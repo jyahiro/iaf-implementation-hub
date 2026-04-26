@@ -18,3 +18,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Platform workspaces
+apps/*/dist
+packages/*/dist
+apps/*/node_modules
+packages/*/node_modules

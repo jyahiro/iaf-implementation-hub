@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iaf-platform-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iaf-platform-web
+  template:
+    metadata:
+      labels:
+        app: iaf-platform-web
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/example/iaf-platform-web:latest
+          ports:
+            - containerPort: 4200
+          env:
+            - name: API_BASE_URL
+              value: http://iaf-platform-api:4100
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iaf-platform-web
+spec:
+  selector:
+    app: iaf-platform-web
+  ports:
+    - port: 4200
+      targetPort: 4200

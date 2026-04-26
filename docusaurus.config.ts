@@ -41,26 +41,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/jyahiro/iaf-implementation-hub/tree/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/jyahiro/iaf-implementation-hub/tree/main/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -69,8 +53,13 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/informs-logo-official-clean.png',
+    announcementBar: {
+      id: 'legal-guardrail',
+      content:
+        'Legal guardrail: all Hub guidance is governed by applicable law and policy, including the Evidence Act. <a href="/iaf-implementation-hub/docs/public-sector/legal-guardrails">Learn more</a>.',
+      isCloseable: true,
+    },
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -87,8 +76,8 @@ const config: Config = {
           position: 'left',
           label: 'Framework Docs',
         },
-        {to: '/docs/service-catalog/index', label: 'Service Catalog', position: 'left'},
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/docs/implementation-toolkit', label: 'Implementation Toolkit', position: 'left'},
+        {to: '/docs/platform/architecture', label: 'Platform', position: 'left'},
         {
           href: 'https://github.com/jyahiro/iaf-implementation-hub',
           label: 'GitHub',
@@ -104,19 +93,27 @@ const config: Config = {
           items: [
             {
               label: 'Get Started',
-              to: '/docs/intro',
+              to: '/docs/',
             },
             {
               label: 'Core Domains',
-              to: '/docs/domains/01-business-problem-framing',
+              to: '/docs/domains/business-problem-framing',
+            },
+            {
+              label: 'Implementation Toolkit',
+              to: '/docs/implementation-toolkit',
             },
             {
               label: 'Digital Templates',
-              to: '/docs/public-sector/templates/index',
+              to: '/docs/public-sector/templates',
             },
             {
               label: 'Service Catalog',
-              to: '/docs/service-catalog/index',
+              to: '/docs/service-catalog',
+            },
+            {
+              label: 'Legal Guardrails',
+              to: '/docs/public-sector/legal-guardrails',
             },
           ],
         },
@@ -136,10 +133,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/jyahiro/iaf-implementation-hub',

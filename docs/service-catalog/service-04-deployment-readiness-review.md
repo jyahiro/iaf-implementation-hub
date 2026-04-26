@@ -18,5 +18,12 @@ Evaluate operational, governance, and technical readiness for Domain VI deployme
 - Required corrective actions (if any)
 - Production validation checklist
 
+## IAF Task Coverage
+- **Primary tasks:** 6.1, 6.2, 6.3, 6.4, 6.5, 6.6
+- **Supporting domains:** Domain VII lifecycle transition
+
+## Legal Guardrail
+All service execution must comply with applicable law and policy, including the Foundations for Evidence-Based Policymaking Act of 2018. See `docs/public-sector/legal-guardrails`.
+
 ## Standard Turnaround
 - 5-10 business days after evidence package submission.

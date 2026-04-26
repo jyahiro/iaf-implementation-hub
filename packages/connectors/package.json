@@ -1,0 +1,14 @@
+{
+  "name": "@iaf/connectors",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "node ./scripts/check-connectors.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@iaf/shared": "0.1.0"
+  }
+}

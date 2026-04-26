@@ -1,0 +1,14 @@
+{
+  "name": "@iaf/policy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "check": "node ./scripts/check-policy.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@iaf/shared": "0.1.0"
+  }
+}

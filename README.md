@@ -1,41 +1,29 @@
-# Website
+# IAF Implementation Hub and Platform
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This repository contains:
 
-## Installation
+- A Docusaurus knowledge layer for IAF standards and implementation guidance.
+- A full-platform scaffold (`apps/web`, `apps/api`) for end-to-end IAF workflow execution.
+- Shared policy and connector packages to support environment-agnostic operation.
 
-```bash
-yarn
-```
+## Workspace Structure
 
-## Local Development
+- `apps/web` - platform user experience shell.
+- `apps/api` - workflow, artifacts, services, audit, and connector orchestration.
+- `packages/shared` - shared models and provider interfaces.
+- `packages/policy` - policy-as-code controls and checks.
+- `packages/connectors` - external data connector bridge adapters.
+- `docs/` - guidance, templates, service catalog, and architecture runbooks.
+- `infra/` - deployment profiles (local, Kubernetes, cloud-managed guidance).
 
-```bash
-yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
+## Common Commands
 
 ```bash
-USE_SSH=true yarn deploy
+npm install
+npm run start
+npm run build
+npm run platform:api
+npm run platform:web
+npm run platform:check-policy
+npm run platform:check-connectors
 ```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
