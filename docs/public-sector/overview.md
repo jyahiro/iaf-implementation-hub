@@ -1,0 +1,28 @@
+---
+sidebar_position: 20
+---
+
+# Public Sector Implementation
+
+This section provides practical guidance for public-sector customers implementing IAF in real program and policy environments.
+
+## Scope
+
+- Enterprise and program-level analytics governance
+- Cross-functional decision support
+- Repeatable delivery from problem framing through lifecycle management
+- Traceable artifacts for oversight and audit readiness
+
+## How to Use This Section
+
+1. Start with domain standards in `docs/domains/`.
+2. Create project artifacts using templates in `docs/public-sector/templates/`.
+3. Engage service pathways in `docs/service-catalog/` when specialized support is needed.
+
+## Delivery Model
+
+The operating model is digital-first and version-controlled:
+
+- Templates are maintained as Markdown artifacts.
+- Reviews and updates happen through repository workflows.
+- Implementation evidence remains discoverable and reusable across teams.
