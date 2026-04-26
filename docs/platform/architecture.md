@@ -27,8 +27,8 @@ Core logic depends on abstract providers, not vendor-specific services:
 
 The platform uses policy-as-code checks and documented control mappings aligned to:
 
-- Evidence Act baseline
-- M-13-13 (Open Data Policy)
-- OPEN Government Data Act / Federal Data Strategy
-- NIST AI RMF / M-24-10
-- NIST 800-53 control families
+- [Evidence Act baseline](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf)
+- [M-13-13 (Open Data Policy)](https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2013/m-13-13.pdf)
+- [OPEN Government Data Act / Federal Data Strategy](https://strategy.data.gov/)
+- [NIST AI RMF / OMB M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf)
+- [NIST SP 800-53 Rev. 5 control families](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)

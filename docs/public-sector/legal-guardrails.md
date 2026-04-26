@@ -4,11 +4,11 @@ sidebar_position: 22
 
 # Legal Guardrails
 
-All implementation guidance in the IAF Implementation Hub is governed by applicable law, policy, and agency directives. For U.S. federal contexts, the primary statutory guardrail is the Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act), Public Law 115-435.
+All implementation guidance in the IAF Implementation Hub is governed by applicable law, policy, and agency directives. For U.S. federal contexts, the primary statutory guardrail is the [Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf), Public Law 115-435.
 
 ## Governing Reference
 
-- **Statute:** Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act)
+- **Statute:** [Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf)
 - **Public Law:** Pub. L. 115-435
 - **Date Enacted:** January 14, 2019
 - **Primary Source:** [Congress.gov Public Law 115-435](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf)

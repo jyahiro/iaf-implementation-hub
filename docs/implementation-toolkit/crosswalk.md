@@ -14,9 +14,9 @@ This is the canonical crosswalk for mapping templates to service pathways.
 - Domain IV Method Selection Record -> Service 03
 - Domain V Model Validation Report -> Service 03 and Service 04
 - Domain VI/VII Operational Lifecycle Review -> Service 04 and Service 05
-- Domain I Governance Artifact (M-13-13 Open Data Policy) -> Service 01
-- Domain III Governance Artifact (OPEN Data Act / FDS) -> Service 02
-- Domain V/VI Governance Artifact (NIST AI RMF / M-24-10) -> Service 03 and Service 04
+- Domain I Governance Artifact ([M-13-13 Open Data Policy](https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2013/m-13-13.pdf)) -> Service 01
+- Domain III Governance Artifact ([OPEN Data Act / FDS](https://strategy.data.gov/)) -> Service 02
+- Domain V/VI Governance Artifact ([NIST AI RMF / M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf)) -> Service 03 and Service 04
 
 ## Service to Template
 

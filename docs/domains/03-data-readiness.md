@@ -7,7 +7,7 @@ slug: /domains/data-readiness
 ## At a Glance
 - **Entry criteria:** Analytics problem framing approved with data requirements identified.
 - **Exit criteria:** Data is validated as fit for purpose with governance controls documented.
-- **Required artifacts:** Data Management Plan, Data Quality Report, OPEN Data/FDS compliance record.
+- **Required artifacts:** Data Management Plan, Data Quality Report, [OPEN Government Data Act / Federal Data Strategy](https://strategy.data.gov/) compliance record.
 - **Accountable roles:** Data Steward, Analyst, Reviewer.
 
 ## Executive Summary
@@ -33,4 +33,4 @@ A project is Domain III compliant only when the following artifacts are complete
 - Data Acquisition and Preparation Log.
 - Data Quality and Relationship Assessment Report.
 - Data Findings Report, including updates to business and analytics problem statements.
-- Governance Artifact: OPEN Government Data Act / Federal Data Strategy Compliance Record (`docs/public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record`).
+- Governance Artifact: [OPEN Government Data Act / Federal Data Strategy Compliance Record](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record).

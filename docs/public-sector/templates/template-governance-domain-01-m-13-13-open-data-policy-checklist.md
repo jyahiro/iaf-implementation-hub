@@ -8,8 +8,8 @@
 - Approval Status:
 
 ## Policy Basis
-- OMB Memorandum M-13-13 (Open Data Policy - Managing Information as an Asset)
-- Foundations for Evidence-Based Policymaking Act of 2018 (Pub. L. 115-435)
+- [OMB Memorandum M-13-13 (Open Data Policy - Managing Information as an Asset)](https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2013/m-13-13.pdf)
+- [Foundations for Evidence-Based Policymaking Act of 2018 (Pub. L. 115-435)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf)
 
 ## Domain I Alignment (Framing)
 - Business problem statement quality:

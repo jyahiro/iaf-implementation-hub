@@ -22,7 +22,7 @@ A city agency experiences long review timelines for building permit applications
 ### Domain I: Business Problem Framing
 - Create **Business Problem Brief**.
 - Align sponsor, permitting office, legal, and IT stakeholders.
-- Complete **M-13-13 Open Data Policy Governance Checklist**.
+- Complete **[M-13-13 Open Data Policy Governance Checklist](../public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist)**.
 - Gate decision: approve progression to Domain II.
 
 ### Domain II: Analytics Problem Framing
@@ -35,7 +35,7 @@ A city agency experiences long review timelines for building permit applications
 ### Domain III: Data
 - Build source inventory (application records, reviewer workload, inspection dependencies).
 - Complete data quality checks and lineage notes.
-- Complete OPEN Data/FDS compliance artifact.
+- Complete [OPEN Data/FDS compliance artifact](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record).
 - Gate decision: approve progression to Domain IV.
 
 ### Domain IV: Methodology Framing
@@ -48,7 +48,7 @@ A city agency experiences long review timelines for building permit applications
 - Build delay-risk model and workflow recommendation logic.
 - Validate performance against baseline and fairness checks.
 - Produce model findings and limitations report.
-- Complete AI governance assurance case when applicable.
+- Complete [AI governance assurance case](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case) when applicable.
 
 ### Domain VI: Deployment
 - Run business validation with permit operations team.
