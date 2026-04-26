@@ -14,7 +14,7 @@ This is the canonical crosswalk for mapping templates to service pathways.
 - Domain IV Method Selection Record -> Service 03
 - Domain V Model Validation Report -> Service 03 and Service 04
 - Domain VI/VII Operational Lifecycle Review -> Service 04 and Service 05
-- Domain I Governance Artifact (M-23-15) -> Service 01
+- Domain I Governance Artifact (M-13-13 Open Data Policy) -> Service 01
 - Domain III Governance Artifact (OPEN Data Act / FDS) -> Service 02
 - Domain V/VI Governance Artifact (NIST AI RMF / M-24-10) -> Service 03 and Service 04
 

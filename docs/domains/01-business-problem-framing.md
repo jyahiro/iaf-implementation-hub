@@ -7,7 +7,7 @@ slug: /domains/business-problem-framing
 ## At a Glance
 - **Entry criteria:** Strategic question identified and sponsor engaged.
 - **Exit criteria:** Problem statement approved and sponsor/stakeholder alignment recorded.
-- **Required artifacts:** Business Problem Statement, Stakeholder Register, M-23-15 checklist.
+- **Required artifacts:** Business Problem Statement, Stakeholder Register, M-13-13 (Open Data Policy) checklist.
 - **Accountable roles:** Executive Sponsor, Program Manager, Analyst.
 
 ## Executive Summary
@@ -33,4 +33,4 @@ A project is Domain I compliant only when the following artifacts are complete a
 - Initial Business Case and Value Hypothesis.
 - Analytics Suitability Assessment (go/no-go rationale).
 - Sponsor Approval and Alignment Record (meeting decision log or signed memorandum).
-- Governance Artifact: M-23-15 Evidence Planning Checklist (`docs/public-sector/templates/template-governance-domain-01-m-23-15-evidence-planning-checklist`).
+- Governance Artifact: M-13-13 (Open Data Policy) Governance Checklist (`docs/public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist`).
