@@ -6,7 +6,7 @@ sidebar_position: 30
 
 The Service Catalog provides a functioning menu of implementation support services for public-sector customers. Each service includes purpose, triggers, inputs, outputs, and turnaround expectations.
 
-All services are mapped to IAF task coverage and governed by the Evidence Act legal baseline described in `docs/public-sector/legal-guardrails`.
+All services are mapped to IAF task coverage and governed by the Evidence Act legal baseline described in [Legal Guardrails](../public-sector/legal-guardrails).
 
 ## How to Use
 
@@ -32,4 +32,4 @@ All services are mapped to IAF task coverage and governed by the Evidence Act le
 - Service 03 consumes Domain IV/V method, model, and AI governance artifacts.
 - Service 04 consumes Domain V/VI validation and deployment assurance artifacts.
 - Service 05 consumes Domain VI/VII lifecycle review artifacts and monitoring evidence.
-- See full bidirectional mapping in `docs/implementation-toolkit/`.
+- See [Template and Service Crosswalk](../implementation-toolkit/crosswalk) for canonical mapping.

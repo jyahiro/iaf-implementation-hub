@@ -1,4 +1,14 @@
+---
+slug: /domains/lifecycle-management
+---
+
 # Domain VII: Analytics Solution Lifecycle Management
+
+## At a Glance
+- **Entry criteria:** Deployed solution with monitoring controls in place.
+- **Exit criteria:** Ongoing lifecycle governance cadence established and active.
+- **Required artifacts:** Performance Monitoring Plan, Recalibration Log, Revalidation Reports.
+- **Accountable roles:** Program Manager, Operations Lead, Reviewer.
 
 ## Executive Summary
 Domain VII governs ongoing oversight of deployed analytics solutions to sustain performance, relevance, and business value over time. Per the INFORMS Analytics Framework, this domain includes performance tracking, recalibration and maintenance, support for training activities, periodic business-case validation, side-effect analysis, and continuous documentation upkeep. Domain VII is complete when lifecycle controls are institutionalized as standard operating practice.
