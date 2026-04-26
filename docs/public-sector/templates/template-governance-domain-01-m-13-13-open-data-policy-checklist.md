@@ -1,4 +1,4 @@
-# Template: Domain I Governance Artifact (M-23-15 Evidence Planning Checklist)
+# Template: Domain I Governance Artifact (M-13-13 Open Data Policy Governance Checklist)
 
 ## Metadata
 - Project:
@@ -8,20 +8,20 @@
 - Approval Status:
 
 ## Policy Basis
-- OMB Memorandum M-23-15 (Evidence Act implementation guidance)
+- OMB Memorandum M-13-13 (Open Data Policy - Managing Information as an Asset)
 - Foundations for Evidence-Based Policymaking Act of 2018 (Pub. L. 115-435)
 
 ## Domain I Alignment (Framing)
 - Business problem statement quality:
 - Decision relevance and expected outcomes:
 - Stakeholder and sponsor alignment:
-- Evidence-building objective clarity:
+- Information asset and open data implications identified:
 
-## Learning and Evaluation Planning
-- Key learning questions:
-- Evidence gaps:
-- Proposed evaluation or analysis approach:
-- Decision points supported by evidence:
+## Open Data Planning
+- Priority information assets identified:
+- Public release and access considerations:
+- Metadata and documentation planning:
+- Data governance dependencies for downstream domains:
 
 ## Governance and Accountability
 - Accountable officials and roles:

@@ -1,6 +1,6 @@
 export interface PolicyControl {
   id: string;
-  framework: 'evidence-act' | 'm-23-15' | 'open-data-fds' | 'nist-ai-rmf-m-24-10' | 'nist-800-53';
+  framework: 'evidence-act' | 'm-13-13-open-data-policy' | 'open-data-fds' | 'nist-ai-rmf-m-24-10' | 'nist-800-53';
   domainScope: string[];
   title: string;
   requiredEvidenceKeys: string[];
@@ -15,11 +15,11 @@ export const POLICY_PACK: PolicyControl[] = [
     requiredEvidenceKeys: ['learningQuestions', 'sponsorApprovalRecord'],
   },
   {
-    id: 'm-23-15-001',
-    framework: 'm-23-15',
+    id: 'm-13-13-001',
+    framework: 'm-13-13-open-data-policy',
     domainScope: ['domain-1-framing'],
-    title: 'Evidence planning checklist completed',
-    requiredEvidenceKeys: ['m2315Checklist', 'stakeholderAlignmentRecord'],
+    title: 'Open data policy governance checklist completed for planning stage',
+    requiredEvidenceKeys: ['m1313Checklist', 'stakeholderAlignmentRecord'],
   },
   {
     id: 'open-data-fds-001',
