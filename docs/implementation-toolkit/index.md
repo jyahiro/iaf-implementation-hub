@@ -15,28 +15,12 @@ The Implementation Toolkit combines digital templates and support services into 
 
 ## Toolkit Components
 
-- **Templates:** `docs/public-sector/templates/`
-- **Service Catalog:** `docs/service-catalog/`
-- **Legal Baseline:** `docs/public-sector/legal-guardrails`
-- **Platform Architecture:** `docs/platform/architecture`
-- **Platform Runbooks:** `docs/platform/runbooks`
+- **Templates:** [Digital Templates](../public-sector/templates/)
+- **Service Catalog:** [Service Catalog](../service-catalog/)
+- **Legal Baseline:** [Legal Guardrails](../public-sector/legal-guardrails)
+- **Platform Architecture:** [Platform Architecture](../platform/architecture)
+- **Platform Runbooks:** [Platform Runbooks](../platform/runbooks)
 
-## Template-to-Service Crosswalk
+## Canonical Crosswalk
 
-- **Domain I Business Problem Brief** -> **Service 01: Problem Framing Facilitation**
-- **Domain II Analytics Problem Statement** -> **Service 01** (handoff support) and **Service 03** (method readiness)
-- **Domain III Data Readiness Assessment** -> **Service 02: Data Readiness Assessment**
-- **Domain IV Method Selection Record** -> **Service 03: Method and Model Advisory**
-- **Domain V Model Validation Report** -> **Service 03** and **Service 04**
-- **Domain VI/VII Operational Lifecycle Review** -> **Service 04** and **Service 05**
-- **Domain I Governance Artifact (M-23-15)** -> **Service 01**
-- **Domain III Governance Artifact (OPEN Data Act / FDS)** -> **Service 02**
-- **Domain V/VI Governance Artifact (NIST AI RMF / M-24-10)** -> **Service 03** and **Service 04**
-
-## Service-to-Template Crosswalk
-
-- **Service 01** consumes Business Problem Brief and produces Domain I approval records.
-- **Service 02** consumes Data Readiness artifacts and produces Domain III remediation and readiness outputs.
-- **Service 03** consumes method/model artifacts and produces method-selection and model-risk decisions.
-- **Service 04** consumes model/deployment artifacts and produces deployment gate decisions.
-- **Service 05** consumes lifecycle monitoring evidence and produces recalibration and oversight actions.
+Use [Template and Service Crosswalk](./crosswalk) as the single source of truth for template-to-service mapping.

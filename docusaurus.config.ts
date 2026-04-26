@@ -57,7 +57,7 @@ const config: Config = {
     announcementBar: {
       id: 'legal-guardrail',
       content:
-        'Legal guardrail: all Hub guidance is governed by applicable law and policy, including the Evidence Act. <a href="/iaf-implementation-hub/docs/public-sector/legal-guardrails">Learn more</a>.',
+        'Legal guardrail: all Hub guidance is governed by applicable law and policy, including the Evidence Act. <a href="/iaf-implementation-hub/docs/legal-policy/compliance-checkpoints">View legal guardrails and required controls</a>.',
       isCloseable: true,
     },
     colorMode: {
@@ -70,14 +70,13 @@ const config: Config = {
         src: 'img/informs-logo-official-clean.png',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Framework Docs',
-        },
-        {to: '/docs/implementation-toolkit', label: 'Implementation Toolkit', position: 'left'},
+        {to: '/', label: 'Home', position: 'left'},
+        {to: '/docs/start-here', label: 'Start Here', position: 'left'},
+        {to: '/docs/domains/business-problem-framing', label: 'Domain Standards', position: 'left'},
+        {to: '/docs/implementation-toolkit', label: 'Toolkit and Templates', position: 'left'},
+        {to: '/docs/service-catalog', label: 'Service Catalog', position: 'left'},
         {to: '/docs/platform/architecture', label: 'Platform', position: 'left'},
+        {to: '/docs/legal-policy/compliance-checkpoints', label: 'Legal and Policy', position: 'left'},
         {
           href: 'https://github.com/jyahiro/iaf-implementation-hub',
           label: 'GitHub',
@@ -113,7 +112,7 @@ const config: Config = {
             },
             {
               label: 'Legal Guardrails',
-              to: '/docs/public-sector/legal-guardrails',
+              to: '/docs/legal-policy/compliance-checkpoints',
             },
           ],
         },

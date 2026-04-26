@@ -1,4 +1,14 @@
+---
+slug: /domains/methodology-selection
+---
+
 # Domain IV: Methodology (Approach) Framing
+
+## At a Glance
+- **Entry criteria:** Data readiness confirmed and analytics objective validated.
+- **Exit criteria:** Method and technical stack selected with documented trade-offs.
+- **Required artifacts:** Method Evaluation Matrix, Architecture Overview, Stack Decision Record.
+- **Accountable roles:** Analyst, Technical Lead, Reviewer.
 
 ## Executive Summary
 Domain IV selects the analytical methods and technical approach required to solve the defined analytics problem using available data and resources. Per the INFORMS Analytics Framework, this domain identifies candidate methods, evaluates alternatives, confirms technical solution architecture, and selects an implementation-ready technology stack. Domain IV is complete when the methodology is justified, feasible, and governance-ready.

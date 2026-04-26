@@ -1,4 +1,14 @@
+---
+slug: /domains/model-building
+---
+
 # Domain V: Analytics/Model Development
+
+## At a Glance
+- **Entry criteria:** Approved method and architecture.
+- **Exit criteria:** Model performance validated and deployment recommendation documented.
+- **Required artifacts:** Model Validation Report, Findings Briefing, AI RMF/M-24-10 assurance case.
+- **Accountable roles:** Analyst, Model Owner, Reviewer.
 
 ## Executive Summary
 Domain V designs, builds, evaluates, calibrates, and documents analytics models to produce reliable decision-support outputs. Per the INFORMS Analytics Framework, this domain includes model structure design, model construction, performance verification, calibration based on stakeholder input, potential model integration, and communication of findings with assumptions and limitations. Domain V is complete when model outputs are validated as decision-relevant and technically defensible.
