@@ -6,7 +6,7 @@ sidebar_position: 30
 
 The Service Catalog provides a functioning menu of implementation support services for public-sector customers. Each service includes purpose, triggers, inputs, outputs, and turnaround expectations.
 
-All services are mapped to IAF task coverage and governed by the Evidence Act legal baseline described in [Legal Guardrails](../public-sector/legal-guardrails).
+All services are mapped to IAF task coverage and governed by the [Evidence Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) legal baseline described in [Legal Guardrails](../public-sector/legal-guardrails).
 
 ## How to Use
 

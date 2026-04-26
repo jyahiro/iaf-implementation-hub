@@ -8,8 +8,8 @@
 - Approval Status:
 
 ## Policy Basis
-- OPEN Government Data Act (Title II of Pub. L. 115-435)
-- Federal Data Strategy principles and practices
+- [OPEN Government Data Act (Title II of Pub. L. 115-435)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf)
+- [Federal Data Strategy principles and practices](https://strategy.data.gov/)
 
 ## Domain III Alignment (Data)
 - Data requirements and source inventory status:

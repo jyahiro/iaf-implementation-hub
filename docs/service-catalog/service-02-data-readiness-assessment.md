@@ -19,11 +19,11 @@ Assess whether available data is sufficient, governed, and fit for intended anal
 - Remediation plan and Domain IV readiness recommendation
 
 ## IAF Task Coverage
-- **Primary tasks:** 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8
+- **Primary tasks:** [3.1](../legal-policy/role-task-matrix#task-31), [3.2](../legal-policy/role-task-matrix#task-32), [3.3](../legal-policy/role-task-matrix#task-33), [3.4](../legal-policy/role-task-matrix#task-34), [3.5](../legal-policy/role-task-matrix#task-35), [3.6](../legal-policy/role-task-matrix#task-36), [3.7](../legal-policy/role-task-matrix#task-37), [3.8](../legal-policy/role-task-matrix#task-38)
 - **Supporting domains:** Domain II validation and Domain IV readiness
 
 ## Legal Guardrail
-All service execution must comply with applicable law and policy, including the Foundations for Evidence-Based Policymaking Act of 2018. See `docs/public-sector/legal-guardrails`.
+All service execution must comply with applicable law and policy, including the [Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf). See [Legal Guardrails](../public-sector/legal-guardrails).
 
 ## Standard Turnaround
 - 10-15 business days, based on data access scope.

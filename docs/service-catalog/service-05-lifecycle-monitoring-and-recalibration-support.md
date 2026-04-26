@@ -19,11 +19,11 @@ Provide sustained Domain VII oversight support for performance monitoring, recal
 - Updated risk and documentation maintenance actions
 
 ## IAF Task Coverage
-- **Primary tasks:** 7.1, 7.2, 7.3, 7.4, 7.5, 7.6
+- **Primary tasks:** [7.1](../legal-policy/role-task-matrix#task-71), [7.2](../legal-policy/role-task-matrix#task-72), [7.3](../legal-policy/role-task-matrix#task-73), [7.4](../legal-policy/role-task-matrix#task-74), [7.5](../legal-policy/role-task-matrix#task-75), [7.6](../legal-policy/role-task-matrix#task-76)
 - **Supporting domains:** Domain VI deployment feedback loop
 
 ## Legal Guardrail
-All service execution must comply with applicable law and policy, including the Foundations for Evidence-Based Policymaking Act of 2018. See `docs/public-sector/legal-guardrails`.
+All service execution must comply with applicable law and policy, including the [Foundations for Evidence-Based Policymaking Act of 2018 (Evidence Act)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf). See [Legal Guardrails](../public-sector/legal-guardrails).
 
 ## Standard Turnaround
 - Initial assessment in 5-10 business days; ongoing support scheduled by cadence.

@@ -8,8 +8,8 @@
 - Approval Status:
 
 ## Policy Basis
-- NIST AI Risk Management Framework (AI RMF 1.0)
-- OMB Memorandum M-24-10 (federal AI governance requirements)
+- [NIST AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/itl/ai-risk-management-framework)
+- [OMB Memorandum M-24-10 (federal AI governance requirements)](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf)
 
 ## Domain V Alignment (Build)
 - Intended system purpose and scope:

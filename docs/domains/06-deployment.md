@@ -7,7 +7,7 @@ slug: /domains/deployment
 ## At a Glance
 - **Entry criteria:** Model validation complete and sponsor alignment on deployment pathway.
 - **Exit criteria:** Production readiness validated and deployment gate approved.
-- **Required artifacts:** Deployment Validation Report, Production Requirements, AI RMF/M-24-10 assurance case.
+- **Required artifacts:** Deployment Validation Report, Production Requirements, [NIST AI RMF / OMB M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf) assurance case.
 - **Accountable roles:** Program Manager, Technical Lead, Authorizing Official.
 
 ## Executive Summary
@@ -33,4 +33,4 @@ A project is Domain VI compliant only when the following artifacts are complete 
 - Production Requirements Specification.
 - Implementation and Test Execution Report.
 - Deployment Validation and Verification Report.
-- Governance Artifact: NIST AI RMF / M-24-10 Assurance Case (`docs/public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case`).
+- Governance Artifact: [NIST AI RMF / M-24-10 Assurance Case](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case).

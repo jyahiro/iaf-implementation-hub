@@ -1,8 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 type Role =
   | 'program_manager'
   | 'analyst'
+  | 'data_engineer'
+  | 'data_scientist'
   | 'sponsor'
   | 'data_steward'
   | 'reviewer'
@@ -25,7 +28,246 @@ interface DomainResponse {
   checklistComplete: boolean;
   artifactComplete: boolean;
   serviceComplete: boolean;
+  taskStatus: Record<string, boolean>;
+  taskForms: Record<string, TaskFormState>;
 }
+
+interface RoleTaskFocus {
+  primary: string[];
+  supporting: string[];
+}
+
+interface DomainTaskProfile {
+  allTasks: string[];
+  byRole: Partial<Record<Role, RoleTaskFocus>>;
+}
+
+interface TaskFormState {
+  workflowValues: Record<string, string>;
+}
+
+interface TaskWorkflowField {
+  id: string;
+  label: string;
+  type: 'text' | 'textarea' | 'select' | 'people';
+  required?: boolean;
+  placeholder?: string;
+  options?: string[];
+  helpText?: string;
+}
+
+interface TaskWorkflowDefinition {
+  summary: string;
+  fields: TaskWorkflowField[];
+}
+
+interface IcamPerson {
+  id: string;
+  displayName: string;
+  email: string;
+  roleTitle: string;
+  organization: string;
+}
+
+const TASK_REFERENCE_PATH = '/docs/legal-policy/role-task-matrix/';
+const TASK_DESCRIPTIONS: Record<string, string> = {
+  '1.1': 'Define mission problem and measurable outcomes.',
+  '1.2': 'Identify stakeholders and decision cadence.',
+  '1.3': 'Capture decision criteria and constraints.',
+  '1.4': 'Define scope boundaries and assumptions.',
+  '1.5': 'Confirm governance and approval pathway.',
+  '1.6': 'Approve problem framing brief for execution.',
+  '2.1': 'Translate business problem into analytics objectives.',
+  '2.2': 'Define candidate analytical approaches.',
+  '2.3': 'Set success metrics and performance thresholds.',
+  '2.4': 'Document assumptions and trade-offs.',
+  '2.5': 'Select preferred analytics approach.',
+  '2.6': 'Define acceptance criteria for next gate.',
+  '2.7': 'Authorize transition to data readiness activities.',
+  '3.1': 'Inventory data sources and owners.',
+  '3.2': 'Classify data sensitivity and handling requirements.',
+  '3.3': 'Assess data quality and fitness for use.',
+  '3.4': 'Design ingestion, transformation, and lineage flow.',
+  '3.5': 'Implement secure data access and controls.',
+  '3.6': 'Produce data readiness evidence package.',
+  '3.7': 'Resolve critical data risks and exceptions.',
+  '3.8': 'Approve data baseline for methodology selection.',
+  '4.1': 'Define candidate method families and fit criteria.',
+  '4.2': 'Evaluate methods against constraints and mission needs.',
+  '4.3': 'Define architecture and integration approach.',
+  '4.4': 'Approve selected methodology and delivery approach.',
+  '5.1': 'Prepare development-ready analytic datasets.',
+  '5.2': 'Develop baseline and candidate models.',
+  '5.3': 'Validate model performance and robustness.',
+  '5.4': 'Assess model risk, fairness, and explainability.',
+  '5.5': 'Package model artifacts for deployment.',
+  '5.6': 'Approve model release readiness.',
+  '6.1': 'Finalize deployment plan and operational controls.',
+  '6.2': 'Complete implementation readiness review.',
+  '6.3': 'Authorize production deployment.',
+  '6.4': 'Execute deployment and cutover steps.',
+  '6.5': 'Establish observability and incident workflows.',
+  '6.6': 'Validate deployed solution against acceptance criteria.',
+  '7.1': 'Track operational performance and mission outcomes.',
+  '7.2': 'Monitor drift and trigger retraining thresholds.',
+  '7.3': 'Manage change requests and version governance.',
+  '7.4': 'Conduct periodic oversight and compliance reviews.',
+  '7.5': 'Prioritize enhancements and deprecation actions.',
+  '7.6': 'Document closure, sustainment, or retirement decisions.',
+};
+
+const DUMMY_ICAM_DIRECTORY: IcamPerson[] = [
+  {id: 'u-001', displayName: 'Avery Johnson', email: 'avery.johnson@agency.gov', roleTitle: 'Program Manager', organization: 'Permitting Office'},
+  {id: 'u-002', displayName: 'Jordan Lee', email: 'jordan.lee@agency.gov', roleTitle: 'Data Steward', organization: 'Data Governance Office'},
+  {id: 'u-003', displayName: 'Taylor Smith', email: 'taylor.smith@agency.gov', roleTitle: 'Policy Advisor', organization: 'General Counsel'},
+  {id: 'u-004', displayName: 'Casey Brown', email: 'casey.brown@agency.gov', roleTitle: 'Operations Lead', organization: 'Regional Operations'},
+  {id: 'u-005', displayName: 'Morgan Davis', email: 'morgan.davis@agency.gov', roleTitle: 'Data Engineer', organization: 'Enterprise Data Platform'},
+  {id: 'u-006', displayName: 'Riley Patel', email: 'riley.patel@agency.gov', roleTitle: 'Executive Sponsor', organization: 'Mission Directorate'},
+  {id: 'u-007', displayName: 'Quinn Wilson', email: 'quinn.wilson@agency.gov', roleTitle: 'Reviewer', organization: 'Independent Oversight'},
+  {id: 'u-008', displayName: 'Jamie Garcia', email: 'jamie.garcia@agency.gov', roleTitle: 'Analyst', organization: 'Performance Analytics'},
+];
+
+const TASK_WORKFLOW_DEFINITIONS: Record<string, TaskWorkflowDefinition> = {
+  '1.1': {
+    summary: 'Define a clear mission problem statement and intended outcomes.',
+    fields: [
+      {id: 'problemStatement', label: 'Mission Problem Statement', type: 'textarea', required: true},
+      {
+        id: 'targetOutcome',
+        label: 'Target Outcome Metric',
+        type: 'text',
+        required: true,
+        helpText: 'Include a measurable performance target (for example, reduce cycle time by 20%).',
+      },
+      {
+        id: 'timeHorizon',
+        label: 'Decision Time Horizon',
+        type: 'select',
+        required: true,
+        options: ['30 days', '90 days', '6 months', '12 months'],
+        helpText: 'Choose the timeframe in which leaders expect decision impact.',
+      },
+    ],
+  },
+  '1.2': {
+    summary: 'Identify stakeholders and establish the decision cadence for governance.',
+    fields: [
+      {
+        id: 'primaryStakeholders',
+        label: 'Primary Stakeholders (ICAM search)',
+        type: 'people',
+        required: true,
+        placeholder: 'Type name or email to search the personnel directory.',
+        helpText:
+          'Search the ICAM directory by name or email, then select stakeholders to include in this task.',
+      },
+      {
+        id: 'decisionOwner',
+        label: 'Decision Owner Role',
+        type: 'select',
+        required: true,
+        options: ['Executive Sponsor', 'Program Manager', 'Authorizing Official', 'Review Board'],
+        helpText: 'Select who has final authority for this domain decision.',
+      },
+      {
+        id: 'cadence',
+        label: 'Decision Cadence',
+        type: 'select',
+        required: true,
+        options: ['Weekly', 'Bi-weekly', 'Monthly', 'Gate-based only'],
+        helpText: 'Set how often decisions/checkpoints occur during execution.',
+      },
+      {
+        id: 'cadenceRationale',
+        label: 'Cadence Rationale',
+        type: 'textarea',
+        required: true,
+        helpText: 'Explain why this cadence fits risk, workload, and governance needs.',
+      },
+    ],
+  },
+  '1.3': {
+    summary: 'Capture decision criteria and constraints for scope control.',
+    fields: [
+      {id: 'decisionCriteria', label: 'Decision Criteria', type: 'textarea', required: true},
+      {
+        id: 'constraints',
+        label: 'Constraints (policy, timeline, budget)',
+        type: 'textarea',
+        required: true,
+        helpText: 'Capture known legal, schedule, budget, and operational limits.',
+      },
+    ],
+  },
+  '1.4': {
+    summary: 'Set clear scope boundaries and assumptions.',
+    fields: [
+      {id: 'inScope', label: 'In Scope', type: 'textarea', required: true},
+      {id: 'outOfScope', label: 'Out of Scope', type: 'textarea', required: true},
+      {
+        id: 'keyAssumptions',
+        label: 'Key Assumptions',
+        type: 'textarea',
+        required: true,
+        helpText: 'Document assumptions that, if invalidated, would change solution direction.',
+      },
+    ],
+  },
+  '1.5': {
+    summary: 'Confirm governance checkpoints and approvals.',
+    fields: [
+      {id: 'approvalChain', label: 'Approval Chain', type: 'textarea', required: true},
+      {
+        id: 'checkpointCadence',
+        label: 'Checkpoint Cadence',
+        type: 'select',
+        required: true,
+        options: ['Domain gate checkpoints', 'Bi-weekly + gates', 'Monthly + gates'],
+        helpText: 'Define governance checkpoint rhythm that ensures oversight without blocking delivery.',
+      },
+    ],
+  },
+  '1.6': {
+    summary: 'Record final framing approval to proceed.',
+    fields: [
+      {
+        id: 'approvalDecision',
+        label: 'Approval Decision',
+        type: 'select',
+        required: true,
+        options: ['Approved', 'Conditional Approval', 'Not Approved'],
+        helpText: 'Record the formal decision outcome for Domain I completion.',
+      },
+      {
+        id: 'approvalConditions',
+        label: 'Conditions / Notes',
+        type: 'textarea',
+        required: true,
+        helpText: 'Include any remediation conditions, caveats, or next-step requirements.',
+      },
+    ],
+  },
+};
+
+const GENERIC_TASK_WORKFLOW: TaskWorkflowDefinition = {
+  summary: 'Capture how this task was performed and what evidence supports completion.',
+  fields: [
+    {
+      id: 'workPerformed',
+      label: 'Work Performed',
+      type: 'textarea',
+      required: true,
+      helpText: 'Describe the concrete steps completed for this task.',
+    },
+    {
+      id: 'evidenceProduced',
+      label: 'Evidence Produced',
+      type: 'textarea',
+      required: true,
+      helpText: 'List artifacts, decisions, or outputs that prove completion.',
+    },
+  ],
+};
 
 interface LocalDemoState {
   users: Array<{userId: string; email: string; role: Role}>;
@@ -124,9 +366,85 @@ const ROLE_PROMPTS: Record<Role, string> = {
   sponsor: 'Document the decision authority and approval threshold for this domain.',
   program_manager: 'Document delivery milestones, dependencies, and accountability owners.',
   analyst: 'Document analytic assumptions, method rationale, and validation approach.',
+  data_engineer: 'Document data pipeline, metadata, quality, and integration implementation tasks.',
+  data_scientist: 'Document modeling strategy, feature rationale, and validation decisions.',
   data_steward: 'Document data governance controls, stewardship responsibilities, and quality risks.',
   reviewer: 'Document oversight criteria and evidence required for gate approval.',
   admin: 'Document platform, access, and audit configuration implications for this domain.',
+};
+
+const DOMAIN_TASK_MATRIX: Record<string, DomainTaskProfile> = {
+  'domain-1-framing': {
+    allTasks: ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6'],
+    byRole: {
+      sponsor: {primary: ['1.6', '1.5'], supporting: ['1.2']},
+      program_manager: {primary: ['1.2', '1.4'], supporting: ['1.5']},
+      analyst: {primary: ['1.1', '1.3'], supporting: ['1.4']},
+      reviewer: {primary: ['1.3'], supporting: ['1.6']},
+    },
+  },
+  'domain-2-analytics-framing': {
+    allTasks: ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7'],
+    byRole: {
+      sponsor: {primary: ['2.7'], supporting: ['2.4']},
+      program_manager: {primary: ['2.4', '2.6'], supporting: ['2.7']},
+      analyst: {primary: ['2.1', '2.2', '2.3'], supporting: ['2.5']},
+      data_scientist: {primary: ['2.2', '2.3', '2.5'], supporting: ['2.4']},
+      reviewer: {primary: ['2.6'], supporting: ['2.7']},
+    },
+  },
+  'domain-3-data': {
+    allTasks: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8'],
+    byRole: {
+      program_manager: {primary: ['3.1', '3.7'], supporting: ['3.8']},
+      data_steward: {primary: ['3.2', '3.3', '3.6'], supporting: ['3.7']},
+      data_engineer: {primary: ['3.4', '3.5'], supporting: ['3.6']},
+      analyst: {primary: ['3.6', '3.8'], supporting: ['3.7']},
+      reviewer: {primary: ['3.3'], supporting: ['3.7']},
+    },
+  },
+  'domain-4-methodology': {
+    allTasks: ['4.1', '4.2', '4.3', '4.4'],
+    byRole: {
+      program_manager: {primary: ['4.2'], supporting: ['4.4']},
+      analyst: {primary: ['4.1', '4.2'], supporting: ['4.3']},
+      data_scientist: {primary: ['4.1', '4.2'], supporting: ['4.4']},
+      data_engineer: {primary: ['4.3', '4.4'], supporting: ['4.2']},
+      reviewer: {primary: ['4.2'], supporting: ['4.4']},
+    },
+  },
+  'domain-5-build': {
+    allTasks: ['5.1', '5.2', '5.3', '5.4', '5.5', '5.6'],
+    byRole: {
+      program_manager: {primary: ['5.6'], supporting: ['5.3']},
+      analyst: {primary: ['5.1', '5.3', '5.6'], supporting: ['5.4']},
+      data_scientist: {primary: ['5.2', '5.3', '5.4'], supporting: ['5.6']},
+      data_engineer: {primary: ['5.5'], supporting: ['5.2']},
+      reviewer: {primary: ['5.3', '5.6'], supporting: ['5.4']},
+    },
+  },
+  'domain-6-deploy': {
+    allTasks: ['6.1', '6.2', '6.3', '6.4', '6.5', '6.6'],
+    byRole: {
+      sponsor: {primary: ['6.3'], supporting: ['6.1']},
+      program_manager: {primary: ['6.1', '6.2', '6.4'], supporting: ['6.3']},
+      data_engineer: {primary: ['6.5', '6.6'], supporting: ['6.4']},
+      analyst: {primary: ['6.1', '6.6'], supporting: ['6.2']},
+      reviewer: {primary: ['6.2', '6.6'], supporting: ['6.3']},
+    },
+  },
+  'domain-7-lifecycle': {
+    allTasks: ['7.1', '7.2', '7.3', '7.4', '7.5', '7.6'],
+    byRole: {
+      sponsor: {primary: ['7.4'], supporting: ['7.1']},
+      program_manager: {primary: ['7.1', '7.4', '7.6'], supporting: ['7.5']},
+      analyst: {primary: ['7.1', '7.2'], supporting: ['7.5']},
+      data_scientist: {primary: ['7.2'], supporting: ['7.1']},
+      data_engineer: {primary: ['7.2', '7.6'], supporting: ['7.1']},
+      reviewer: {primary: ['7.5', '7.6'], supporting: ['7.4']},
+      data_steward: {primary: ['7.6'], supporting: ['7.1']},
+    },
+  },
 };
 
 const containerStyle: React.CSSProperties = {
@@ -142,6 +460,12 @@ const inputStyle: React.CSSProperties = {
   padding: '0.5rem',
   marginBottom: '0.5rem',
 };
+
+function defaultTaskFormState(): TaskFormState {
+  return {
+    workflowValues: {},
+  };
+}
 
 function getLocalState(): LocalDemoState {
   const existing = localStorage.getItem(LOCAL_STATE_KEY);
@@ -186,6 +510,7 @@ async function requestJson(
 }
 
 export default function DemoExperience(): React.JSX.Element {
+  const taskReferenceBaseUrl = useBaseUrl(TASK_REFERENCE_PATH);
   const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:4100');
   const [browserOnlyMode, setBrowserOnlyMode] = useState(true);
   const [wizardStep, setWizardStep] = useState<WizardStep>('connection');
@@ -201,6 +526,8 @@ export default function DemoExperience(): React.JSX.Element {
   const [output, setOutput] = useState('{}');
   const [currentDomainIndex, setCurrentDomainIndex] = useState(0);
   const [domainResponses, setDomainResponses] = useState<Record<string, DomainResponse>>({});
+  const [icamMode, setIcamMode] = useState<'dummy' | 'manual'>('dummy');
+  const [icamSearchByTask, setIcamSearchByTask] = useState<Record<string, string>>({});
 
   const tokenPreview = useMemo(() => {
     if (!token) {
@@ -210,6 +537,8 @@ export default function DemoExperience(): React.JSX.Element {
   }, [token]);
 
   const currentDomain = DOMAIN_STEPS[currentDomainIndex];
+  const currentTaskProfile = DOMAIN_TASK_MATRIX[currentDomain.id];
+  const currentRoleTaskFocus = currentTaskProfile.byRole[role];
   const currentResponse =
     domainResponses[currentDomain.id] ??
     ({
@@ -219,11 +548,40 @@ export default function DemoExperience(): React.JSX.Element {
       checklistComplete: false,
       artifactComplete: false,
       serviceComplete: false,
+      taskStatus: {},
+      taskForms: {},
     } satisfies DomainResponse);
   const allDomainsComplete = DOMAIN_STEPS.every((step) => {
     const response = domainResponses[step.id];
     return Boolean(response?.checklistComplete && response?.artifactComplete && response?.serviceComplete);
   });
+
+  function taskReferenceLink(taskId: string): string {
+    return `${taskReferenceBaseUrl}#task-${taskId.replace('.', '')}`;
+  }
+
+  function taskTooltip(taskId: string): string {
+    return TASK_DESCRIPTIONS[taskId] ?? 'Open task details in Task RACI Matrix.';
+  }
+
+  function getTaskWorkflowDefinition(taskId: string): TaskWorkflowDefinition {
+    return TASK_WORKFLOW_DEFINITIONS[taskId] ?? GENERIC_TASK_WORKFLOW;
+  }
+
+  function renderTaskLinks(taskIds: string[]): React.JSX.Element {
+    return (
+      <>
+        {taskIds.map((taskId, index) => (
+          <React.Fragment key={taskId}>
+            <a href={taskReferenceLink(taskId)} target="_blank" rel="noreferrer" title={taskTooltip(taskId)}>
+              {taskId}
+            </a>
+            {index < taskIds.length - 1 ? ', ' : ''}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  }
 
   function getPreviousDomainResponse(index: number): DomainResponse | null {
     if (index <= 0) {
@@ -238,18 +596,22 @@ export default function DemoExperience(): React.JSX.Element {
     const priorResponse = getPreviousDomainResponse(index);
     const priorObjective = priorResponse?.objective?.trim();
     const projectContext = projectName.trim() || 'the project';
+    const taskProfile = DOMAIN_TASK_MATRIX[step.id];
+    const roleTaskFocus = taskProfile.byRole[role];
+    const rolePrimaryTasks = roleTaskFocus?.primary.join(', ') || 'domain-shared tasks';
     const objectiveBase = priorObjective
       ? `Using prior domain output ("${priorObjective}"), define ${step.objectiveLabel.toLowerCase()} for ${projectContext}.`
       : `Define ${step.objectiveLabel.toLowerCase()} for ${projectContext}.`;
 
     const roleBase = `${ROLE_PROMPTS[role]} ${
       priorObjective ? `Incorporate prior domain context: "${priorObjective}".` : ''
-    }`.trim();
+    } Prioritize IAF tasks: ${rolePrimaryTasks}.`.trim();
 
-    const policyBase =
+    const policyBase = `${
       index <= 2
         ? 'Identify legal and policy constraints, data handling requirements, and approval checkpoints.'
-        : 'Identify deployment, oversight, and operational risk controls with required approvals.';
+        : 'Identify deployment, oversight, and operational risk controls with required approvals.'
+    }`.trim();
 
     return {
       objective: objectiveBase,
@@ -281,10 +643,119 @@ export default function DemoExperience(): React.JSX.Element {
           checklistComplete: false,
           artifactComplete: false,
           serviceComplete: false,
+          taskStatus: {},
+          taskForms: {},
         }),
         ...patch,
       },
     }));
+  }
+
+  function getRolePrimaryTasks(domainId: string): string[] {
+    const profile = DOMAIN_TASK_MATRIX[domainId];
+    return profile.byRole[role]?.primary ?? [];
+  }
+
+  function getRoleSupportingTasks(domainId: string): string[] {
+    const profile = DOMAIN_TASK_MATRIX[domainId];
+    return profile.byRole[role]?.supporting ?? [];
+  }
+
+  function allPrimaryTasksComplete(response: DomainResponse, domainId: string): boolean {
+    const primaryTasks = getRolePrimaryTasks(domainId);
+    if (!primaryTasks.length) {
+      return false;
+    }
+    return primaryTasks.every((taskId) => isTaskFullyComplete(response, taskId));
+  }
+
+  function isTaskWorkflowComplete(form: TaskFormState | undefined, taskId: string): boolean {
+    const workflow = TASK_WORKFLOW_DEFINITIONS[taskId] ?? GENERIC_TASK_WORKFLOW;
+    if (!workflow?.fields?.length) {
+      return true;
+    }
+    return workflow.fields
+      .filter((field) => field.required)
+      .every((field) => Boolean((form?.workflowValues?.[field.id] ?? '').trim()));
+  }
+
+  function isTaskFullyComplete(response: DomainResponse, taskId: string): boolean {
+    const form = response.taskForms[taskId];
+    return Boolean(response.taskStatus[taskId] && form && isTaskWorkflowComplete(form, taskId));
+  }
+
+  function updateTaskForm(taskId: string, patch: Partial<TaskFormState>) {
+    const currentTaskForm = currentResponse.taskForms[taskId] ?? defaultTaskFormState();
+    const nextTaskForm: TaskFormState = {
+      ...currentTaskForm,
+      ...patch,
+    };
+    const nextTaskStatus = {
+      ...currentResponse.taskStatus,
+      [taskId]: isTaskWorkflowComplete(nextTaskForm, taskId),
+    };
+    const nextTaskForms = {
+      ...currentResponse.taskForms,
+      [taskId]: nextTaskForm,
+    };
+    const provisionalResponse: DomainResponse = {
+      ...currentResponse,
+      taskStatus: nextTaskStatus,
+      taskForms: nextTaskForms,
+    };
+    updateCurrentResponse({
+      taskStatus: nextTaskStatus,
+      taskForms: nextTaskForms,
+      checklistComplete: allPrimaryTasksComplete(provisionalResponse, currentDomain.id),
+    });
+  }
+
+  function updateTaskWorkflowValue(taskId: string, fieldId: string, value: string) {
+    const currentTaskForm = currentResponse.taskForms[taskId] ?? defaultTaskFormState();
+    updateTaskForm(taskId, {
+      workflowValues: {
+        ...currentTaskForm.workflowValues,
+        [fieldId]: value,
+      },
+    });
+  }
+
+  function parsePeopleValue(value: string): string[] {
+    return value
+      .split(';')
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+
+  function addPersonToWorkflow(taskId: string, fieldId: string, person: IcamPerson) {
+    const currentRaw = currentResponse.taskForms[taskId]?.workflowValues?.[fieldId] ?? '';
+    const selected = parsePeopleValue(currentRaw);
+    const token = `${person.displayName} <${person.email}>`;
+    if (selected.includes(token)) {
+      return;
+    }
+    const next = [...selected, token].join('; ');
+    updateTaskWorkflowValue(taskId, fieldId, next);
+  }
+
+  function removePersonFromWorkflow(taskId: string, fieldId: string, token: string) {
+    const currentRaw = currentResponse.taskForms[taskId]?.workflowValues?.[fieldId] ?? '';
+    const next = parsePeopleValue(currentRaw)
+      .filter((entry) => entry !== token)
+      .join('; ');
+    updateTaskWorkflowValue(taskId, fieldId, next);
+  }
+
+  function matchingIcamPeople(query: string): IcamPerson[] {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      return DUMMY_ICAM_DIRECTORY.slice(0, 6);
+    }
+    return DUMMY_ICAM_DIRECTORY.filter((person) =>
+      `${person.displayName} ${person.email} ${person.roleTitle} ${person.organization}`
+        .toLowerCase()
+        .includes(normalized),
+    ).slice(0, 8);
   }
 
   useEffect(() => {
@@ -305,9 +776,25 @@ export default function DemoExperience(): React.JSX.Element {
           objective: current?.objective?.trim() ? current.objective : suggestions.objective,
           roleNote: current?.roleNote?.trim() ? current.roleNote : suggestions.roleNote,
           policyRisk: current?.policyRisk?.trim() ? current.policyRisk : suggestions.policyRisk,
-          checklistComplete: current?.checklistComplete ?? false,
+          checklistComplete:
+            current?.checklistComplete ??
+            allPrimaryTasksComplete(
+              {
+                objective: current?.objective ?? '',
+                roleNote: current?.roleNote ?? '',
+                policyRisk: current?.policyRisk ?? '',
+                checklistComplete: false,
+                artifactComplete: current?.artifactComplete ?? false,
+                serviceComplete: current?.serviceComplete ?? false,
+                taskStatus: current?.taskStatus ?? {},
+                taskForms: current?.taskForms ?? {},
+              },
+              currentDomain.id,
+            ),
           artifactComplete: current?.artifactComplete ?? false,
           serviceComplete: current?.serviceComplete ?? false,
+          taskStatus: current?.taskStatus ?? {},
+          taskForms: current?.taskForms ?? {},
         },
       };
     });
@@ -504,13 +991,27 @@ export default function DemoExperience(): React.JSX.Element {
   }
 
   async function handleSaveDomain() {
+    const primaryTasks = getRolePrimaryTasks(currentDomain.id);
+    const supportingTasks = getRoleSupportingTasks(currentDomain.id);
     const artifactPayload = await requestData(`/projects/${projectId}/artifacts`, 'POST', {
       templateId: currentDomain.templateId,
       title: `${currentDomain.label} Artifact`,
       markdown:
         `# ${currentDomain.label}\n\n` +
+        `## Role workflow (${role})\n` +
+        `Primary tasks: ${primaryTasks.length ? primaryTasks.join(', ') : 'none assigned'}\n\n` +
+        `Supporting tasks: ${supportingTasks.length ? supportingTasks.join(', ') : 'none assigned'}\n\n` +
         `## Objective\n${currentResponse.objective}\n\n` +
         `## Role-specific note (${role})\n${currentResponse.roleNote}\n\n` +
+        `## Task completion status\n${Object.entries(currentResponse.taskStatus)
+          .map(([taskId, done]) => `- ${taskId}: ${done ? 'complete' : 'incomplete'}`)
+          .join('\n')}\n\n` +
+        `## Task workflow form data\n${Object.entries(currentResponse.taskForms)
+          .map(
+            ([taskId, form]) =>
+              `- ${taskId}: workflow=${JSON.stringify(form.workflowValues ?? {})}`,
+          )
+          .join('\n')}\n\n` +
         `## Policy / risk note\n${currentResponse.policyRisk}\n`,
     });
 
@@ -521,7 +1022,7 @@ export default function DemoExperience(): React.JSX.Element {
     updateCurrentResponse({
       artifactComplete: true,
       serviceComplete: true,
-      checklistComplete: true,
+      checklistComplete: allPrimaryTasksComplete(currentResponse, currentDomain.id),
     });
 
     return {
@@ -532,8 +1033,10 @@ export default function DemoExperience(): React.JSX.Element {
   }
 
   function canAdvanceDomain(): boolean {
+    const primaryTasks = getRolePrimaryTasks(currentDomain.id);
     return Boolean(
-      currentResponse.checklistComplete &&
+      primaryTasks.length &&
+        allPrimaryTasksComplete(currentResponse, currentDomain.id) &&
         currentResponse.artifactComplete &&
         currentResponse.serviceComplete &&
         currentResponse.objective.trim() &&
@@ -583,6 +1086,22 @@ export default function DemoExperience(): React.JSX.Element {
           onClick={() => runAction(() => requestData('/health', 'GET'))}>
           {browserOnlyMode ? 'Check Browser Demo State' : 'Check API Health'}
         </button>
+        <div className="margin-top--md">
+          <label htmlFor="icamMode">ICAM / Personnel Connection</label>
+          <select
+            id="icamMode"
+            style={inputStyle}
+            value={icamMode}
+            onChange={(event) => setIcamMode(event.target.value as 'dummy' | 'manual')}>
+            <option value="dummy">Dummy ICAM directory (demo)</option>
+            <option value="manual">Manual entry only</option>
+          </select>
+          <p className="margin-bottom--none">
+            {icamMode === 'dummy'
+              ? 'Dummy ICAM is active: stakeholder fields support live search by name/email.'
+              : 'Manual mode is active: stakeholder fields accept free text input only.'}
+          </p>
+        </div>
       </div>
 
       {wizardStep === 'connection' || wizardStep === 'login' ? (
@@ -604,6 +1123,8 @@ export default function DemoExperience(): React.JSX.Element {
             onChange={(event) => setRole(event.target.value as Role)}>
             <option value="program_manager">Program Manager</option>
             <option value="analyst">Analyst</option>
+            <option value="data_engineer">Data Engineer</option>
+            <option value="data_scientist">Data Scientist</option>
             <option value="sponsor">Sponsor</option>
             <option value="data_steward">Data Steward</option>
             <option value="reviewer">Reviewer</option>
@@ -661,6 +1182,25 @@ export default function DemoExperience(): React.JSX.Element {
             <strong>{currentDomain.label}</strong>
           </p>
           <p>
+            <strong>IAF tasks in this domain:</strong> {renderTaskLinks(currentTaskProfile.allTasks)}
+          </p>
+          <p>
+            <strong>{role.replace('_', ' ')} primary tasks:</strong>{' '}
+            {currentRoleTaskFocus?.primary?.length
+              ? renderTaskLinks(currentRoleTaskFocus.primary)
+              : 'No explicit primary tasks assigned in this placeholder matrix.'}
+          </p>
+          <p>
+            <strong>{role.replace('_', ' ')} supporting tasks:</strong>{' '}
+            {currentRoleTaskFocus?.supporting?.length
+              ? renderTaskLinks(currentRoleTaskFocus.supporting)
+              : 'No explicit supporting tasks assigned in this placeholder matrix.'}
+          </p>
+          <p>
+            <strong>Domain gate rule:</strong> all primary tasks for the selected role must be marked complete
+            before advancing.
+          </p>
+          <p>
             <strong>Prior domain context:</strong> {previousDomainSummary()}
           </p>
 
@@ -689,17 +1229,303 @@ export default function DemoExperience(): React.JSX.Element {
             onChange={(event) => updateCurrentResponse({policyRisk: event.target.value})}
           />
 
-          <button
-            type="button"
-            className="button button--secondary margin-right--sm"
-            disabled={busy}
-            onClick={() =>
-              updateCurrentResponse({
-                checklistComplete: !currentResponse.checklistComplete,
-              })
-            }>
-            Toggle Checklist ({String(currentResponse.checklistComplete)})
-          </button>
+          <div className="margin-bottom--sm">
+            <strong>Role Task Workflow</strong>
+          </div>
+          {currentRoleTaskFocus?.primary?.length ? (
+            <div className="margin-bottom--sm">
+              <p className="margin-bottom--xs">
+                <strong>Primary tasks (required):</strong>
+              </p>
+              {currentRoleTaskFocus.primary.map((taskId) => (
+                <div
+                  key={taskId}
+                  style={{
+                    border: '1px solid var(--ifm-color-emphasis-300)',
+                    borderRadius: '6px',
+                    padding: '0.75rem',
+                    marginBottom: '0.5rem',
+                  }}>
+                  <p className="margin-bottom--xs">
+                    <strong>Task:</strong>{' '}
+                    <a
+                      href={taskReferenceLink(taskId)}
+                      target="_blank"
+                      rel="noreferrer"
+                      title={taskTooltip(taskId)}>
+                      {taskId}
+                    </a>
+                  </p>
+                  <div className="margin-bottom--sm">
+                    <p className="margin-bottom--xs">
+                      <strong>Workflow:</strong> {getTaskWorkflowDefinition(taskId).summary}
+                    </p>
+                    {getTaskWorkflowDefinition(taskId).fields.map((field) => {
+                        const value = currentResponse.taskForms[taskId]?.workflowValues?.[field.id] ?? '';
+                        if (field.type === 'textarea') {
+                          return (
+                            <label key={field.id} style={{display: 'block'}}>
+                              {field.label}{' '}
+                              <span title={field.helpText ?? 'Provide the required task workflow information.'}>ⓘ</span>
+                              <textarea
+                                style={{...inputStyle, minHeight: '64px'}}
+                                value={value}
+                                placeholder={field.placeholder}
+                                onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                              />
+                            </label>
+                          );
+                        }
+                        if (field.type === 'select') {
+                          return (
+                            <label key={field.id} style={{display: 'block'}}>
+                              {field.label}{' '}
+                              <span title={field.helpText ?? 'Select the option that best matches this task step.'}>ⓘ</span>
+                              <select
+                                style={inputStyle}
+                                value={value}
+                                onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}>
+                                <option value="">Select an option</option>
+                                {(field.options ?? []).map((optionValue) => (
+                                  <option key={optionValue} value={optionValue}>
+                                    {optionValue}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          );
+                        }
+                        if (field.type === 'people') {
+                          const searchKey = `${taskId}:${field.id}`;
+                          const selectedTokens = parsePeopleValue(value);
+                          const searchValue = icamSearchByTask[searchKey] ?? '';
+                          return (
+                            <div key={field.id} style={{display: 'block', marginBottom: '0.5rem'}}>
+                              <label style={{display: 'block'}}>
+                                {field.label}{' '}
+                                <span title={field.helpText ?? 'Search the directory and select people for this field.'}>
+                                  ⓘ
+                                </span>
+                              </label>
+                              {icamMode === 'dummy' ? (
+                                <>
+                                  <input
+                                    style={inputStyle}
+                                    placeholder={field.placeholder}
+                                    value={searchValue}
+                                    onChange={(event) =>
+                                      setIcamSearchByTask((existing) => ({
+                                        ...existing,
+                                        [searchKey]: event.target.value,
+                                      }))
+                                    }
+                                  />
+                                  <div style={{border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '0.5rem', marginBottom: '0.5rem'}}>
+                                    {matchingIcamPeople(searchValue).map((person) => (
+                                      <button
+                                        key={person.id}
+                                        type="button"
+                                        className="button button--secondary button--sm margin-right--sm margin-bottom--sm"
+                                        onClick={() => addPersonToWorkflow(taskId, field.id, person)}>
+                                        Add {person.displayName} ({person.email})
+                                      </button>
+                                    ))}
+                                  </div>
+                                </>
+                              ) : null}
+                              <textarea
+                                style={{...inputStyle, minHeight: '64px'}}
+                                value={value}
+                                placeholder={
+                                  icamMode === 'dummy'
+                                    ? 'Selected stakeholders will appear here.'
+                                    : field.placeholder
+                                }
+                                onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                              />
+                              {selectedTokens.length ? (
+                                <div>
+                                  {selectedTokens.map((token) => (
+                                    <button
+                                      key={token}
+                                      type="button"
+                                      className="button button--secondary button--sm margin-right--sm margin-bottom--sm"
+                                      onClick={() => removePersonFromWorkflow(taskId, field.id, token)}>
+                                      Remove {token}
+                                    </button>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
+                          );
+                        }
+                        return (
+                          <label key={field.id} style={{display: 'block'}}>
+                            {field.label}{' '}
+                            <span title={field.helpText ?? 'Provide the required task workflow information.'}>ⓘ</span>
+                            <input
+                              style={inputStyle}
+                              value={value}
+                              placeholder={field.placeholder}
+                              onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                            />
+                          </label>
+                        );
+                      })}
+                  </div>
+                  <p className="margin-bottom--none">
+                    <strong>Task complete:</strong> <code>{String(Boolean(currentResponse.taskStatus[taskId]))}</code>
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+          {currentRoleTaskFocus?.supporting?.length ? (
+            <div className="margin-bottom--sm">
+              <p className="margin-bottom--xs">
+                <strong>Supporting tasks:</strong>
+              </p>
+              {currentRoleTaskFocus.supporting.map((taskId) => (
+                <div
+                  key={taskId}
+                  style={{
+                    border: '1px dashed var(--ifm-color-emphasis-300)',
+                    borderRadius: '6px',
+                    padding: '0.75rem',
+                    marginBottom: '0.5rem',
+                  }}>
+                  <strong>Task:</strong>{' '}
+                  <a
+                    href={taskReferenceLink(taskId)}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={taskTooltip(taskId)}>
+                    {taskId}
+                  </a>
+                  <p className="margin-top--xs margin-bottom--sm">
+                    <strong>Workflow:</strong> {getTaskWorkflowDefinition(taskId).summary}
+                  </p>
+                  {getTaskWorkflowDefinition(taskId).fields.map((field) => {
+                    const value = currentResponse.taskForms[taskId]?.workflowValues?.[field.id] ?? '';
+                    if (field.type === 'textarea') {
+                      return (
+                        <label key={field.id} style={{display: 'block'}}>
+                          {field.label}{' '}
+                          <span title={field.helpText ?? 'Provide the required task workflow information.'}>ⓘ</span>
+                          <textarea
+                            style={{...inputStyle, minHeight: '64px'}}
+                            value={value}
+                            placeholder={field.placeholder}
+                            onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                          />
+                        </label>
+                      );
+                    }
+                    if (field.type === 'select') {
+                      return (
+                        <label key={field.id} style={{display: 'block'}}>
+                          {field.label}{' '}
+                          <span title={field.helpText ?? 'Select the option that best matches this task step.'}>ⓘ</span>
+                          <select
+                            style={inputStyle}
+                            value={value}
+                            onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}>
+                            <option value="">Select an option</option>
+                            {(field.options ?? []).map((optionValue) => (
+                              <option key={optionValue} value={optionValue}>
+                                {optionValue}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      );
+                    }
+                    if (field.type === 'people') {
+                      const searchKey = `${taskId}:${field.id}`;
+                      const selectedTokens = parsePeopleValue(value);
+                      const searchValue = icamSearchByTask[searchKey] ?? '';
+                      return (
+                        <div key={field.id} style={{display: 'block', marginBottom: '0.5rem'}}>
+                          <label style={{display: 'block'}}>
+                            {field.label}{' '}
+                            <span title={field.helpText ?? 'Search the directory and select people for this field.'}>
+                              ⓘ
+                            </span>
+                          </label>
+                          {icamMode === 'dummy' ? (
+                            <>
+                              <input
+                                style={inputStyle}
+                                placeholder={field.placeholder}
+                                value={searchValue}
+                                onChange={(event) =>
+                                  setIcamSearchByTask((existing) => ({
+                                    ...existing,
+                                    [searchKey]: event.target.value,
+                                  }))
+                                }
+                              />
+                              <div style={{border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '0.5rem', marginBottom: '0.5rem'}}>
+                                {matchingIcamPeople(searchValue).map((person) => (
+                                  <button
+                                    key={person.id}
+                                    type="button"
+                                    className="button button--secondary button--sm margin-right--sm margin-bottom--sm"
+                                    onClick={() => addPersonToWorkflow(taskId, field.id, person)}>
+                                    Add {person.displayName} ({person.email})
+                                  </button>
+                                ))}
+                              </div>
+                            </>
+                          ) : null}
+                          <textarea
+                            style={{...inputStyle, minHeight: '64px'}}
+                            value={value}
+                            placeholder={
+                              icamMode === 'dummy' ? 'Selected stakeholders will appear here.' : field.placeholder
+                            }
+                            onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                          />
+                          {selectedTokens.length ? (
+                            <div>
+                              {selectedTokens.map((token) => (
+                                <button
+                                  key={token}
+                                  type="button"
+                                  className="button button--secondary button--sm margin-right--sm margin-bottom--sm"
+                                  onClick={() => removePersonFromWorkflow(taskId, field.id, token)}>
+                                  Remove {token}
+                                </button>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    }
+                    return (
+                      <label key={field.id} style={{display: 'block'}}>
+                        {field.label}{' '}
+                        <span title={field.helpText ?? 'Provide the required task workflow information.'}>ⓘ</span>
+                        <input
+                          style={inputStyle}
+                          value={value}
+                          placeholder={field.placeholder}
+                          onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
+                        />
+                      </label>
+                    );
+                  })}
+                  <p className="margin-bottom--none">
+                    <strong>Task complete:</strong> <code>{String(Boolean(currentResponse.taskStatus[taskId]))}</code>
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+          <p>
+            <strong>Primary task completion:</strong>{' '}
+            <code>{String(allPrimaryTasksComplete(currentResponse, currentDomain.id))}</code>
+          </p>
 
           <button
             type="button"
