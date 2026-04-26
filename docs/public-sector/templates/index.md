@@ -18,6 +18,15 @@ These templates are digitally enabling artifacts designed for direct use in repo
 - [Domain III Governance Artifact (OPEN Data Act / FDS)](./template-governance-domain-03-open-data-fds-compliance-record)
 - [Domain V/VI Governance Artifact (NIST AI RMF / M-24-10)](./template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case)
 
+## Service Linkage
+
+- Domain I templates align to `Service 01: Problem Framing Facilitation`.
+- Domain III templates align to `Service 02: Data Readiness Assessment`.
+- Domain IV and V templates align to `Service 03: Method and Model Advisory`.
+- Domain V/VI deployment templates align to `Service 04: Deployment Readiness Review`.
+- Domain VI/VII lifecycle templates align to `Service 05: Lifecycle Monitoring and Recalibration Support`.
+- See combined crosswalk in `docs/implementation-toolkit/`.
+
 ## Usage Standard
 
 - Keep each artifact in Markdown.

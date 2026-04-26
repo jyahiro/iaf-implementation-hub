@@ -1,92 +1,48 @@
-# Website
+# IAF Implementation Hub and Platform
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This repository contains:
 
-## Features
+- A **Docusaurus** knowledge layer for INFORMS Analytics Framework (IAF) standards, templates, service catalog, and public-sector implementation guidance.
+- A **platform scaffold** (`apps/web`, `apps/api`) for end-to-end IAF workflow execution, plus shared packages for policy checks and connectors.
 
-- **Static Site Generator**: Efficient and fast content building.
-- **Live Reload**: Reflects changes immediately during local development.
-- **GitHub Pages Integration**: Easily deploy to GitHub Pages.
+## Workspace structure
 
-## Getting Started
+- `apps/web` — platform user experience shell.
+- `apps/api` — workflow, artifacts, services, audit, and connector orchestration.
+- `packages/shared` — shared models and provider interfaces.
+- `packages/policy` — policy-as-code controls and checks.
+- `packages/connectors` — external data connector bridge adapters.
+- `docs/` — guidance, templates, service catalog, and architecture runbooks.
+- `infra/` — deployment profiles (local, Kubernetes, cloud-managed guidance).
 
-Follow these steps to get the project running locally.
+## Prerequisites
 
-### Prerequisites
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm (bundled with Node)
 
-Ensure you have the following installed on your system:
-
-- [Node.js](https://nodejs.org/) (v14 or later recommended)
-- [Yarn](https://yarnpkg.com/)
-
-### Installation
-
-```bash
-yarn
-```
-
-This will install the dependencies required for the project.
-
-## Local Development
-
-Start the development server by running:
+## Getting started
 
 ```bash
-yarn start
+npm install
+npm run start
 ```
 
-This command launches a local server and opens the project in your default web browser. Any changes you make will reflect automatically.
+Open the local URL shown in the terminal to browse the site. Use `npm run build` to produce a static build in `build/`.
 
-## Build
-
-Generate a static build of the project by running:
+## Platform commands
 
 ```bash
-yarn build
+npm run platform:api
+npm run platform:web
+npm run platform:check-policy
+npm run platform:check-connectors
 ```
-
-The static content will be available in the `build/` directory. You can serve these files using any static hosting service.
-
-## Usage Examples
-
-### Example 1: Adding Content
-To add a new page:
-
-1. Create a new Markdown file under the `docs/` directory.
-2. Add metadata at the top of your file:
-   ```markdown
-   ---
-   id: page-id
-   title: Page Title
-   ---
-   ```
-3. Start your development server and navigate to the new page.
-
-### Example 2: Switching Themes
-Modify the `docusaurus.config.js` file to change themes. Restart the server to see the new look.
 
 ## Deployment
 
-### Using SSH
+GitHub Pages deployment uses the Docusaurus deploy flow (see [Docusaurus deployment](https://docusaurus.io/docs/deployment)). Configure `GIT_USER` or `USE_SSH` as needed for your environment.
 
-```bash
-USE_SSH=true yarn deploy
-```
+## Additional resources
 
-### Without SSH
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-This command builds the project and pushes it to the `gh-pages` branch for deployment.
-
-## Additional Resources
-
-- [Docusaurus Docs](https://docusaurus.io/docs)
-- [GitHub Pages Guide](https://pages.github.com/)
-
-## Badges
-
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
+- [Docusaurus documentation](https://docusaurus.io/docs)
+- [GitHub Pages](https://pages.github.com/)

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iaf-platform-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iaf-platform-api
+  template:
+    metadata:
+      labels:
+        app: iaf-platform-api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/example/iaf-platform-api:latest
+          ports:
+            - containerPort: 4100
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: IAF_SECURITY_BASELINE
+              value: nist-800-53
+            - name: STORAGE_PROVIDER
+              value: pluggable
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iaf-platform-api
+spec:
+  selector:
+    app: iaf-platform-api
+  ports:
+    - port: 4100
+      targetPort: 4100

@@ -1,0 +1,14 @@
+{
+  "name": "@iaf/platform-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "node ./scripts/dev-server.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@iaf/shared": "0.1.0"
+  }
+}
