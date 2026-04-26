@@ -1,5 +1,25 @@
-# Model Building
+# Domain V: Analytics/Model Development
 
-This domain covers the design, training, testing, and refinement of analytic or machine learning models that produce decision-support outputs. It emphasizes reproducibility, documentation, and performance validation to ensure models are technically sound and mission-relevant.
+## Executive Summary
+Domain V designs, builds, evaluates, calibrates, and documents analytics models to produce reliable decision-support outputs. Per the INFORMS Analytics Framework, this domain includes model structure design, model construction, performance verification, calibration based on stakeholder input, potential model integration, and communication of findings with assumptions and limitations. Domain V is complete when model outputs are validated as decision-relevant and technically defensible.
 
-Within federal data governance, model building requires traceability, controls, and clear documentation so model behavior can be understood and reviewed. In the Department of the Army's data strategy, this domain supports operational trust by developing models that are robust, transparent, and aligned to Army mission outcomes.
+## Operational Alignment
+Analytics/Model Development operationalizes enterprise objectives by converting approved methodology into tested analytical capability. This domain strengthens decision-support maturity through reproducible development practices, transparent performance evaluation, and disciplined communication of model constraints, enabling informed governance and responsible adoption.
+
+## IAF Standard Checklist (Readiness Assessment)
+Before advancing to Domain VI, the project lead must confirm:
+
+- Model design is documented and traceable to the analytics problem statement.
+- One or more models are built using approved methods and controlled data inputs.
+- Performance is run, verified, and evaluated against defined success measures.
+- Calibration and refinements are completed based on stakeholder and validation feedback.
+- Findings, assumptions, limitations, and constraints are formally documented.
+
+## Artifact Requirements
+A project is Domain V compliant only when the following artifacts are complete and current:
+
+- Model Design Specification.
+- Model Build and Experimentation Log.
+- Model Performance Evaluation Report.
+- Calibration and Improvement Record.
+- Model Findings and Limitations Briefing Package.

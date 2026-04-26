@@ -1,5 +1,25 @@
-# Business Problem Framing
+# Domain I: Business Problem (Question) Framing
 
-This domain defines the mission need, policy context, and operational outcomes that analytics work is meant to support. It ensures that stakeholders align on the problem, constraints, and success criteria before technical solutions are pursued.
+## Executive Summary
+Domain I establishes the authoritative business problem statement that governs the analytics effort. Per the INFORMS Analytics Framework, this domain defines and refines the business question, identifies relevant stakeholders, confirms that the problem is appropriate for an analytics solution, and secures sponsor alignment to proceed. Domain I is complete only when the problem is clear, decision-relevant, and formally accepted as the basis for subsequent domains.
 
-In federal data governance settings, business problem framing connects agency priorities to measurable decisions and public value outcomes. For the Department of the Army's data strategy, it helps translate readiness, modernization, and resource stewardship objectives into clear analytic questions that can be governed, executed, and assessed.
+## Operational Alignment
+Business Problem Framing aligns analytics investments to enterprise strategy by translating broad organizational objectives into actionable decision problems. This domain strengthens decision-support maturity by requiring clear scope, accountable ownership, and explicit value hypotheses before technical work begins. It reduces downstream rework, improves governance traceability, and provides a common decision context across mission, operations, policy, risk, and resource functions.
+
+## IAF Standard Checklist (Readiness Assessment)
+Before advancing to Domain II, the project lead must confirm:
+
+- A clear and concise business problem (or question) statement is documented and approved.
+- Primary and secondary stakeholders are identified, including decision owners and affected parties.
+- The expected decision impact and measurable outcomes are defined at an enterprise-relevant level.
+- Initial feasibility confirms the problem is amenable to analytics within known constraints.
+- Sponsor agreement and stakeholder alignment are formally recorded.
+
+## Artifact Requirements
+A project is Domain I compliant only when the following artifacts are complete and current:
+
+- Business Problem Statement (version-controlled, with scope and constraints).
+- Stakeholder Register and Responsibility Map.
+- Initial Business Case and Value Hypothesis.
+- Analytics Suitability Assessment (go/no-go rationale).
+- Sponsor Approval and Alignment Record (meeting decision log or signed memorandum).
