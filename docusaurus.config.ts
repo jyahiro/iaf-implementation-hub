@@ -87,6 +87,7 @@ const config: Config = {
           position: 'left',
           label: 'Framework Docs',
         },
+        {to: '/docs/service-catalog/index', label: 'Service Catalog', position: 'left'},
         {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/jyahiro/iaf-implementation-hub',
@@ -108,6 +109,14 @@ const config: Config = {
             {
               label: 'Core Domains',
               to: '/docs/domains/01-business-problem-framing',
+            },
+            {
+              label: 'Digital Templates',
+              to: '/docs/public-sector/templates/index',
+            },
+            {
+              label: 'Service Catalog',
+              to: '/docs/service-catalog/index',
             },
           ],
         },
