@@ -23,3 +23,4 @@ A project is Domain I compliant only when the following artifacts are complete a
 - Initial Business Case and Value Hypothesis.
 - Analytics Suitability Assessment (go/no-go rationale).
 - Sponsor Approval and Alignment Record (meeting decision log or signed memorandum).
+- Governance Artifact: M-23-15 Evidence Planning Checklist (`docs/public-sector/templates/template-governance-domain-01-m-23-15-evidence-planning-checklist`).
