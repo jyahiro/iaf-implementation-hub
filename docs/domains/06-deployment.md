@@ -1,5 +1,25 @@
-# Deployment
+# Domain VI: Deployment
 
-This domain transitions analytic solutions from development into operational use, including integration, rollout planning, and user enablement. It ensures solutions are delivered in a way that is secure, maintainable, and effective in real decision workflows.
+## Executive Summary
+Domain VI transitions the analytics solution into production use through validation, implementation support, and operational verification. Per the INFORMS Analytics Framework, this domain includes business validation and reporting, sponsor alignment for deployment, deployed-solution requirements definition, implementation/testing support, and production validation of data flows and system behavior. Domain VI is complete when the solution is operationally accepted and demonstrably fit for use.
 
-For federal data governance, deployment must align with security requirements, governance controls, and documented operating procedures. In the Department of the Army's data strategy, this domain helps move analytics into mission execution environments while maintaining reliability, compliance, and stakeholder confidence.
+## Operational Alignment
+Deployment aligns analytics capability with enterprise execution by embedding validated solutions into real decision processes. This domain advances decision-support maturity by formalizing acceptance criteria, implementation governance, and production verification practices that protect reliability, usability, and sustained value delivery.
+
+## IAF Standard Checklist (Readiness Assessment)
+Before advancing to Domain VII, the project lead must confirm:
+
+- Business validation is completed with documented findings.
+- Sponsor agreement and stakeholder alignment for deployment are formally recorded.
+- Production requirements (model, usability, system, and business) are finalized.
+- Implementation and production testing are completed with issue resolution tracking.
+- Deployment verification confirms expected performance and production data flow integrity.
+
+## Artifact Requirements
+A project is Domain VI compliant only when the following artifacts are complete and current:
+
+- Business Validation Report.
+- Deployment Approval and Alignment Record.
+- Production Requirements Specification.
+- Implementation and Test Execution Report.
+- Deployment Validation and Verification Report.

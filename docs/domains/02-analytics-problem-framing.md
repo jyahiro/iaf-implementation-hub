@@ -1,5 +1,25 @@
-# Analytics Problem Framing
+# Domain II: Analytics Problem Framing
 
-This domain converts a mission-oriented business problem into a well-defined analytics problem with specific scope, assumptions, and expected outputs. It establishes the analytic objective, decision points, and evaluation approach needed for sound technical execution.
+## Executive Summary
+Domain II translates an approved business problem into a structured analytics problem that can be solved with data and analytical methods. Per the INFORMS Analytics Framework, this domain defines drivers and outputs, states assumptions, sets primary success measures, identifies baseline performance, and documents implementation risks with mitigation strategies. Domain II is complete when the analytics framing is technically actionable and sponsor-aligned.
 
-In federal data governance, analytics problem framing supports transparency, repeatability, and compliance by documenting how analytic methods will inform decisions. Within the Department of the Army's data strategy, it aligns analytic design to authoritative data sources, governance standards, and mission-relevant performance measures.
+## Operational Alignment
+Analytics Problem Framing connects strategy to execution by converting policy and operational priorities into measurable analytical objectives. This domain improves organizational decision-support maturity by standardizing assumptions, metrics, and risk treatment across projects, which enables comparability, governance oversight, and repeatable delivery at enterprise scale.
+
+## IAF Standard Checklist (Readiness Assessment)
+Before advancing to Domain III, the project lead must confirm:
+
+- The business problem is reformulated into an explicit analytics problem statement.
+- Candidate inputs/drivers and expected outputs are defined and traceable to decisions.
+- Assumptions are documented, testable, and reviewed with stakeholders.
+- Primary success measures and baseline current-state performance are established.
+- Key implementation risks and mitigations are documented and accepted by sponsors.
+
+## Artifact Requirements
+A project is Domain II compliant only when the following artifacts are complete and current:
+
+- Analytics Problem Statement and Scope Definition.
+- Input/Driver-to-Output Logic Model.
+- Assumptions Register.
+- Success Metrics and Baseline Performance Report.
+- Risk and Mitigation Register with sponsor/stakeholder alignment record.

@@ -1,5 +1,25 @@
-# Methodology Selection
+# Domain IV: Methodology (Approach) Framing
 
-This domain identifies and justifies the analytic methods most appropriate for the problem, data conditions, and decision environment. It balances rigor, explainability, timeliness, and implementation constraints when choosing among techniques.
+## Executive Summary
+Domain IV selects the analytical methods and technical approach required to solve the defined analytics problem using available data and resources. Per the INFORMS Analytics Framework, this domain identifies candidate methods, evaluates alternatives, confirms technical solution architecture, and selects an implementation-ready technology stack. Domain IV is complete when the methodology is justified, feasible, and governance-ready.
 
-In federal data governance contexts, methodology selection supports defensible analysis by documenting trade-offs and ensuring methods meet policy, ethics, and audit expectations. For the Department of the Army's data strategy, it enables disciplined method choices that align with mission risk, operational tempo, and enterprise standards.
+## Operational Alignment
+Methodology Framing aligns strategic intent with practical execution by ensuring analytical rigor is balanced with scalability, timeliness, explainability, and operational constraints. This domain improves enterprise decision-support maturity by establishing transparent method-selection criteria and reducing model risk introduced by ad hoc tool or technique choices.
+
+## IAF Standard Checklist (Readiness Assessment)
+Before advancing to Domain V, the project lead must confirm:
+
+- Candidate analytical methods are identified and mapped to the analytics problem type.
+- Method selection criteria (performance, explainability, constraints) are documented.
+- Selected methods are feasible with available data, resources, and timelines.
+- Target technical architecture is defined and reviewed with technology stakeholders.
+- The technology stack is selected, approved, and ready for controlled development.
+
+## Artifact Requirements
+A project is Domain IV compliant only when the following artifacts are complete and current:
+
+- Method Alternatives and Selection Rationale.
+- Method Evaluation Matrix (criteria, trade-offs, decision record).
+- Technical Solution Architecture Overview.
+- Technology Stack Decision Record.
+- Methodology Approval Record (analytics and sponsor governance sign-off).
