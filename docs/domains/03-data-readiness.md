@@ -34,3 +34,9 @@ A project is Domain III compliant only when the following artifacts are complete
 - Data Quality and Relationship Assessment Report.
 - Data Findings Report, including updates to business and analytics problem statements.
 - Governance Artifact: [OPEN Government Data Act / Federal Data Strategy Compliance Record](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record).
+
+## Next steps
+
+- **Primary:** Continue to [Domain IV: Methodology (Approach) Framing](./methodology-selection).
+- **Services:** [Service 02: Data Readiness Assessment](../service-catalog/service-02-data-readiness-assessment)
+- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints)

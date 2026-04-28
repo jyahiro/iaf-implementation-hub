@@ -34,3 +34,9 @@ A project is Domain I compliant only when the following artifacts are complete a
 - Analytics Suitability Assessment (go/no-go rationale).
 - Sponsor Approval and Alignment Record (meeting decision log or signed memorandum).
 - Governance Artifact: [M-13-13 (Open Data Policy) Governance Checklist](../public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist).
+
+## Next steps
+
+- **Primary:** Continue to [Domain II: Analytics Problem Framing](./analytics-problem-framing).
+- **Onboarding:** [Start Here](../start-here/) · [Interactive Demo Environment](../start-here/demo-environment)
+- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints) · [Legal guardrails](../public-sector/legal-guardrails)

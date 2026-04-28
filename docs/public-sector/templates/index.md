@@ -8,12 +8,12 @@ These templates are digitally enabling artifacts designed for direct use in repo
 
 ## Available Templates
 
-- [Domain I Business Problem Brief](./template-domain-1-business-problem-brief)
-- [Domain II Analytics Problem Statement](./template-domain-2-analytics-problem-statement)
-- [Domain III Data Readiness Assessment](./template-domain-3-data-readiness-assessment)
-- [Domain IV Method Selection Record](./template-domain-4-method-selection-record)
-- [Domain V Model Validation Report](./template-domain-5-model-validation-report)
-- [Domain VI/VII Operational Lifecycle Review](./template-domain-6-7-operational-lifecycle-review)
+- [Domain I: Business Problem (Question) Framing — Business Problem Brief](./template-domain-1-business-problem-brief)
+- [Domain II: Analytics Problem Framing — Analytics Problem Statement](./template-domain-2-analytics-problem-statement)
+- [Domain III: Data — Data Readiness Assessment](./template-domain-3-data-readiness-assessment)
+- [Domain IV: Methodology (Approach) Framing — Method Selection Record](./template-domain-4-method-selection-record)
+- [Domain V: Analytics/Model Development — Model Validation Report](./template-domain-5-model-validation-report)
+- [Domain VI / VII: Deployment & Analytics Solution Lifecycle Management — Operational Lifecycle Review](./template-domain-6-7-operational-lifecycle-review)
 - [Domain I Governance Artifact (M-13-13 Open Data Policy)](./template-governance-domain-01-m-13-13-open-data-policy-checklist)
 - [Domain III Governance Artifact (OPEN Data Act / FDS)](./template-governance-domain-03-open-data-fds-compliance-record)
 - [Domain V/VI Governance Artifact (NIST AI RMF / M-24-10)](./template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case)

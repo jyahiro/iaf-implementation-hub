@@ -1,5 +1,21 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import {getIafDomainDefinition, IAF_DOMAIN_DEFINITIONS} from '@site/src/data/iafDomains';
+import {
+  createEcfrTitleAnchor,
+  createFrAnchor,
+  emptyRegulatoryContext,
+  fetchEcfrTitles,
+  fetchFrAgencies,
+  loadRegulatoryContextFromStorage,
+  type EcfrTitleRow,
+  type FrAgency,
+  type FrDocumentHit,
+  type InitiativeRegulatoryContext,
+  type RegulatoryAnchor,
+  saveRegulatoryContextToStorage,
+  searchFrDocuments,
+} from '@site/src/lib/regulatoryApi';
 
 const MASTER_ROLES = {
   sponsor: {label: 'Executive Sponsor', shortCode: 'SP'},
@@ -332,57 +348,13 @@ interface LocalDemoState {
 
 const LOCAL_STATE_KEY = 'iaf-demo-local-state-v2';
 
-const DOMAIN_STEPS: DomainStep[] = [
-  {
-    id: 'domain-1-framing',
-    label: 'Domain I: Business Problem (Question) Framing',
-    templateId: 'template-domain-1-business-problem-brief',
-    serviceId: 'service-01',
-    objectiveLabel: 'Business problem and outcomes',
-  },
-  {
-    id: 'domain-2-analytics-framing',
-    label: 'Domain II: Analytics Problem Framing',
-    templateId: 'template-domain-2-analytics-problem-statement',
-    serviceId: 'service-01',
-    objectiveLabel: 'Analytics question and success metrics',
-  },
-  {
-    id: 'domain-3-data',
-    label: 'Domain III: Data',
-    templateId: 'template-domain-3-data-readiness-assessment',
-    serviceId: 'service-02',
-    objectiveLabel: 'Data readiness and governance controls',
-  },
-  {
-    id: 'domain-4-methodology',
-    label: 'Domain IV: Methodology (Approach) Framing',
-    templateId: 'template-domain-4-method-selection-record',
-    serviceId: 'service-03',
-    objectiveLabel: 'Method and architecture selection',
-  },
-  {
-    id: 'domain-5-build',
-    label: 'Domain V: Analytics/Model Development',
-    templateId: 'template-domain-5-model-validation-report',
-    serviceId: 'service-03',
-    objectiveLabel: 'Model validation and risk documentation',
-  },
-  {
-    id: 'domain-6-deploy',
-    label: 'Domain VI: Deployment',
-    templateId: 'template-domain-6-7-operational-lifecycle-review',
-    serviceId: 'service-04',
-    objectiveLabel: 'Deployment readiness and controls',
-  },
-  {
-    id: 'domain-7-lifecycle',
-    label: 'Domain VII: Analytics Solution Lifecycle Management',
-    templateId: 'template-domain-6-7-operational-lifecycle-review',
-    serviceId: 'service-05',
-    objectiveLabel: 'Monitoring, recalibration, and sustainment',
-  },
-];
+const DOMAIN_STEPS: DomainStep[] = IAF_DOMAIN_DEFINITIONS.map((definition) => ({
+  id: definition.id,
+  label: definition.displayLabel,
+  templateId: definition.templateId,
+  serviceId: definition.serviceId,
+  objectiveLabel: definition.objectiveLabel,
+}));
 
 const DOMAIN_STANDARD_REQUIREMENTS: Record<string, DomainStandardRequirement> = {
   'domain-1-framing': {
@@ -607,7 +579,94 @@ export default function DemoExperience(): React.JSX.Element {
   const [domainResponses, setDomainResponses] = useState<Record<string, DomainResponse>>({});
   const [icamMode, setIcamMode] = useState<'dummy' | 'manual'>('dummy');
   const [icamSearchByTask, setIcamSearchByTask] = useState<Record<string, string>>({});
+  const [regContext, setRegContext] = useState<InitiativeRegulatoryContext>(() => {
+    return loadRegulatoryContextFromStorage() ?? emptyRegulatoryContext();
+  });
+  const [frAgencies, setFrAgencies] = useState<FrAgency[]>([]);
+  const [frAgencyFilter, setFrAgencyFilter] = useState('');
+  const [frAgenciesBusy, setFrAgenciesBusy] = useState(false);
+  const [frResults, setFrResults] = useState<FrDocumentHit[]>([]);
+  const [frQueryBusy, setFrQueryBusy] = useState(false);
+  const [ecfrTitles, setEcfrTitles] = useState<EcfrTitleRow[] | null>(null);
+  const [ecfrBusy, setEcfrBusy] = useState(false);
+  const [ecfrTitlePick, setEcfrTitlePick] = useState<number | ''>('');
   const masterRoleKeys = Object.keys(MASTER_ROLES) as Role[];
+
+  const domainDocsBase = useBaseUrl('/docs/domains/');
+
+  useEffect(() => {
+    saveRegulatoryContextToStorage(regContext);
+  }, [regContext]);
+
+  const filteredFrAgencies = useMemo(() => {
+    const query = frAgencyFilter.trim().toLowerCase();
+    if (!query) {
+      return frAgencies.slice(0, 80);
+    }
+    return frAgencies.filter((agency) => `${agency.name} ${agency.slug}`.toLowerCase().includes(query)).slice(0, 80);
+  }, [frAgencies, frAgencyFilter]);
+
+  function addRegulatoryAnchor(anchor: RegulatoryAnchor): void {
+    setRegContext((existing) => {
+      if (existing.anchors.some((item) => item.id === anchor.id)) {
+        return existing;
+      }
+      return {...existing, anchors: [...existing.anchors, anchor]};
+    });
+  }
+
+  function removeRegulatoryAnchor(anchorId: string): void {
+    setRegContext((existing) => ({...existing, anchors: existing.anchors.filter((item) => item.id !== anchorId)}));
+  }
+
+  function regulatoryNudgeForDomain(domainId: string): string {
+    if (!regContext.anchors.length) {
+      return '';
+    }
+    const definition = getIafDomainDefinition(domainId);
+    const preview = regContext.anchors.map((anchor) => `– ${anchor.title}`).slice(0, 5).join('\n');
+    return `You have ${regContext.anchors.length} confirmed regulatory anchor(s). As you complete ${definition?.displayLabel ?? 'this domain'}, tie decisions and evidence to these sources where applicable:\n${preview}`;
+  }
+
+  async function ensureFrAgencies(): Promise<void> {
+    if (frAgencies.length || frAgenciesBusy) {
+      return;
+    }
+    setFrAgenciesBusy(true);
+    try {
+      const list = await fetchFrAgencies(500);
+      setFrAgencies(list);
+    } finally {
+      setFrAgenciesBusy(false);
+    }
+  }
+
+  async function ensureEcfrTitles(): Promise<void> {
+    if (ecfrTitles || ecfrBusy) {
+      return;
+    }
+    setEcfrBusy(true);
+    try {
+      const titles = await fetchEcfrTitles();
+      setEcfrTitles(titles);
+    } finally {
+      setEcfrBusy(false);
+    }
+  }
+
+  async function runFrDocumentSearch(): Promise<void> {
+    setFrQueryBusy(true);
+    try {
+      const hits = await searchFrDocuments({
+        term: regContext.frSearchTerm || projectDescription,
+        agencyId: regContext.frAgencyId,
+        perPage: 8,
+      });
+      setFrResults(hits);
+    } finally {
+      setFrQueryBusy(false);
+    }
+  }
 
   const tokenPreview = useMemo(() => {
     if (!token) {
@@ -615,6 +674,11 @@ export default function DemoExperience(): React.JSX.Element {
     }
     return `${token.slice(0, 24)}...`;
   }, [token]);
+
+  const regAnchorSignature = useMemo(
+    () => regContext.anchors.map((anchor) => anchor.id).join('|'),
+    [regContext.anchors],
+  );
 
   const currentDomain = DOMAIN_STEPS[currentDomainIndex];
   const currentTaskProfile = DOMAIN_TASK_MATRIX[currentDomain.id];
@@ -728,11 +792,18 @@ export default function DemoExperience(): React.JSX.Element {
         ? 'Identify legal and policy constraints, data handling requirements, and approval checkpoints.'
         : 'Identify deployment, oversight, and operational risk controls with required approvals.'
     }`.trim();
+    const regulatoryHint =
+      regContext.anchors.length > 0
+        ? ` Tie analysis to confirmed sources: ${regContext.anchors
+            .map((anchor) => anchor.title)
+            .slice(0, 3)
+            .join('; ')}.`
+        : '';
 
     return {
       objective: objectiveBase,
       roleNote: roleBase,
-      policyRisk: policyBase,
+      policyRisk: `${policyBase}${regulatoryHint}`.trim(),
     };
   }
 
@@ -846,7 +917,14 @@ export default function DemoExperience(): React.JSX.Element {
     if (field === 'roleNote') {
       return `${ROLE_PROMPTS[role]} Focus on tasks ${getRolePrimaryTasks(currentDomain.id).join(', ') || 'assigned to this role'} and document decision-ready evidence.`;
     }
-    return `Key policy and risk controls for ${currentDomain.label}: document legal basis, approval checkpoints, data handling constraints, and mitigation actions tied to ${projectContext}.`;
+    const anchorTail =
+      regContext.anchors.length > 0
+        ? ` Reference confirmed sources: ${regContext.anchors
+            .map((anchor) => anchor.title)
+            .slice(0, 3)
+            .join('; ')}.`
+        : '';
+    return `Key policy and risk controls for ${currentDomain.label}: document legal basis, approval checkpoints, data handling constraints, and mitigation actions tied to ${projectContext}.${anchorTail}`;
   }
 
   function generateWorkflowFieldExample(taskId: string, field: TaskWorkflowField): string {
@@ -979,7 +1057,7 @@ export default function DemoExperience(): React.JSX.Element {
         },
       };
     });
-  }, [currentDomain.id, currentDomainIndex, role, projectName, domainResponses]);
+  }, [currentDomain.id, currentDomainIndex, role, projectName, domainResponses, regAnchorSignature]);
 
   async function runAction(action: () => Promise<unknown>) {
     setBusy(true);
@@ -988,7 +1066,13 @@ export default function DemoExperience(): React.JSX.Element {
       setOutput(JSON.stringify(payload, null, 2));
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unexpected error';
-      setOutput(JSON.stringify({error: message}, null, 2));
+      const networkHint =
+        /fetch|network|Failed to fetch|Load failed|ECONNREFUSED/i.test(message) ||
+        message.includes('Federal Register') ||
+        message.includes('eCFR')
+          ? 'External API tip: confirm your network allows HTTPS to federalregister.gov and ecfr.gov, relax optional agency filters, or retry later.'
+          : undefined;
+      setOutput(JSON.stringify({error: message, ...(networkHint ? {hint: networkHint} : {})}, null, 2));
     } finally {
       setBusy(false);
     }
@@ -1160,6 +1244,10 @@ export default function DemoExperience(): React.JSX.Element {
   }
 
   async function handleCreateProject() {
+    setRegContext((existing) => ({
+      ...existing,
+      frSearchTerm: existing.frSearchTerm.trim() || projectDescription.trim().slice(0, 220),
+    }));
     const response = (await requestData('/projects', 'POST', {
       name: projectName,
       description: projectDescription,
@@ -1203,6 +1291,11 @@ export default function DemoExperience(): React.JSX.Element {
         `${standardsChecks.map((check) => `- ${check.complete ? '[x]' : '[ ]'} ${check.label}`).join('\n')}\n\n` +
         `## Policy / regulation\n${DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].policyReference}\n\n` +
         `## Governance gate objective\n${DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].governanceGateObjective}\n\n` +
+        (regContext.anchors.length
+          ? `## Regulatory anchors (Federal Register / eCFR)\n${regContext.anchors
+              .map((anchor) => `- [${anchor.title}](${anchor.url}) (${anchor.source})`)
+              .join('\n')}\n\n`
+          : '') +
         `## Policy / risk note\n${currentResponse.policyRisk}\n`,
     });
 
@@ -1245,8 +1338,62 @@ export default function DemoExperience(): React.JSX.Element {
     }
   }
 
+  function renderDemoWizardProgress(): React.JSX.Element {
+    const signInComplete = Boolean(token);
+    const signInActive = !token && (wizardStep === 'connection' || wizardStep === 'login');
+    const projectComplete = Boolean(projectId) && wizardStep !== 'project';
+    const projectActive = Boolean(token) && wizardStep === 'project';
+    const domainsActive = wizardStep === 'domain';
+    const domainsComplete = wizardStep === 'summary';
+    const summaryActive = wizardStep === 'summary';
+    const domainStepLabel =
+      wizardStep === 'domain'
+        ? `Domains (${currentDomainIndex + 1}/7)`
+        : wizardStep === 'summary'
+          ? 'Domains (done)'
+          : 'Domains';
+
+    function segmentState(complete: boolean, active: boolean): string {
+      if (complete) {
+        return 'iaf-demo-wizard-progress__segment--complete';
+      }
+      if (active) {
+        return 'iaf-demo-wizard-progress__segment--active';
+      }
+      return 'iaf-demo-wizard-progress__segment--pending';
+    }
+
+    return (
+      <nav className="iaf-demo-wizard-progress" aria-label="Interactive demo progress">
+        <ol className="iaf-demo-wizard-progress__list">
+          <li
+            className={`iaf-demo-wizard-progress__segment ${segmentState(signInComplete, signInActive)}`}
+            aria-current={signInActive ? 'step' : undefined}>
+            <span className="iaf-demo-wizard-progress__label">1. Sign in</span>
+          </li>
+          <li
+            className={`iaf-demo-wizard-progress__segment ${segmentState(projectComplete, projectActive)}`}
+            aria-current={projectActive ? 'step' : undefined}>
+            <span className="iaf-demo-wizard-progress__label">2. Project setup</span>
+          </li>
+          <li
+            className={`iaf-demo-wizard-progress__segment ${segmentState(domainsComplete, domainsActive)}`}
+            aria-current={domainsActive ? 'step' : undefined}>
+            <span className="iaf-demo-wizard-progress__label">3. {domainStepLabel}</span>
+          </li>
+          <li
+            className={`iaf-demo-wizard-progress__segment ${segmentState(false, summaryActive)}`}
+            aria-current={summaryActive ? 'step' : undefined}>
+            <span className="iaf-demo-wizard-progress__label">4. Wrap-up</span>
+          </li>
+        </ol>
+      </nav>
+    );
+  }
+
   return (
     <div>
+      {renderDemoWizardProgress()}
       <div style={containerStyle}>
         <h3>Demo Mode</h3>
         <label htmlFor="browserOnlyMode">
@@ -1355,13 +1502,197 @@ export default function DemoExperience(): React.JSX.Element {
             value={projectDescription}
             onChange={(event) => setProjectDescription(event.target.value)}
           />
-          <button
-            type="button"
-            className="button button--primary"
-            disabled={busy}
-            onClick={() => runAction(handleCreateProject)}>
-            Start Domain Workflow
-          </button>
+
+          <hr style={{margin: '1.25rem 0'}} />
+          <h4 className="margin-bottom--xs">Optional: Regulatory context (Federal Register &amp; eCFR)</h4>
+          <p style={{fontSize: '0.9rem'}} className="margin-bottom--sm">
+            Pull live metadata from the public{' '}
+            <a href="https://www.federalregister.gov/reader-aids/developer-resources/rest-api" target="_blank" rel="noreferrer">
+              Federal Register API
+            </a>{' '}
+            and browse links from the public{' '}
+            <a href="https://www.ecfr.gov/reader-aids/ecfr-developer-resources" target="_blank" rel="noreferrer">
+              eCFR API
+            </a>
+            . Suggestions are not legal advice—confirm each anchor applies to your initiative.
+          </p>
+          <label htmlFor="frSearchTerm">Federal Register search terms</label>
+          <input
+            id="frSearchTerm"
+            style={inputStyle}
+            value={regContext.frSearchTerm}
+            onChange={(event) => setRegContext((existing) => ({...existing, frSearchTerm: event.target.value}))}
+            placeholder="e.g., permitting, artificial intelligence, data quality"
+          />
+          <div className="margin-top--sm margin-bottom--sm">
+            <button
+              type="button"
+              className="button button--secondary margin-right--sm"
+              disabled={frAgenciesBusy}
+              onClick={() => {
+                void ensureFrAgencies();
+              }}>
+              {frAgenciesBusy ? 'Loading agencies…' : 'Load publishing agencies'}
+            </button>
+            <span style={{fontSize: '0.85rem'}}>Loads the first 500 agencies for filtering (demo scope).</span>
+          </div>
+          {frAgencies.length ? (
+            <>
+              <label htmlFor="frAgencyFilter">Filter agency list</label>
+              <input
+                id="frAgencyFilter"
+                style={inputStyle}
+                value={frAgencyFilter}
+                onChange={(event) => setFrAgencyFilter(event.target.value)}
+                placeholder="Type to filter by agency name"
+              />
+              <label htmlFor="frAgencySelect">Publishing agency (optional)</label>
+              <select
+                id="frAgencySelect"
+                style={inputStyle}
+                value={regContext.frAgencyId ?? ''}
+                onChange={(event) =>
+                  setRegContext((existing) => ({
+                    ...existing,
+                    frAgencyId: event.target.value ? Number(event.target.value) : null,
+                  }))
+                }>
+                <option value="">All agencies (no agency filter)</option>
+                {filteredFrAgencies.map((agency) => (
+                  <option key={agency.id} value={agency.id}>
+                    {agency.name}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : null}
+          <div className="margin-top--sm margin-bottom--sm">
+            <button
+              type="button"
+              className="button button--secondary margin-right--sm"
+              disabled={frQueryBusy}
+              onClick={() => {
+                void runFrDocumentSearch();
+              }}>
+              {frQueryBusy ? 'Searching…' : 'Suggest Federal Register documents'}
+            </button>
+          </div>
+          {frResults.length ? (
+            <div className="margin-bottom--md">
+              <strong>Suggestions</strong>
+              {frResults.map((hit) => (
+                <div
+                  key={hit.documentNumber}
+                  style={{
+                    border: '1px solid var(--ifm-color-emphasis-300)',
+                    borderRadius: '6px',
+                    padding: '0.6rem',
+                    marginTop: '0.5rem',
+                  }}>
+                  <div style={{fontWeight: 600}}>{hit.title}</div>
+                  <div style={{fontSize: '0.85rem', marginTop: '0.25rem'}}>
+                    {hit.publicationDate ? `${hit.publicationDate} · ` : ''}
+                    {hit.abstract ? `${hit.abstract.slice(0, 220)}${hit.abstract.length > 220 ? '…' : ''}` : 'No abstract.'}
+                  </div>
+                  <div className="margin-top--sm">
+                    <button
+                      type="button"
+                      className="button button--secondary button--sm margin-right--sm"
+                      onClick={() => addRegulatoryAnchor(createFrAnchor(hit))}>
+                      Add as anchor
+                    </button>
+                    <a href={hit.htmlUrl} target="_blank" rel="noreferrer">
+                      Open document
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="margin-bottom--sm">
+            <button
+              type="button"
+              className="button button--secondary margin-right--sm"
+              disabled={ecfrBusy}
+              onClick={() => {
+                void ensureEcfrTitles();
+              }}>
+              {ecfrBusy ? 'Loading CFR titles…' : 'Load eCFR titles'}
+            </button>
+            {ecfrTitles?.length ? (
+              <>
+                <label htmlFor="ecfrTitleSelect" className="margin-left--sm">
+                  Add CFR title anchor
+                </label>
+                <select
+                  id="ecfrTitleSelect"
+                  style={{...inputStyle, maxWidth: '100%'}}
+                  value={ecfrTitlePick === '' ? '' : String(ecfrTitlePick)}
+                  onChange={(event) =>
+                    setEcfrTitlePick(event.target.value ? Number(event.target.value) : '')
+                  }>
+                  <option value="">Select a title…</option>
+                  {ecfrTitles.map((titleRow) => (
+                    <option key={titleRow.number} value={titleRow.number}>
+                      Title {titleRow.number}: {titleRow.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  className="button button--secondary margin-left--sm"
+                  disabled={ecfrTitlePick === ''}
+                  onClick={() => {
+                    if (ecfrTitlePick === '') {
+                      return;
+                    }
+                    const row = ecfrTitles.find((titleRow) => titleRow.number === ecfrTitlePick);
+                    if (row) {
+                      addRegulatoryAnchor(createEcfrTitleAnchor(row));
+                    }
+                    setEcfrTitlePick('');
+                  }}>
+                  Add title anchor
+                </button>
+              </>
+            ) : null}
+          </div>
+
+          {regContext.anchors.length ? (
+            <div className="margin-bottom--md">
+              <strong>Confirmed anchors ({regContext.anchors.length})</strong>
+              <ul>
+                {regContext.anchors.map((anchor) => (
+                  <li key={anchor.id}>
+                    <a href={anchor.url} target="_blank" rel="noreferrer">
+                      {anchor.title}
+                    </a>{' '}
+                    <button
+                      type="button"
+                      className="button button--sm button--secondary"
+                      onClick={() => removeRegulatoryAnchor(anchor.id)}>
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {projectId ? (
+            <button type="button" className="button button--primary" onClick={() => setWizardStep('domain')}>
+              Continue to domain workflow
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="button button--primary"
+              disabled={busy}
+              onClick={() => runAction(handleCreateProject)}>
+              Start Domain Workflow
+            </button>
+          )}
           <p>
             <strong>Project ID:</strong> <code>{projectId || 'Not created yet.'}</code>
           </p>
@@ -1376,6 +1707,59 @@ export default function DemoExperience(): React.JSX.Element {
           <p>
             <strong>{currentDomain.label}</strong>
           </p>
+          {getIafDomainDefinition(currentDomain.id)?.docFileStem ? (
+            <p className="margin-bottom--sm">
+              <a
+                href={`${domainDocsBase}${getIafDomainDefinition(currentDomain.id)?.docFileStem}`}
+                target="_blank"
+                rel="noreferrer">
+                Open matching Domain Standard (documentation)
+              </a>
+            </p>
+          ) : null}
+          {regulatoryNudgeForDomain(currentDomain.id) ? (
+            <div
+              className="margin-bottom--md"
+              style={{
+                borderLeft: '4px solid var(--ifm-color-primary)',
+                paddingLeft: '0.75rem',
+              }}>
+              <strong>Regulatory context</strong>
+              <pre style={{whiteSpace: 'pre-wrap', margin: '0.5rem 0 0', fontFamily: 'inherit', fontSize: '0.9rem'}}>
+                {regulatoryNudgeForDomain(currentDomain.id)}
+              </pre>
+            </div>
+          ) : null}
+          <div className="margin-bottom--md">
+            <strong>Confirmed regulatory anchors</strong>
+            {regContext.anchors.length ? (
+              <ul className="margin-bottom--none">
+                {regContext.anchors.map((anchor) => (
+                  <li key={anchor.id}>
+                    <a href={anchor.url} target="_blank" rel="noreferrer">
+                      {anchor.title}
+                    </a>{' '}
+                    <button
+                      type="button"
+                      className="button button--sm button--secondary"
+                      onClick={() => removeRegulatoryAnchor(anchor.id)}>
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="margin-bottom--sm" style={{fontSize: '0.9rem'}}>
+                None yet. You can add anchors from Project Setup, or continue without external citations.
+              </p>
+            )}
+            <button
+              type="button"
+              className="button button--secondary button--sm"
+              onClick={() => setWizardStep('project')}>
+              Adjust regulatory anchors (return to project setup)
+            </button>
+          </div>
           <p>
             <strong>IAF tasks in this domain:</strong> {renderTaskLinks(currentTaskProfile.allTasks)}
           </p>

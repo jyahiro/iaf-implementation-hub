@@ -33,3 +33,9 @@ A project is Domain IV compliant only when the following artifacts are complete 
 - Technical Solution Architecture Overview.
 - Technology Stack Decision Record.
 - Methodology Approval Record (analytics and sponsor governance sign-off).
+
+## Next steps
+
+- **Primary:** Continue to [Domain V: Analytics/Model Development](./model-building).
+- **Services:** [Service 03: Method and Model Advisory](../service-catalog/service-03-method-and-model-advisory)
+- **Crosswalk:** [Template and service crosswalk](../implementation-toolkit/crosswalk)

@@ -28,6 +28,14 @@ Then open this page and execute:
 
 The role-specific prompts and task emphasis follow the placeholder [Task RACI Matrix](../legal-policy/role-task-matrix). Task links in the demo open in a new tab to the referenced task description.
 
+Domain titles in the wizard match the INFORMS IAF domain names in `references/` and the [Task RACI Matrix](../legal-policy/role-task-matrix).
+
+## Federal Register and eCFR assists (Phase A)
+
+In **Step 2: Project Setup**, the demo can call the public [Federal Register API](https://www.federalregister.gov/reader-aids/developer-resources/rest-api) to suggest recent documents (optional agency filter) and the public [eCFR API](https://www.ecfr.gov/reader-aids/ecfr-developer-resources) to add a **CFR title** browse anchor. Items you confirm are stored as **regulatory anchors** and carry through all seven domains: suggested policy text references them, exported artifacts list them, and you can return to Project Setup to adjust anchors without losing your project.
+
+These calls run in the browser; if your network blocks cross-origin requests, use the demo without anchors or run from an unrestricted connection. Always verify that a suggested document or CFR title applies to your initiative.
+
 ## Optional: API-connected mode
 
 If you want to run against the API instead of browser-only mode:

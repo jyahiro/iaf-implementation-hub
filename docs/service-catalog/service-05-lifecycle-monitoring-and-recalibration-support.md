@@ -27,3 +27,9 @@ All service execution must comply with applicable law and policy, including the 
 
 ## Standard Turnaround
 - Initial assessment in 5-10 business days; ongoing support scheduled by cadence.
+
+## Next steps
+
+- **Primary:** Keep [Domain VII: Analytics Solution Lifecycle Management](../domains/lifecycle-management) artifacts current and tie monitoring to [Compliance checkpoints](../legal-policy/compliance-checkpoints).
+- **Operating rhythm:** [Start Here](../start-here/) · [Task RACI Matrix](../legal-policy/role-task-matrix)
+- **Catalog:** [Service 04: Deployment Readiness Review](./service-04-deployment-readiness-review) (prior gate) · [Service catalog index](./)

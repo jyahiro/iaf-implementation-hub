@@ -27,3 +27,9 @@ All service execution must comply with applicable law and policy, including the 
 
 ## Standard Turnaround
 - 10-15 business days, based on data access scope.
+
+## Next steps
+
+- **Primary:** Continue to [Domain IV: Methodology (Approach) Framing](../domains/methodology-selection) when data readiness gates are satisfied.
+- **Related services:** [Service 03: Method and Model Advisory](./service-03-method-and-model-advisory)
+- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints) · [OPEN Data / FDS template](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record)

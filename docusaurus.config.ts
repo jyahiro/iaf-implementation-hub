@@ -53,7 +53,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/informs-logo-official-clean.png',
+    image: 'img/og-thumbnail.png',
     announcementBar: {
       id: 'legal-guardrail',
       content:
@@ -61,7 +61,9 @@ const config: Config = {
       isCloseable: true,
     },
     colorMode: {
-      respectPrefersColorScheme: true,
+      defaultMode: 'dark',
+      respectPrefersColorScheme: false,
+      disableSwitch: false,
     },
     navbar: {
       title: 'IAF Implementation Hub',
@@ -73,9 +75,17 @@ const config: Config = {
         {to: '/', label: 'Home', position: 'left'},
         {to: '/docs/start-here', label: 'Start Here', position: 'left'},
         {to: '/docs/domains/business-problem-framing', label: 'Domain Standards', position: 'left'},
-        {to: '/docs/implementation-toolkit', label: 'Toolkit and Templates', position: 'left'},
-        {to: '/docs/service-catalog', label: 'Service Catalog', position: 'left'},
-        {to: '/docs/release-notes', label: 'Release Notes', position: 'left'},
+        {
+          type: 'dropdown',
+          label: 'Resources',
+          position: 'left',
+          items: [
+            {to: '/docs/implementation-toolkit', label: 'Implementation Toolkit'},
+            {to: '/docs/public-sector/templates', label: 'Digital Templates'},
+            {to: '/docs/service-catalog', label: 'Service Catalog'},
+            {to: '/docs/release-notes', label: 'Release Notes'},
+          ],
+        },
         {to: '/docs/platform/architecture', label: 'Platform', position: 'left'},
         {to: '/docs/legal-policy/compliance-checkpoints', label: 'Legal and Policy', position: 'left'},
         {

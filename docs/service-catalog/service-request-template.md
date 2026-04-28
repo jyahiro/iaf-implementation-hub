@@ -28,3 +28,9 @@
 - Requested outcomes:
 - Acceptance criteria:
 - Decision needed after service completion:
+
+## Next steps
+
+- **Submit:** Attach this template to your project record and route per your agency intake process.
+- **Pick a service:** [Service catalog](./) (Services 01–05) · [Template and service crosswalk](../implementation-toolkit/crosswalk)
+- **Walk the IAF path:** [Start Here](../start-here/) · [Domain standards](../domains/business-problem-framing)

@@ -24,7 +24,7 @@ This page provides a placeholder RACI mapping and task descriptions for the INFO
 - `C`: Consulted
 - `I`: Informed
 
-## Domain I - Business Problem (Question) Framing
+## Domain I: Business Problem (Question) Framing
 
 <a id="task-11"></a>
 ### Task 1.1
@@ -62,7 +62,7 @@ Approve problem framing brief for execution.
 
 RACI: `R=SP`, `A=SP`, `C=PM,RV`, `I=AN,ST,AD`
 
-## Domain II - Analytics Problem Framing
+## Domain II: Analytics Problem Framing
 
 <a id="task-21"></a>
 ### Task 2.1
@@ -106,7 +106,7 @@ Authorize transition to data readiness activities.
 
 RACI: `R=SP`, `A=SP`, `C=PM,RV`, `I=AN,DS,DE`
 
-## Domain III - Data
+## Domain III: Data
 
 <a id="task-31"></a>
 ### Task 3.1
@@ -156,7 +156,7 @@ Approve data baseline for methodology selection.
 
 RACI: `R=RV`, `A=SP`, `C=PM,ST`, `I=AN,DE,DS`
 
-## Domain IV - Methodology (Approach) Framing
+## Domain IV: Methodology (Approach) Framing
 
 <a id="task-41"></a>
 ### Task 4.1
@@ -182,7 +182,7 @@ Approve selected methodology and delivery approach.
 
 RACI: `R=PM`, `A=SP`, `C=DS,RV,AN`, `I=DE,AD`
 
-## Domain V - Analytics/Model Development
+## Domain V: Analytics/Model Development
 
 <a id="task-51"></a>
 ### Task 5.1
@@ -220,7 +220,7 @@ Approve model release readiness.
 
 RACI: `R=PM`, `A=SP`, `C=RV,DS`, `I=AN,DE,AD`
 
-## Domain VI - Deployment
+## Domain VI: Deployment
 
 <a id="task-61"></a>
 ### Task 6.1
@@ -258,7 +258,7 @@ Validate deployed solution against acceptance criteria.
 
 RACI: `R=AN`, `A=PM`, `C=RV,DE`, `I=SP,AD`
 
-## Domain VII - Analytics Solution Lifecycle Management
+## Domain VII: Analytics Solution Lifecycle Management
 
 <a id="task-71"></a>
 ### Task 7.1

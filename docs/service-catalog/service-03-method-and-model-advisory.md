@@ -27,3 +27,9 @@ All service execution must comply with applicable law and policy, including the 
 
 ## Standard Turnaround
 - 10-20 business days, depending on model complexity.
+
+## Next steps
+
+- **Primary:** Move toward [Domain VI: Deployment](../domains/deployment) and book [Service 04: Deployment Readiness Review](./service-04-deployment-readiness-review) when build/validation evidence is ready.
+- **Domains:** [Domain V: Analytics/Model Development](../domains/model-building) · [AI RMF / M-24-10 assurance template](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case)
+- **Crosswalk:** [Template and service crosswalk](../implementation-toolkit/crosswalk)

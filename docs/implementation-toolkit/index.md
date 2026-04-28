@@ -24,3 +24,9 @@ The Implementation Toolkit combines digital templates and support services into 
 ## Canonical Crosswalk
 
 Use [Template and Service Crosswalk](./crosswalk) as the single source of truth for template-to-service mapping.
+
+## Next steps
+
+- **Primary:** Open the [crosswalk](./crosswalk), then align your active templates with [Service Catalog](../service-catalog/) offerings.
+- **Domains:** [Domain standards](../domains/business-problem-framing) · [Compliance checkpoints](../legal-policy/compliance-checkpoints)
+- **Templates:** [Digital Templates](../public-sector/templates) · [Interactive Demo Environment](../start-here/demo-environment)

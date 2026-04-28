@@ -27,3 +27,9 @@ All service execution must comply with applicable law and policy, including the 
 
 ## Standard Turnaround
 - 5-10 business days, depending on stakeholder availability.
+
+## Next steps
+
+- **Primary:** Advance IAF work to [Domain II: Analytics Problem Framing](../domains/analytics-problem-framing) after Service 01 outputs are accepted.
+- **Related services:** [Service 02: Data Readiness Assessment](./service-02-data-readiness-assessment) · [Service 03: Method and Model Advisory](./service-03-method-and-model-advisory)
+- **Artifacts:** [Digital Templates](../public-sector/templates) · [Template and service crosswalk](../implementation-toolkit/crosswalk)

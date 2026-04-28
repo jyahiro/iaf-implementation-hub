@@ -27,3 +27,9 @@ All service execution must comply with applicable law and policy, including the 
 
 ## Standard Turnaround
 - 5-10 business days after evidence package submission.
+
+## Next steps
+
+- **Primary:** Stand up [Domain VII: Analytics Solution Lifecycle Management](../domains/lifecycle-management) cadence and engage [Service 05: Lifecycle Monitoring and Recalibration Support](./service-05-lifecycle-monitoring-and-recalibration-support).
+- **Prior domain:** [Domain VI: Deployment](../domains/deployment)
+- **Catalog:** [Service catalog index](./) · [Compliance checkpoints](../legal-policy/compliance-checkpoints)

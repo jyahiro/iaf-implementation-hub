@@ -25,3 +25,9 @@ This is the canonical crosswalk for mapping templates to service pathways.
 - Service 03 consumes Domain IV/V method and model artifacts plus AI governance artifacts.
 - Service 04 consumes deployment readiness and assurance artifacts.
 - Service 05 consumes lifecycle monitoring and recalibration artifacts.
+
+## Next steps
+
+- **Primary:** Open matching pages in [Digital Templates](../public-sector/templates) and [Service Catalog](../service-catalog/) for each row you own.
+- **IAF execution:** [Domain standards](../domains/business-problem-framing) · [Implementation Toolkit](./) (overview)
+- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints) · [Legal guardrails](../public-sector/legal-guardrails)

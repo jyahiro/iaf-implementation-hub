@@ -19,7 +19,7 @@ A city agency experiences long review timelines for building permit applications
 
 ## End-to-End IAF Walkthrough
 
-### Domain I: Business Problem Framing
+### Domain I: Business Problem (Question) Framing
 - Create **Business Problem Brief**.
 - Align sponsor, permitting office, legal, and IT stakeholders.
 - Complete **[M-13-13 Open Data Policy Governance Checklist](../public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist)**.
@@ -38,7 +38,7 @@ A city agency experiences long review timelines for building permit applications
 - Complete [OPEN Data/FDS compliance artifact](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record).
 - Gate decision: approve progression to Domain IV.
 
-### Domain IV: Methodology Framing
+### Domain IV: Methodology (Approach) Framing
 - Evaluate options:
   - queue analytics + rules engine
   - risk scoring model + routing recommendations
@@ -56,7 +56,7 @@ A city agency experiences long review timelines for building permit applications
 - Verify production data flows and escalation controls.
 - Gate decision: deployment approval.
 
-### Domain VII: Lifecycle Management
+### Domain VII: Analytics Solution Lifecycle Management
 - Monitor cycle time and error metrics weekly.
 - Recalibrate model quarterly or after policy/process changes.
 - Review side effects (e.g., workload imbalance by reviewer group).

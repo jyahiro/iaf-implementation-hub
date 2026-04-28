@@ -34,3 +34,8 @@ A project is Domain VI compliant only when the following artifacts are complete 
 - Implementation and Test Execution Report.
 - Deployment Validation and Verification Report.
 - Governance Artifact: [NIST AI RMF / M-24-10 Assurance Case](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case).
+
+## Next steps
+
+- **Primary:** Continue to [Domain VII: Analytics Solution Lifecycle Management](./lifecycle-management).
+- **Services:** [Service 04: Deployment Readiness Review](../service-catalog/service-04-deployment-readiness-review)
