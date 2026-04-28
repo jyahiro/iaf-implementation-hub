@@ -1,15 +1,18 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-type Role =
-  | 'program_manager'
-  | 'analyst'
-  | 'data_engineer'
-  | 'data_scientist'
-  | 'sponsor'
-  | 'data_steward'
-  | 'reviewer'
-  | 'admin';
+const MASTER_ROLES = {
+  sponsor: {label: 'Executive Sponsor', shortCode: 'SP'},
+  program_manager: {label: 'Program Manager', shortCode: 'PM'},
+  analyst: {label: 'Analyst', shortCode: 'AN'},
+  data_engineer: {label: 'Data Engineer', shortCode: 'DE'},
+  data_scientist: {label: 'Data Scientist', shortCode: 'DS'},
+  data_steward: {label: 'Data Steward', shortCode: 'ST'},
+  reviewer: {label: 'Reviewer/Oversight', shortCode: 'RV'},
+  admin: {label: 'Platform Admin', shortCode: 'AD'},
+} as const;
+
+type Role = keyof typeof MASTER_ROLES;
 
 type WizardStep = 'connection' | 'login' | 'project' | 'domain' | 'summary';
 
@@ -19,6 +22,25 @@ interface DomainStep {
   templateId: string;
   serviceId: string;
   objectiveLabel: string;
+}
+
+interface DomainStandardRequirement {
+  exitCriteria: string;
+  requiredArtifacts: string[];
+  policyReference: string;
+  governanceGateObjective: string;
+}
+
+interface DomainStandardCheck {
+  id: string;
+  label: string;
+  complete: boolean;
+}
+
+interface ConsistencyCheck {
+  id: string;
+  label: string;
+  complete: boolean;
 }
 
 interface DomainResponse {
@@ -362,6 +384,63 @@ const DOMAIN_STEPS: DomainStep[] = [
   },
 ];
 
+const DOMAIN_STANDARD_REQUIREMENTS: Record<string, DomainStandardRequirement> = {
+  'domain-1-framing': {
+    exitCriteria: 'Problem statement approved and sponsor/stakeholder alignment recorded.',
+    requiredArtifacts: [
+      'Business Problem Statement',
+      'Stakeholder Register',
+      'M-13-13 Open Data Policy Governance Checklist',
+    ],
+    policyReference: 'Evidence Act (Title I)',
+    governanceGateObjective: 'Align framing with the agency learning agenda.',
+  },
+  'domain-2-analytics-framing': {
+    exitCriteria: 'Analytics question and success criteria approved for data readiness.',
+    requiredArtifacts: ['Analytics Problem Statement', 'Success Metrics Baseline'],
+    policyReference: 'IAF governance baseline',
+    governanceGateObjective: 'Maintain traceable analytical framing for downstream quality assurance.',
+  },
+  'domain-3-data': {
+    exitCriteria: 'Data is validated as fit for purpose with governance controls documented.',
+    requiredArtifacts: [
+      'Data Management Plan',
+      'Data Quality Report',
+      'OPEN Data/FDS Compliance Record',
+    ],
+    policyReference: 'IQA / OPEN Government Data Act',
+    governanceGateObjective: 'Ensure data meets fit-for-purpose quality standards.',
+  },
+  'domain-4-methodology': {
+    exitCriteria: 'Method and architecture approach approved for development.',
+    requiredArtifacts: ['Method Selection Record', 'Approach Trade-off Summary'],
+    policyReference: 'IAF governance baseline',
+    governanceGateObjective: 'Select methods that are transparent, defensible, and mission-appropriate.',
+  },
+  'domain-5-build': {
+    exitCriteria: 'Model performance validated and deployment recommendation documented.',
+    requiredArtifacts: ['Model Validation Report', 'Findings Briefing', 'AI RMF/M-24-10 Assurance Case'],
+    policyReference: 'NIST AI RMF / OMB M-24-10',
+    governanceGateObjective: 'Demonstrate AI risk assessment and bias mitigation.',
+  },
+  'domain-6-deploy': {
+    exitCriteria: 'Production readiness validated and deployment gate approved.',
+    requiredArtifacts: [
+      'Deployment Validation Report',
+      'Production Requirements',
+      'AI RMF/M-24-10 Assurance Case',
+    ],
+    policyReference: 'NIST AI RMF / OMB M-24-10',
+    governanceGateObjective: 'Demonstrate AI risk assessment and bias mitigation.',
+  },
+  'domain-7-lifecycle': {
+    exitCriteria: 'Monitoring and recalibration controls documented for sustainment.',
+    requiredArtifacts: ['Operational Lifecycle Review', 'Monitoring and Recalibration Plan'],
+    policyReference: 'NARA Records Schedules',
+    governanceGateObjective: 'Ensure analytics outputs are properly archived/disposed.',
+  },
+};
+
 const ROLE_PROMPTS: Record<Role, string> = {
   sponsor: 'Document the decision authority and approval threshold for this domain.',
   program_manager: 'Document delivery milestones, dependencies, and accountability owners.',
@@ -528,6 +607,7 @@ export default function DemoExperience(): React.JSX.Element {
   const [domainResponses, setDomainResponses] = useState<Record<string, DomainResponse>>({});
   const [icamMode, setIcamMode] = useState<'dummy' | 'manual'>('dummy');
   const [icamSearchByTask, setIcamSearchByTask] = useState<Record<string, string>>({});
+  const masterRoleKeys = Object.keys(MASTER_ROLES) as Role[];
 
   const tokenPreview = useMemo(() => {
     if (!token) {
@@ -556,6 +636,38 @@ export default function DemoExperience(): React.JSX.Element {
     return Boolean(response?.checklistComplete && response?.artifactComplete && response?.serviceComplete);
   });
 
+  const roleConsistencyChecks = useMemo<ConsistencyCheck[]>(() => {
+    const promptRoles = Object.keys(ROLE_PROMPTS) as Role[];
+    const matrixRoles = new Set<Role>();
+    for (const profile of Object.values(DOMAIN_TASK_MATRIX)) {
+      (Object.keys(profile.byRole) as Role[]).forEach((roleKey) => matrixRoles.add(roleKey));
+    }
+    return [
+      {
+        id: 'master-role-list-defined',
+        label: 'Master role list is defined and non-empty.',
+        complete: masterRoleKeys.length > 0,
+      },
+      {
+        id: 'role-prompts-aligned',
+        label: 'Role prompts align 1:1 with master role list.',
+        complete:
+          masterRoleKeys.every((roleKey) => promptRoles.includes(roleKey)) &&
+          promptRoles.every((roleKey) => masterRoleKeys.includes(roleKey)),
+      },
+      {
+        id: 'role-task-matrix-aligned',
+        label: 'Role-task matrix references only master-list roles.',
+        complete: [...matrixRoles].every((roleKey) => masterRoleKeys.includes(roleKey)),
+      },
+      {
+        id: 'login-selector-aligned',
+        label: 'Role selector options are generated from the master role list.',
+        complete: true,
+      },
+    ];
+  }, [masterRoleKeys]);
+
   function taskReferenceLink(taskId: string): string {
     return `${taskReferenceBaseUrl}#task-${taskId.replace('.', '')}`;
   }
@@ -581,6 +693,10 @@ export default function DemoExperience(): React.JSX.Element {
         ))}
       </>
     );
+  }
+
+  function roleLabel(roleKey: Role): string {
+    return MASTER_ROLES[roleKey].label;
   }
 
   function getPreviousDomainResponse(index: number): DomainResponse | null {
@@ -718,6 +834,71 @@ export default function DemoExperience(): React.JSX.Element {
         [fieldId]: value,
       },
     });
+  }
+
+  function generateDomainFieldExample(field: 'objective' | 'roleNote' | 'policyRisk'): string {
+    const prior = getPreviousDomainResponse(currentDomainIndex);
+    const priorObjective = prior?.objective?.trim() || 'previous domain outputs';
+    const projectContext = projectName.trim() || 'the project';
+    if (field === 'objective') {
+      return `For ${projectContext}, define ${currentDomain.objectiveLabel.toLowerCase()} by building on ${priorObjective}.`;
+    }
+    if (field === 'roleNote') {
+      return `${ROLE_PROMPTS[role]} Focus on tasks ${getRolePrimaryTasks(currentDomain.id).join(', ') || 'assigned to this role'} and document decision-ready evidence.`;
+    }
+    return `Key policy and risk controls for ${currentDomain.label}: document legal basis, approval checkpoints, data handling constraints, and mitigation actions tied to ${projectContext}.`;
+  }
+
+  function generateWorkflowFieldExample(taskId: string, field: TaskWorkflowField): string {
+    const taskDescription = TASK_DESCRIPTIONS[taskId] ?? 'this task';
+    const prior = getPreviousDomainResponse(currentDomainIndex);
+    const priorObjective = prior?.objective?.trim() || 'prior domain context';
+    const projectContext = projectName.trim() || 'the project';
+    if (field.id === 'primaryStakeholders') {
+      return 'Avery Johnson <avery.johnson@agency.gov>; Jordan Lee <jordan.lee@agency.gov>; Taylor Smith <taylor.smith@agency.gov>';
+    }
+    if (field.id === 'decisionCriteria') {
+      return `Decision criteria for ${projectContext}: measurable mission impact, policy compliance, implementation feasibility, and stakeholder acceptance.`;
+    }
+    if (field.id === 'constraints') {
+      return `Constraints: comply with Evidence Act and open data policy, execute within current fiscal cycle, maintain privacy/security controls, and minimize operational disruption.`;
+    }
+    return `${taskDescription} for ${projectContext}: align with ${currentDomain.label} using ${priorObjective}, and document concrete outputs supporting gate approval.`;
+  }
+
+  function getDomainStandardChecks(response: DomainResponse, domainId: string): DomainStandardCheck[] {
+    const requirement = DOMAIN_STANDARD_REQUIREMENTS[domainId];
+    return [
+      {
+        id: 'objective-framing',
+        label: 'Decision framing is documented (objective + role context).',
+        complete: Boolean(response.objective.trim() && response.roleNote.trim()),
+      },
+      {
+        id: 'policy-governance',
+        label: `Policy control satisfied: ${requirement.policyReference}.`,
+        complete: Boolean(response.policyRisk.trim()),
+      },
+      {
+        id: 'gate-objective',
+        label: `Governance gate objective satisfied: ${requirement.governanceGateObjective}`,
+        complete: Boolean(response.policyRisk.trim()),
+      },
+      {
+        id: 'role-task-alignment',
+        label: 'Role-aligned required tasks are completed per RACI.',
+        complete: allPrimaryTasksComplete(response, domainId),
+      },
+      {
+        id: 'artifact-service-linkage',
+        label: 'Domain artifact and linked service request are recorded.',
+        complete: Boolean(response.artifactComplete && response.serviceComplete),
+      },
+    ];
+  }
+
+  function areDomainStandardsSatisfied(response: DomainResponse, domainId: string): boolean {
+    return getDomainStandardChecks(response, domainId).every((check) => check.complete);
   }
 
   function parsePeopleValue(value: string): string[] {
@@ -993,6 +1174,12 @@ export default function DemoExperience(): React.JSX.Element {
   async function handleSaveDomain() {
     const primaryTasks = getRolePrimaryTasks(currentDomain.id);
     const supportingTasks = getRoleSupportingTasks(currentDomain.id);
+    const projectedResponse: DomainResponse = {
+      ...currentResponse,
+      artifactComplete: true,
+      serviceComplete: true,
+    };
+    const standardsChecks = getDomainStandardChecks(projectedResponse, currentDomain.id);
     const artifactPayload = await requestData(`/projects/${projectId}/artifacts`, 'POST', {
       templateId: currentDomain.templateId,
       title: `${currentDomain.label} Artifact`,
@@ -1012,6 +1199,10 @@ export default function DemoExperience(): React.JSX.Element {
               `- ${taskId}: workflow=${JSON.stringify(form.workflowValues ?? {})}`,
           )
           .join('\n')}\n\n` +
+        `## Domain standards alignment control\n` +
+        `${standardsChecks.map((check) => `- ${check.complete ? '[x]' : '[ ]'} ${check.label}`).join('\n')}\n\n` +
+        `## Policy / regulation\n${DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].policyReference}\n\n` +
+        `## Governance gate objective\n${DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].governanceGateObjective}\n\n` +
         `## Policy / risk note\n${currentResponse.policyRisk}\n`,
     });
 
@@ -1036,11 +1227,7 @@ export default function DemoExperience(): React.JSX.Element {
     const primaryTasks = getRolePrimaryTasks(currentDomain.id);
     return Boolean(
       primaryTasks.length &&
-        allPrimaryTasksComplete(currentResponse, currentDomain.id) &&
-        currentResponse.artifactComplete &&
-        currentResponse.serviceComplete &&
-        currentResponse.objective.trim() &&
-        currentResponse.roleNote.trim(),
+        areDomainStandardsSatisfied(currentResponse, currentDomain.id),
     );
   }
 
@@ -1102,6 +1289,17 @@ export default function DemoExperience(): React.JSX.Element {
               : 'Manual mode is active: stakeholder fields accept free text input only.'}
           </p>
         </div>
+        <div className="margin-top--md">
+          <h4>Master Role List Control</h4>
+          <p className="margin-bottom--xs">
+            Canonical roles: {masterRoleKeys.map((roleKey) => `${roleLabel(roleKey)} (${MASTER_ROLES[roleKey].shortCode})`).join('; ')}
+          </p>
+          {roleConsistencyChecks.map((check) => (
+            <div key={check.id}>
+              <code>{check.complete ? 'pass' : 'fail'}</code> {check.label}
+            </div>
+          ))}
+        </div>
       </div>
 
       {wizardStep === 'connection' || wizardStep === 'login' ? (
@@ -1121,14 +1319,11 @@ export default function DemoExperience(): React.JSX.Element {
             style={inputStyle}
             value={role}
             onChange={(event) => setRole(event.target.value as Role)}>
-            <option value="program_manager">Program Manager</option>
-            <option value="analyst">Analyst</option>
-            <option value="data_engineer">Data Engineer</option>
-            <option value="data_scientist">Data Scientist</option>
-            <option value="sponsor">Sponsor</option>
-            <option value="data_steward">Data Steward</option>
-            <option value="reviewer">Reviewer</option>
-            <option value="admin">Admin</option>
+            {masterRoleKeys.map((roleKey) => (
+              <option key={roleKey} value={roleKey}>
+                {roleLabel(roleKey)}
+              </option>
+            ))}
           </select>
           <button
             type="button"
@@ -1185,13 +1380,13 @@ export default function DemoExperience(): React.JSX.Element {
             <strong>IAF tasks in this domain:</strong> {renderTaskLinks(currentTaskProfile.allTasks)}
           </p>
           <p>
-            <strong>{role.replace('_', ' ')} primary tasks:</strong>{' '}
+            <strong>{roleLabel(role)} primary tasks:</strong>{' '}
             {currentRoleTaskFocus?.primary?.length
               ? renderTaskLinks(currentRoleTaskFocus.primary)
               : 'No explicit primary tasks assigned in this placeholder matrix.'}
           </p>
           <p>
-            <strong>{role.replace('_', ' ')} supporting tasks:</strong>{' '}
+            <strong>{roleLabel(role)} supporting tasks:</strong>{' '}
             {currentRoleTaskFocus?.supporting?.length
               ? renderTaskLinks(currentRoleTaskFocus.supporting)
               : 'No explicit supporting tasks assigned in this placeholder matrix.'}
@@ -1200,6 +1395,28 @@ export default function DemoExperience(): React.JSX.Element {
             <strong>Domain gate rule:</strong> all primary tasks for the selected role must be marked complete
             before advancing.
           </p>
+          <div className="margin-bottom--sm">
+            <strong>Domain Standards Control</strong>
+            <p className="margin-bottom--xs">
+              <strong>Exit criteria:</strong> {DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].exitCriteria}
+            </p>
+            <p className="margin-bottom--xs">
+              <strong>Policy / Regulation:</strong> {DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].policyReference}
+            </p>
+            <p className="margin-bottom--xs">
+              <strong>Governance gate objective:</strong>{' '}
+              {DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].governanceGateObjective}
+            </p>
+            <p className="margin-bottom--xs">
+              <strong>Required artifacts:</strong>{' '}
+              {DOMAIN_STANDARD_REQUIREMENTS[currentDomain.id].requiredArtifacts.join('; ')}
+            </p>
+            {getDomainStandardChecks(currentResponse, currentDomain.id).map((check) => (
+              <div key={check.id}>
+                <code>{check.complete ? 'pass' : 'pending'}</code> {check.label}
+              </div>
+            ))}
+          </div>
           <p>
             <strong>Prior domain context:</strong> {previousDomainSummary()}
           </p>
@@ -1211,6 +1428,12 @@ export default function DemoExperience(): React.JSX.Element {
             value={currentResponse.objective}
             onChange={(event) => updateCurrentResponse({objective: event.target.value})}
           />
+          <button
+            type="button"
+            className="button button--secondary button--sm margin-bottom--sm"
+            onClick={() => updateCurrentResponse({objective: generateDomainFieldExample('objective')})}>
+            Generate Example
+          </button>
 
           <label htmlFor="roleNote">Role-specific note ({role})</label>
           <p>{ROLE_PROMPTS[role]}</p>
@@ -1220,6 +1443,12 @@ export default function DemoExperience(): React.JSX.Element {
             value={currentResponse.roleNote}
             onChange={(event) => updateCurrentResponse({roleNote: event.target.value})}
           />
+          <button
+            type="button"
+            className="button button--secondary button--sm margin-bottom--sm"
+            onClick={() => updateCurrentResponse({roleNote: generateDomainFieldExample('roleNote')})}>
+            Generate Example
+          </button>
 
           <label htmlFor="policyRisk">Policy and risk note</label>
           <textarea
@@ -1228,6 +1457,12 @@ export default function DemoExperience(): React.JSX.Element {
             value={currentResponse.policyRisk}
             onChange={(event) => updateCurrentResponse({policyRisk: event.target.value})}
           />
+          <button
+            type="button"
+            className="button button--secondary button--sm margin-bottom--sm"
+            onClick={() => updateCurrentResponse({policyRisk: generateDomainFieldExample('policyRisk')})}>
+            Generate Example
+          </button>
 
           <div className="margin-bottom--sm">
             <strong>Role Task Workflow</strong>
@@ -1273,6 +1508,14 @@ export default function DemoExperience(): React.JSX.Element {
                                 placeholder={field.placeholder}
                                 onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
                               />
+                              <button
+                                type="button"
+                                className="button button--secondary button--sm margin-bottom--sm"
+                                onClick={() =>
+                                  updateTaskWorkflowValue(taskId, field.id, generateWorkflowFieldExample(taskId, field))
+                                }>
+                                Generate Example
+                              </button>
                             </label>
                           );
                         }
@@ -1418,6 +1661,14 @@ export default function DemoExperience(): React.JSX.Element {
                             placeholder={field.placeholder}
                             onChange={(event) => updateTaskWorkflowValue(taskId, field.id, event.target.value)}
                           />
+                          <button
+                            type="button"
+                            className="button button--secondary button--sm margin-bottom--sm"
+                            onClick={() =>
+                              updateTaskWorkflowValue(taskId, field.id, generateWorkflowFieldExample(taskId, field))
+                            }>
+                            Generate Example
+                          </button>
                         </label>
                       );
                     }

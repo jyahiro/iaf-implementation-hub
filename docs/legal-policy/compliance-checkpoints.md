@@ -4,14 +4,15 @@ sidebar_position: 31
 
 # Compliance Checkpoints
 
-This matrix defines required policy and governance checkpoints by domain stage.
+This matrix defines required policy and governance checkpoints by domain stage, including explicit gate objectives.
 
-| Domain | Required Artifact | Approval Authority | Policy Basis |
-| --- | --- | --- | --- |
-| Domain I | [M-13-13 (Open Data Policy) Governance Checklist](../public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist) | Sponsor / Program Lead | [Evidence Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf), [M-13-13 (Open Data Policy)](https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2013/m-13-13.pdf) |
-| Domain III | [OPEN Data Act / FDS Compliance Record](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record) | Data Steward / Reviewer | [OPEN Government Data Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf), [Federal Data Strategy](https://strategy.data.gov/) |
-| Domain V-VI | [AI RMF / M-24-10 Assurance Case](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case) | Technical Reviewer / Authorizing Official | [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf) |
-| All Domains | Domain checklist and approval record | Assigned gate approver | [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)-aligned controls |
+| IAF Domain | Policy / Regulation | Governance Gate Objective | Required Artifact | Approval Authority |
+| --- | --- | --- | --- | --- |
+| Domain I (Business Framing) | [Evidence Act (Title I)](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) | Align framing with the agency learning agenda. | [M-13-13 (Open Data Policy) Governance Checklist](../public-sector/templates/template-governance-domain-01-m-13-13-open-data-policy-checklist) | Sponsor / Program Lead |
+| Domain III (Data) | [Information Quality Act (IQA)](https://obamawhitehouse.archives.gov/omb/fedreg/reproducible2) / [OPEN Government Data Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) | Ensure data meets fit-for-purpose quality standards. | [OPEN Data Act / FDS Compliance Record](../public-sector/templates/template-governance-domain-03-open-data-fds-compliance-record) | Data Steward / Reviewer |
+| Domain V-VI (Modeling / Deployment) | [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework) / [OMB M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf) | Demonstrate AI risk assessment and bias mitigation. | [AI RMF / M-24-10 Assurance Case](../public-sector/templates/template-governance-domain-05-06-ai-rmf-m-24-10-assurance-case) | Technical Reviewer / Authorizing Official |
+| Domain VII (Lifecycle) | [NARA Records Schedules](https://www.archives.gov/records-mgmt/records-schedules) | Ensure analytics outputs are properly archived/disposed. | Operational lifecycle review and records disposition evidence | Records Officer / Program Lead |
+| All Domains | [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final) | Maintain security and audit-ready control evidence at each gate. | Domain checklist and approval record | Assigned gate approver |
 
 ## Records and Retention
 

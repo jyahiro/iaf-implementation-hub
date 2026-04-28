@@ -75,6 +75,7 @@ const config: Config = {
         {to: '/docs/domains/business-problem-framing', label: 'Domain Standards', position: 'left'},
         {to: '/docs/implementation-toolkit', label: 'Toolkit and Templates', position: 'left'},
         {to: '/docs/service-catalog', label: 'Service Catalog', position: 'left'},
+        {to: '/docs/release-notes', label: 'Release Notes', position: 'left'},
         {to: '/docs/platform/architecture', label: 'Platform', position: 'left'},
         {to: '/docs/legal-policy/compliance-checkpoints', label: 'Legal and Policy', position: 'left'},
         {
@@ -113,6 +114,10 @@ const config: Config = {
             {
               label: 'Legal Guardrails',
               to: '/docs/legal-policy/compliance-checkpoints',
+            },
+            {
+              label: 'Release Notes',
+              to: '/docs/release-notes',
             },
           ],
         },
