@@ -36,6 +36,6 @@ A project is Domain VII compliant only when the following artifacts are complete
 
 ## Next steps
 
-- **Primary:** [Service 05: Lifecycle Monitoring and Recalibration Support](../service-catalog/service-05-lifecycle-monitoring-and-recalibration-support) · [Start Here](../start-here/) (operating cadence)
-- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints) · [Task RACI Matrix](../legal-policy/role-task-matrix)
-- **Prior domain:** [Domain VI: Deployment](./deployment)
+- **Primary:** [Service 05: Lifecycle Monitoring and Recalibration Support](/docs/service-catalog/service-05-lifecycle-monitoring-and-recalibration-support/) · [Start Here](/docs/start-here/) (operating cadence)
+- **Governance:** [Compliance checkpoints](/docs/legal-policy/compliance-checkpoints/) · [Task RACI Matrix](/docs/legal-policy/role-task-matrix/)
+- **Prior domain:** [Domain VI: Deployment](/docs/domains/deployment/)

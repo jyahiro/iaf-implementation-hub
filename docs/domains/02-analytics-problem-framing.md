@@ -36,6 +36,6 @@ A project is Domain II compliant only when the following artifacts are complete 
 
 ## Next steps
 
-- **Primary:** Continue to [Domain III: Data](./data-readiness).
-- **Prior domain:** [Domain I: Business Problem (Question) Framing](./business-problem-framing)
-- **Templates:** [Implementation Toolkit](../implementation-toolkit/) · [Digital Templates](../public-sector/templates)
+- **Primary:** Continue to [Domain III: Data](/docs/domains/data-readiness/).
+- **Prior domain:** [Domain I: Business Problem (Question) Framing](/docs/domains/business-problem-framing/)
+- **Templates:** [Implementation Toolkit](/docs/implementation-toolkit/) · [Digital Templates](/docs/public-sector/templates/)

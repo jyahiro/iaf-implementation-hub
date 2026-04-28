@@ -6,7 +6,7 @@ sidebar_position: 30
 
 The Service Catalog provides a functioning menu of implementation support services for public-sector customers. Each service includes purpose, triggers, inputs, outputs, and turnaround expectations.
 
-All services are mapped to IAF task coverage and governed by the [Evidence Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) legal baseline described in [Legal Guardrails](../public-sector/legal-guardrails).
+All services are mapped to IAF task coverage and governed by the [Evidence Act](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) legal baseline described in [Legal Guardrails](/docs/public-sector/legal-guardrails/).
 
 ## How to Use
 
@@ -32,10 +32,10 @@ All services are mapped to IAF task coverage and governed by the [Evidence Act](
 - Service 03 consumes Domain IV/V method, model, and AI governance artifacts.
 - Service 04 consumes Domain V/VI validation and deployment assurance artifacts.
 - Service 05 consumes Domain VI/VII lifecycle review artifacts and monitoring evidence.
-- See [Template and Service Crosswalk](../implementation-toolkit/crosswalk) for canonical mapping.
+- See [Template and Service Crosswalk](/docs/implementation-toolkit/crosswalk/) for canonical mapping.
 
 ## Next steps
 
-- **Primary:** Choose a service above, then complete [Service Request Template](./service-request-template) with inputs attached.
-- **Domains:** [Domain standards](../domains/business-problem-framing) · [Compliance checkpoints](../legal-policy/compliance-checkpoints)
-- **Execution:** [Implementation Toolkit](../implementation-toolkit/) · [Interactive Demo Environment](../start-here/demo-environment)
+- **Primary:** Choose a service above, then complete [Service Request Template](/docs/service-catalog/service-request-template/) with inputs attached.
+- **Domains:** [Domain standards](/docs/domains/business-problem-framing/) · [Compliance checkpoints](/docs/legal-policy/compliance-checkpoints/)
+- **Execution:** [Implementation Toolkit](/docs/implementation-toolkit/) · [Interactive Demo Environment](/docs/start-here/demo-environment/)

@@ -4,7 +4,7 @@ sidebar_position: 32
 
 # Roles and Responsibilities
 
-This page is aligned to the [Task RACI Matrix](./role-task-matrix), which is the source of truth for task-level role assignments.
+This page is aligned to the [Task RACI Matrix](/docs/legal-policy/role-task-matrix/), which is the source of truth for task-level role assignments.
 
 ## Standard Roles (RACI-Aligned)
 
@@ -26,5 +26,5 @@ This page is aligned to the [Task RACI Matrix](./role-task-matrix), which is the
 
 ## Task-Level Assignment Reference
 
-- For Domain I-VII task-level assignments and descriptions, use the [Task RACI Matrix](./role-task-matrix).
+- For Domain I-VII task-level assignments and descriptions, use the [Task RACI Matrix](/docs/legal-policy/role-task-matrix/).
 - Task hyperlinks across services and demo pages resolve to that matrix.

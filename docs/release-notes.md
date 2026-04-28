@@ -32,7 +32,7 @@ Until the Hub reaches a stable 1.0 baseline, minor releases may bundle several t
 ### Added
 
 - Interactive demo expansion: role-based task emphasis, form-style task workflows, and policy-linked task references.
-- Task-level [RACI matrix](./legal-policy/role-task-matrix) with anchors for deep links from the demo.
+- Task-level [RACI matrix](/docs/legal-policy/role-task-matrix/) with anchors for deep links from the demo.
 - Domain standards alignment controls in the demo and in exported markdown artifacts.
 - Legal and policy hyperlinks across the service catalog, domain pages, implementation toolkit, and governance templates.
 

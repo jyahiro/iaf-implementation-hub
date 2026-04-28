@@ -36,6 +36,6 @@ A project is Domain IV compliant only when the following artifacts are complete 
 
 ## Next steps
 
-- **Primary:** Continue to [Domain V: Analytics/Model Development](./model-building).
-- **Services:** [Service 03: Method and Model Advisory](../service-catalog/service-03-method-and-model-advisory)
-- **Crosswalk:** [Template and service crosswalk](../implementation-toolkit/crosswalk)
+- **Primary:** Continue to [Domain V: Analytics/Model Development](/docs/domains/model-building/).
+- **Services:** [Service 03: Method and Model Advisory](/docs/service-catalog/service-03-method-and-model-advisory/)
+- **Crosswalk:** [Template and service crosswalk](/docs/implementation-toolkit/crosswalk/)

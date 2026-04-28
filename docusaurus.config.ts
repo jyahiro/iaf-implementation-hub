@@ -8,6 +8,8 @@ const config: Config = {
   title: 'IAF Implementation Hub',
   tagline: 'Operationalizing the INFORMS Analytics Framework for Public Sector Missions.',
   favicon: 'img/favicon.ico',
+  /** Explicit trailing slash avoids GitHub Pages redirect quirks (Docusaurus deploy warning). */
+  trailingSlash: true,
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -57,7 +59,7 @@ const config: Config = {
     announcementBar: {
       id: 'legal-guardrail',
       content:
-        'Legal guardrail: all Hub guidance is governed by applicable law and policy, including the Evidence Act. <a href="/iaf-implementation-hub/docs/legal-policy/compliance-checkpoints">View legal guardrails and required controls</a>.',
+        'Legal guardrail: all Hub guidance is governed by applicable law and policy, including the Evidence Act. <a href="/iaf-implementation-hub/docs/legal-policy/compliance-checkpoints/">View legal guardrails and required controls</a>.',
       isCloseable: true,
     },
     colorMode: {
@@ -73,21 +75,21 @@ const config: Config = {
       },
       items: [
         {to: '/', label: 'Home', position: 'left'},
-        {to: '/docs/start-here', label: 'Start Here', position: 'left'},
-        {to: '/docs/domains/business-problem-framing', label: 'Domain Standards', position: 'left'},
+        {to: '/docs/start-here/', label: 'Start Here', position: 'left'},
+        {to: '/docs/domains/business-problem-framing/', label: 'Domain Standards', position: 'left'},
         {
           type: 'dropdown',
           label: 'Resources',
           position: 'left',
           items: [
-            {to: '/docs/implementation-toolkit', label: 'Implementation Toolkit'},
-            {to: '/docs/public-sector/templates', label: 'Digital Templates'},
-            {to: '/docs/service-catalog', label: 'Service Catalog'},
-            {to: '/docs/release-notes', label: 'Release Notes'},
+            {to: '/docs/implementation-toolkit/', label: 'Implementation Toolkit'},
+            {to: '/docs/public-sector/templates/', label: 'Digital Templates'},
+            {to: '/docs/service-catalog/', label: 'Service Catalog'},
+            {to: '/docs/release-notes/', label: 'Release Notes'},
           ],
         },
-        {to: '/docs/platform/architecture', label: 'Platform', position: 'left'},
-        {to: '/docs/legal-policy/compliance-checkpoints', label: 'Legal and Policy', position: 'left'},
+        {to: '/docs/platform/architecture/', label: 'Platform', position: 'left'},
+        {to: '/docs/legal-policy/compliance-checkpoints/', label: 'Legal and Policy', position: 'left'},
         {
           href: 'https://github.com/jyahiro/iaf-implementation-hub',
           label: 'GitHub',
@@ -107,27 +109,27 @@ const config: Config = {
             },
             {
               label: 'Core Domains',
-              to: '/docs/domains/business-problem-framing',
+              to: '/docs/domains/business-problem-framing/',
             },
             {
               label: 'Implementation Toolkit',
-              to: '/docs/implementation-toolkit',
+              to: '/docs/implementation-toolkit/',
             },
             {
               label: 'Digital Templates',
-              to: '/docs/public-sector/templates',
+              to: '/docs/public-sector/templates/',
             },
             {
               label: 'Service Catalog',
-              to: '/docs/service-catalog',
+              to: '/docs/service-catalog/',
             },
             {
               label: 'Legal Guardrails',
-              to: '/docs/legal-policy/compliance-checkpoints',
+              to: '/docs/legal-policy/compliance-checkpoints/',
             },
             {
               label: 'Release Notes',
-              to: '/docs/release-notes',
+              to: '/docs/release-notes/',
             },
           ],
         },

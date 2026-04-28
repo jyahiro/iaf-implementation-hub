@@ -32,5 +32,5 @@
 ## Next steps
 
 - **Submit:** Attach this template to your project record and route per your agency intake process.
-- **Pick a service:** [Service catalog](./) (Services 01–05) · [Template and service crosswalk](../implementation-toolkit/crosswalk)
-- **Walk the IAF path:** [Start Here](../start-here/) · [Domain standards](../domains/business-problem-framing)
+- **Pick a service:** [Service catalog](/docs/service-catalog/) (Services 01–05) · [Template and service crosswalk](/docs/implementation-toolkit/crosswalk/)
+- **Walk the IAF path:** [Start Here](/docs/start-here/) · [Domain standards](/docs/domains/business-problem-framing/)

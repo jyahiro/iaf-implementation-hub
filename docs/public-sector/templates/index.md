@@ -25,7 +25,7 @@ These templates are digitally enabling artifacts designed for direct use in repo
 - Domain IV and V templates align to `Service 03: Method and Model Advisory`.
 - Domain V/VI deployment templates align to `Service 04: Deployment Readiness Review`.
 - Domain VI/VII lifecycle templates align to `Service 05: Lifecycle Monitoring and Recalibration Support`.
-- See [Template and Service Crosswalk](../../implementation-toolkit/crosswalk).
+- See [Template and Service Crosswalk](/docs/implementation-toolkit/crosswalk/).
 
 ## Usage Standard
 
@@ -33,4 +33,4 @@ These templates are digitally enabling artifacts designed for direct use in repo
 - Track changes through version control.
 - Link completed artifacts to the relevant domain page.
 - Include owner, review date, and approval status in every artifact.
-- Apply legal and policy controls consistent with [Legal Guardrails](../legal-guardrails).
+- Apply legal and policy controls consistent with [Legal Guardrails](/docs/public-sector/legal-guardrails/).

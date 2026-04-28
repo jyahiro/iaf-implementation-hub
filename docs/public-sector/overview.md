@@ -15,9 +15,9 @@ This section provides practical guidance for public-sector customers implementin
 
 ## How to Use This Section
 
-1. Start with [Domain Standards](../domains/business-problem-framing).
-2. Create project artifacts using [Digital Templates](./templates/).
-3. Engage [Service Catalog](../service-catalog/) pathways when specialized support is needed.
+1. Start with [Domain Standards](/docs/domains/business-problem-framing/).
+2. Create project artifacts using [Digital Templates](/docs/public-sector/templates/).
+3. Engage [Service Catalog](/docs/service-catalog/) pathways when specialized support is needed.
 
 ## Delivery Model
 
@@ -29,4 +29,4 @@ The operating model is digital-first and version-controlled:
 
 ## Legal and Policy Baseline
 
-Implementation within this Hub follows a legal guardrail model anchored to the [Foundations for Evidence-Based Policymaking Act of 2018](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) for federal contexts. See [Legal Guardrails](./legal-guardrails) for details and scope.
+Implementation within this Hub follows a legal guardrail model anchored to the [Foundations for Evidence-Based Policymaking Act of 2018](https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf) for federal contexts. See [Legal Guardrails](/docs/public-sector/legal-guardrails/) for details and scope.

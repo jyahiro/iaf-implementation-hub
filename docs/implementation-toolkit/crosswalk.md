@@ -28,6 +28,6 @@ This is the canonical crosswalk for mapping templates to service pathways.
 
 ## Next steps
 
-- **Primary:** Open matching pages in [Digital Templates](../public-sector/templates) and [Service Catalog](../service-catalog/) for each row you own.
-- **IAF execution:** [Domain standards](../domains/business-problem-framing) · [Implementation Toolkit](./) (overview)
-- **Governance:** [Compliance checkpoints](../legal-policy/compliance-checkpoints) · [Legal guardrails](../public-sector/legal-guardrails)
+- **Primary:** Open matching pages in [Digital Templates](/docs/public-sector/templates/) and [Service Catalog](/docs/service-catalog/) for each row you own.
+- **IAF execution:** [Domain standards](/docs/domains/business-problem-framing/) · [Implementation Toolkit](/docs/implementation-toolkit/) (overview)
+- **Governance:** [Compliance checkpoints](/docs/legal-policy/compliance-checkpoints/) · [Legal guardrails](/docs/public-sector/legal-guardrails/)

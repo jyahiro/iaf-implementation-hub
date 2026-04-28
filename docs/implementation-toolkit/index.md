@@ -15,18 +15,18 @@ The Implementation Toolkit combines digital templates and support services into 
 
 ## Toolkit Components
 
-- **Templates:** [Digital Templates](../public-sector/templates/)
-- **Service Catalog:** [Service Catalog](../service-catalog/)
-- **Legal Baseline:** [Legal Guardrails](../public-sector/legal-guardrails)
-- **Platform Architecture:** [Platform Architecture](../platform/architecture)
-- **Platform Runbooks:** [Platform Runbooks](../platform/runbooks)
+- **Templates:** [Digital Templates](/docs/public-sector/templates/)
+- **Service Catalog:** [Service Catalog](/docs/service-catalog/)
+- **Legal Baseline:** [Legal Guardrails](/docs/public-sector/legal-guardrails)
+- **Platform Architecture:** [Platform Architecture](/docs/platform/architecture/)
+- **Platform Runbooks:** [Platform Runbooks](/docs/platform/runbooks/)
 
 ## Canonical Crosswalk
 
-Use [Template and Service Crosswalk](./crosswalk) as the single source of truth for template-to-service mapping.
+Use [Template and Service Crosswalk](/docs/implementation-toolkit/crosswalk/) as the single source of truth for template-to-service mapping.
 
 ## Next steps
 
-- **Primary:** Open the [crosswalk](./crosswalk), then align your active templates with [Service Catalog](../service-catalog/) offerings.
-- **Domains:** [Domain standards](../domains/business-problem-framing) · [Compliance checkpoints](../legal-policy/compliance-checkpoints)
-- **Templates:** [Digital Templates](../public-sector/templates) · [Interactive Demo Environment](../start-here/demo-environment)
+- **Primary:** Open the [crosswalk](/docs/implementation-toolkit/crosswalk/), then align your active templates with [Service Catalog](/docs/service-catalog/) offerings.
+- **Domains:** [Domain standards](/docs/domains/business-problem-framing/) · [Compliance checkpoints](/docs/legal-policy/compliance-checkpoints/)
+- **Templates:** [Digital Templates](/docs/public-sector/templates/) · [Interactive Demo Environment](/docs/start-here/demo-environment/)
