@@ -1,5 +1,6 @@
 ---
 sidebar_position: 42
+hub_contexts: [connector]
 ---
 
 # MVP User Flow

@@ -8,7 +8,7 @@ slug: /domains/data-readiness
 - **Entry criteria:** Analytics problem framing approved with data requirements identified.
 - **Exit criteria:** Data is validated as fit for purpose with governance controls documented.
 - **Required artifacts:** Data Management Plan, Data Quality Report, [OPEN Government Data Act / Federal Data Strategy](https://strategy.data.gov/) compliance record.
-- **Accountable roles:** Data Steward, Analyst, Reviewer.
+- **Accountable roles:** Data Engineer, Application Developer, Team Lead (TDSP).
 
 ## Executive Summary
 Domain III establishes data readiness for analytics execution. Per the INFORMS Analytics Framework, this domain identifies and prioritizes data needs, analyzes data sources and structures, plans and executes data acquisition, prepares and validates data, evaluates quality, and documents findings. Domain III is complete when data is demonstrably fit for purpose and the data foundation is governable, secure, and reproducible.

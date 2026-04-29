@@ -4,6 +4,28 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+/**
+ * Hub Assistant API base (see `apps/api/scripts/dev-server.mjs`).
+ * - Production: only if `HUB_ASSISTANT_API_BASE_URL` is set at build time.
+ * - Development: same-origin proxy path `{baseUrl}__hub_platform_api` (see `plugins/hub-assistant-proxy-plugin.js`)
+ *   unless `HUB_ASSISTANT_API_BASE_URL` is set explicitly (e.g. direct `http://localhost:4100`).
+ */
+function resolveHubAssistantApiBase(siteBaseUrl: string): string {
+  const raw = process.env.HUB_ASSISTANT_API_BASE_URL;
+  if (typeof raw === 'string' && raw.trim() !== '') {
+    return raw.trim().replace(/\/$/, '');
+  }
+  if (process.env.NODE_ENV === 'production') {
+    return '';
+  }
+  const root = siteBaseUrl.replace(/\/?$/, '');
+  const proxy = `${root}/__hub_platform_api`.replace(/\/+/g, '/');
+  return proxy || '/__hub_platform_api';
+}
+
+/** Must match `baseUrl` below (used before `config` exists for Hub Assistant dev proxy path). */
+const siteBaseUrl = '/iaf-implementation-hub/';
+
 const config: Config = {
   title: 'IAF Implementation Hub',
   tagline: 'Operationalizing the INFORMS Analytics Framework for Public Sector Missions.',
@@ -20,7 +42,7 @@ const config: Config = {
   url: 'https://jyahiro.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/iaf-implementation-hub/',
+  baseUrl: siteBaseUrl,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -35,6 +57,16 @@ const config: Config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
+  },
+
+  plugins: [require.resolve('./plugins/hub-assistant-proxy-plugin.js')],
+
+  /** Client-visible config for Hub Assistant (never put API keys here). */
+  customFields: {
+    hubAssistantApiBase: resolveHubAssistantApiBase(siteBaseUrl),
+    /** Optional shared secret sent as `X-Hub-Feedback-Secret` when filing issues via the API (must match server `HUB_FEEDBACK_SECRET`). */
+    hubPublicFeedbackSecret: process.env.HUB_PUBLIC_FEEDBACK_SECRET ?? '',
+    hubAppVersion: process.env.npm_package_version ?? '0.3.0',
   },
 
   presets: [
@@ -72,6 +104,7 @@ const config: Config = {
       logo: {
         alt: 'INFORMS Logo',
         src: 'img/informs-logo-official-clean.png',
+        className: 'iaf-navbar-informs-logo',
       },
       items: [
         {to: '/', label: 'Home', position: 'left'},

@@ -18,13 +18,13 @@ import {
 } from '@site/src/lib/regulatoryApi';
 
 const MASTER_ROLES = {
-  sponsor: {label: 'Executive Sponsor', shortCode: 'SP'},
-  program_manager: {label: 'Program Manager', shortCode: 'PM'},
-  analyst: {label: 'Analyst', shortCode: 'AN'},
-  data_engineer: {label: 'Data Engineer', shortCode: 'DE'},
+  sponsor: {label: 'Group Manager', shortCode: 'GM'},
+  reviewer: {label: 'Team Lead', shortCode: 'TL'},
+  program_manager: {label: 'Project Lead', shortCode: 'PL'},
   data_scientist: {label: 'Data Scientist', shortCode: 'DS'},
-  data_steward: {label: 'Data Steward', shortCode: 'ST'},
-  reviewer: {label: 'Reviewer/Oversight', shortCode: 'RV'},
+  data_engineer: {label: 'DevOps Engineer', shortCode: 'DO'},
+  analyst: {label: 'Application Developer', shortCode: 'AP'},
+  data_steward: {label: 'Data Engineer', shortCode: 'DE'},
   admin: {label: 'Platform Admin', shortCode: 'AD'},
 } as const;
 
@@ -155,14 +155,14 @@ const TASK_DESCRIPTIONS: Record<string, string> = {
 };
 
 const DUMMY_ICAM_DIRECTORY: IcamPerson[] = [
-  {id: 'u-001', displayName: 'Avery Johnson', email: 'avery.johnson@agency.gov', roleTitle: 'Program Manager', organization: 'Permitting Office'},
-  {id: 'u-002', displayName: 'Jordan Lee', email: 'jordan.lee@agency.gov', roleTitle: 'Data Steward', organization: 'Data Governance Office'},
+  {id: 'u-001', displayName: 'Avery Johnson', email: 'avery.johnson@agency.gov', roleTitle: 'Project Lead', organization: 'Permitting Office'},
+  {id: 'u-002', displayName: 'Jordan Lee', email: 'jordan.lee@agency.gov', roleTitle: 'Data Engineer', organization: 'Data Governance Office'},
   {id: 'u-003', displayName: 'Taylor Smith', email: 'taylor.smith@agency.gov', roleTitle: 'Policy Advisor', organization: 'General Counsel'},
   {id: 'u-004', displayName: 'Casey Brown', email: 'casey.brown@agency.gov', roleTitle: 'Operations Lead', organization: 'Regional Operations'},
-  {id: 'u-005', displayName: 'Morgan Davis', email: 'morgan.davis@agency.gov', roleTitle: 'Data Engineer', organization: 'Enterprise Data Platform'},
-  {id: 'u-006', displayName: 'Riley Patel', email: 'riley.patel@agency.gov', roleTitle: 'Executive Sponsor', organization: 'Mission Directorate'},
-  {id: 'u-007', displayName: 'Quinn Wilson', email: 'quinn.wilson@agency.gov', roleTitle: 'Reviewer', organization: 'Independent Oversight'},
-  {id: 'u-008', displayName: 'Jamie Garcia', email: 'jamie.garcia@agency.gov', roleTitle: 'Analyst', organization: 'Performance Analytics'},
+  {id: 'u-005', displayName: 'Morgan Davis', email: 'morgan.davis@agency.gov', roleTitle: 'DevOps Engineer', organization: 'Enterprise Data Platform'},
+  {id: 'u-006', displayName: 'Riley Patel', email: 'riley.patel@agency.gov', roleTitle: 'Group Manager', organization: 'Mission Directorate'},
+  {id: 'u-007', displayName: 'Quinn Wilson', email: 'quinn.wilson@agency.gov', roleTitle: 'Team Lead', organization: 'Independent Oversight'},
+  {id: 'u-008', displayName: 'Jamie Garcia', email: 'jamie.garcia@agency.gov', roleTitle: 'Application Developer', organization: 'Performance Analytics'},
 ];
 
 const TASK_WORKFLOW_DEFINITIONS: Record<string, TaskWorkflowDefinition> = {
@@ -204,7 +204,7 @@ const TASK_WORKFLOW_DEFINITIONS: Record<string, TaskWorkflowDefinition> = {
         label: 'Decision Owner Role',
         type: 'select',
         required: true,
-        options: ['Executive Sponsor', 'Program Manager', 'Authorizing Official', 'Review Board'],
+        options: ['Group Manager', 'Project Lead', 'Authorizing Official', 'Architecture review board'],
         helpText: 'Select who has final authority for this domain decision.',
       },
       {
@@ -414,13 +414,15 @@ const DOMAIN_STANDARD_REQUIREMENTS: Record<string, DomainStandardRequirement> = 
 };
 
 const ROLE_PROMPTS: Record<Role, string> = {
-  sponsor: 'Document the decision authority and approval threshold for this domain.',
-  program_manager: 'Document delivery milestones, dependencies, and accountability owners.',
-  analyst: 'Document analytic assumptions, method rationale, and validation approach.',
-  data_engineer: 'Document data pipeline, metadata, quality, and integration implementation tasks.',
-  data_scientist: 'Document modeling strategy, feature rationale, and validation decisions.',
-  data_steward: 'Document data governance controls, stewardship responsibilities, and quality risks.',
-  reviewer: 'Document oversight criteria and evidence required for gate approval.',
+  sponsor: 'Document decision authority, priorities, and approval thresholds the Group Manager must uphold (TDSP).',
+  program_manager:
+    'Document scope, success metrics, stakeholder commitments, and delivery dependencies owned by the Project Lead (TDSP).',
+  analyst: 'Document application or integration changes, APIs, and acceptance evidence expected of the Application Developer (TDSP).',
+  data_engineer:
+    'Document pipelines, environments, release mechanics, and observability owned by the DevOps Engineer (TDSP).',
+  data_scientist: 'Document modeling approach, experiments, validation, and monitoring criteria owned by the Data Scientist (TDSP).',
+  data_steward: 'Document data products, transformations, quality, and lineage owned by the Data Engineer (TDSP).',
+  reviewer: 'Document review cadence, quality bar, and gate evidence expected of the Team Lead (TDSP).',
   admin: 'Document platform, access, and audit configuration implications for this domain.',
 };
 
@@ -512,6 +514,27 @@ const inputStyle: React.CSSProperties = {
   marginBottom: '0.5rem',
 };
 
+function FieldLabel({
+  htmlFor,
+  label,
+  helpText,
+  className,
+}: {
+  htmlFor: string;
+  label: string;
+  helpText: string;
+  className?: string;
+}): React.JSX.Element {
+  return (
+    <label htmlFor={htmlFor} className={className}>
+      {label}{' '}
+      <span className="iaf-demo-field-help" title={helpText} aria-label={`Field help: ${helpText}`} tabIndex={0}>
+        i
+      </span>
+    </label>
+  );
+}
+
 function defaultTaskFormState(): TaskFormState {
   return {
     workflowValues: {},
@@ -536,6 +559,28 @@ function getLocalState(): LocalDemoState {
 
 function setLocalState(state: LocalDemoState) {
   localStorage.setItem(LOCAL_STATE_KEY, JSON.stringify(state));
+}
+
+function inferFrAgencyFromEmail(email: string, agencies: FrAgency[]): FrAgency | null {
+  const domain = email.trim().toLowerCase().split('@')[1] ?? '';
+  if (!domain) {
+    return null;
+  }
+  const labels = domain.split('.').filter(Boolean);
+  const candidates = labels
+    .slice(0, -1)
+    .filter((label) => label.length > 1 && !['mail', 'email', 'corp', 'cloud', 'digital', 'team'].includes(label));
+  if (!candidates.length) {
+    return null;
+  }
+  const normalize = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  for (const agency of agencies) {
+    const searchable = normalize(`${agency.name} ${agency.slug} ${agency.shortName ?? ''}`);
+    if (candidates.some((token) => searchable.includes(token))) {
+      return agency;
+    }
+  }
+  return null;
 }
 
 async function requestJson(
@@ -605,6 +650,33 @@ export default function DemoExperience(): React.JSX.Element {
     }
     return frAgencies.filter((agency) => `${agency.name} ${agency.slug}`.toLowerCase().includes(query)).slice(0, 80);
   }, [frAgencies, frAgencyFilter]);
+
+  const selectedFrAgency = useMemo(
+    () => frAgencies.find((agency) => agency.id === regContext.frAgencyId) ?? null,
+    [frAgencies, regContext.frAgencyId],
+  );
+
+  const inferredFrAgency = useMemo(() => inferFrAgencyFromEmail(email, frAgencies), [email, frAgencies]);
+
+  useEffect(() => {
+    if (wizardStep !== 'project' || frAgencies.length || frAgenciesBusy) {
+      return;
+    }
+    void ensureFrAgencies();
+  }, [wizardStep, frAgencies.length, frAgenciesBusy]);
+
+  useEffect(() => {
+    if (wizardStep !== 'project' || regContext.frAgencyId != null || !inferredFrAgency) {
+      return;
+    }
+    setRegContext((existing) => {
+      if (existing.frAgencyId != null) {
+        return existing;
+      }
+      return {...existing, frAgencyId: inferredFrAgency.id};
+    });
+    setFrAgencyFilter(inferredFrAgency.name);
+  }, [wizardStep, regContext.frAgencyId, inferredFrAgency]);
 
   function addRegulatoryAnchor(anchor: RegulatoryAnchor): void {
     setRegContext((existing) => {
@@ -1405,7 +1477,11 @@ export default function DemoExperience(): React.JSX.Element {
           />{' '}
           Browser-only mode (no backend process required)
         </label>
-        <label htmlFor="apiBaseUrl">API Base URL (used only when browser-only mode is off)</label>
+        <FieldLabel
+          htmlFor="apiBaseUrl"
+          label="API Base URL (used only when browser-only mode is off)"
+          helpText="Enter the backend API origin URL, for example http://localhost:4100. This value is ignored when browser-only mode is enabled."
+        />
         <input
           id="apiBaseUrl"
           style={inputStyle}
@@ -1421,7 +1497,11 @@ export default function DemoExperience(): React.JSX.Element {
           {browserOnlyMode ? 'Check Browser Demo State' : 'Check API Health'}
         </button>
         <div className="margin-top--md">
-          <label htmlFor="icamMode">ICAM / Personnel Connection</label>
+          <FieldLabel
+            htmlFor="icamMode"
+            label="ICAM / Personnel Connection"
+            helpText="Select how people fields are populated: demo directory lookup or manual free-text entry."
+          />
           <select
             id="icamMode"
             style={inputStyle}
@@ -1453,14 +1533,22 @@ export default function DemoExperience(): React.JSX.Element {
         <div style={containerStyle}>
           <h3>Step 1: Login</h3>
           <p>The rest of the experience adapts to the role chosen here.</p>
-          <label htmlFor="email">Email</label>
+          <FieldLabel
+            htmlFor="email"
+            label="Email"
+            helpText="Enter your work email. The hub uses this to sign in and infer your agency during project setup."
+          />
           <input
             id="email"
             style={inputStyle}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <label htmlFor="role">Role</label>
+          <FieldLabel
+            htmlFor="role"
+            label="Role"
+            helpText="Choose your TDSP-aligned role (Group Manager, Team Lead, Project Lead, Data Scientist, DevOps Engineer, Application Developer, Data Engineer, or Platform Admin). Task emphasis and prompts follow the Task RACI Matrix."
+          />
           <select
             id="role"
             style={inputStyle}
@@ -1488,14 +1576,22 @@ export default function DemoExperience(): React.JSX.Element {
       {wizardStep === 'project' ? (
         <div style={containerStyle}>
           <h3>Step 2: Project Setup</h3>
-          <label htmlFor="projectName">Project Name</label>
+          <FieldLabel
+            htmlFor="projectName"
+            label="Project Name"
+            helpText="Enter a short, descriptive title for the initiative. This appears across generated artifacts and the summary."
+          />
           <input
             id="projectName"
             style={inputStyle}
             value={projectName}
             onChange={(event) => setProjectName(event.target.value)}
           />
-          <label htmlFor="projectDescription">Project Description</label>
+          <FieldLabel
+            htmlFor="projectDescription"
+            label="Project Description"
+            helpText="Describe the mission problem, intended outcome, and operating constraints. This seeds suggestions in downstream workflow steps."
+          />
           <textarea
             id="projectDescription"
             style={{...inputStyle, minHeight: '90px'}}
@@ -1516,7 +1612,11 @@ export default function DemoExperience(): React.JSX.Element {
             </a>
             . Suggestions are not legal advice—confirm each anchor applies to your initiative.
           </p>
-          <label htmlFor="frSearchTerm">Federal Register search terms</label>
+          <FieldLabel
+            htmlFor="frSearchTerm"
+            label="Federal Register search terms"
+            helpText="Enter key terms used to retrieve relevant Federal Register documents, such as program names, policy topics, or compliance keywords."
+          />
           <input
             id="frSearchTerm"
             style={inputStyle}
@@ -1538,7 +1638,11 @@ export default function DemoExperience(): React.JSX.Element {
           </div>
           {frAgencies.length ? (
             <>
-              <label htmlFor="frAgencyFilter">Filter agency list</label>
+              <FieldLabel
+                htmlFor="frAgencyFilter"
+                label="Filter agency list"
+                helpText="Type part of an agency name to narrow the publishing agency options."
+              />
               <input
                 id="frAgencyFilter"
                 style={inputStyle}
@@ -1546,7 +1650,11 @@ export default function DemoExperience(): React.JSX.Element {
                 onChange={(event) => setFrAgencyFilter(event.target.value)}
                 placeholder="Type to filter by agency name"
               />
-              <label htmlFor="frAgencySelect">Publishing agency (optional)</label>
+              <FieldLabel
+                htmlFor="frAgencySelect"
+                label="Publishing agency (optional)"
+                helpText="Choose the Federal Register publishing agency to narrow regulatory search results. Leave blank to search across all agencies."
+              />
               <select
                 id="frAgencySelect"
                 style={inputStyle}
@@ -1564,6 +1672,11 @@ export default function DemoExperience(): React.JSX.Element {
                   </option>
                 ))}
               </select>
+              <p style={{fontSize: '0.8rem', marginTop: '0.35rem'}}>
+                {selectedFrAgency
+                  ? `Agency auto-identified from your login email: ${selectedFrAgency.name}.`
+                  : 'Agency could not be auto-identified from your login email; choose one if desired.'}
+              </p>
             </>
           ) : null}
           <div className="margin-top--sm margin-bottom--sm">
@@ -1622,9 +1735,12 @@ export default function DemoExperience(): React.JSX.Element {
             </button>
             {ecfrTitles?.length ? (
               <>
-                <label htmlFor="ecfrTitleSelect" className="margin-left--sm">
-                  Add CFR title anchor
-                </label>
+                <FieldLabel
+                  htmlFor="ecfrTitleSelect"
+                  className="margin-left--sm"
+                  label="Add CFR title anchor"
+                  helpText="Select a CFR title to add a reusable regulatory anchor for this initiative."
+                />
                 <select
                   id="ecfrTitleSelect"
                   style={{...inputStyle, maxWidth: '100%'}}
@@ -1805,7 +1921,11 @@ export default function DemoExperience(): React.JSX.Element {
             <strong>Prior domain context:</strong> {previousDomainSummary()}
           </p>
 
-          <label htmlFor="objective">{currentDomain.objectiveLabel}</label>
+          <FieldLabel
+            htmlFor="objective"
+            label={currentDomain.objectiveLabel}
+            helpText="Enter the domain outcome statement your team is committing to in this stage."
+          />
           <textarea
             id="objective"
             style={{...inputStyle, minHeight: '80px'}}
@@ -1819,7 +1939,11 @@ export default function DemoExperience(): React.JSX.Element {
             Generate Example
           </button>
 
-          <label htmlFor="roleNote">Role-specific note ({role})</label>
+          <FieldLabel
+            htmlFor="roleNote"
+            label={`Role-specific note (${role})`}
+            helpText="Capture what this role must deliver or validate in this domain to satisfy governance and execution expectations."
+          />
           <p>{ROLE_PROMPTS[role]}</p>
           <textarea
             id="roleNote"
@@ -1834,7 +1958,11 @@ export default function DemoExperience(): React.JSX.Element {
             Generate Example
           </button>
 
-          <label htmlFor="policyRisk">Policy and risk note</label>
+          <FieldLabel
+            htmlFor="policyRisk"
+            label="Policy and risk note"
+            helpText="Document policy, legal, privacy, security, or operational risks and how they will be mitigated."
+          />
           <textarea
             id="policyRisk"
             style={{...inputStyle, minHeight: '80px'}}

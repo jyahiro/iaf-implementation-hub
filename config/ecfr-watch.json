@@ -1,0 +1,56 @@
+{
+  "description": "Titles and keywords used by scripts/ecfr-hub-relevance.mjs for Hub-relevant CFR change detection via the public eCFR versioner API.",
+  "hubRelevanceKeywords": [
+    "acquisition",
+    "commerce",
+    "data",
+    "emergency",
+    "environment",
+    "financial",
+    "information",
+    "personnel",
+    "privacy",
+    "procurement",
+    "science",
+    "security",
+    "statistical",
+    "technology"
+  ],
+  "watchedTitles": [
+    {
+      "number": 1,
+      "tier": "context",
+      "note": "General provisions; baseline cross-references."
+    },
+    {
+      "number": 2,
+      "tier": "priority",
+      "note": "Federal financial assistance; grants and data obligations often touch analytics programs."
+    },
+    {
+      "number": 5,
+      "tier": "priority",
+      "note": "Administrative personnel; common for governance and workforce analytics."
+    },
+    {
+      "number": 15,
+      "tier": "priority",
+      "note": "Commerce and foreign trade; NIST-adjacent regulatory context for standards and technology."
+    },
+    {
+      "number": 40,
+      "tier": "priority",
+      "note": "Environmental protection; frequent rulemaking with data and modeling obligations."
+    },
+    {
+      "number": 44,
+      "tier": "priority",
+      "note": "Emergency management; mission analytics and interagency data sharing."
+    },
+    {
+      "number": 48,
+      "tier": "priority",
+      "note": "Federal Acquisition Regulations System; IT acquisition and contractor data."
+    }
+  ]
+}

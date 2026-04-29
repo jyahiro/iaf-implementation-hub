@@ -1,0 +1,25 @@
+# Scheduled eCFR metadata check for watched CFR titles (see docs/platform/cfr-regulatory-watch.md).
+name: eCFR regulatory watch
+
+on:
+  schedule:
+    - cron: '20 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Compare eCFR title metadata
+        run: node scripts/ecfr-hub-relevance.mjs

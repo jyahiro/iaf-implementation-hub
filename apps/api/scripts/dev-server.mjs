@@ -52,12 +52,19 @@ function parseBody(request) {
   });
 }
 
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Hub-Feedback-Secret',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+    'Access-Control-Max-Age': '86400',
+  };
+}
+
 function json(response, status, payload) {
   response.writeHead(status, {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+    ...corsHeaders(),
   });
   response.end(JSON.stringify(payload));
 }
@@ -101,9 +108,22 @@ function logAudit(state, eventType, actorId, payload) {
   });
 }
 
+const assistantContextPath = path.join(process.cwd(), 'context', 'hub-assistant-system.md');
+
+function loadAssistantSystemPrompt() {
+  try {
+    return fs.readFileSync(assistantContextPath, 'utf8');
+  } catch {
+    return 'You are the IAF Implementation Hub assistant for public-sector IAF delivery.';
+  }
+}
+
+const ASSISTANT_SYSTEM_PROMPT = loadAssistantSystemPrompt();
+
 const server = http.createServer(async (request, response) => {
   if (request.method === 'OPTIONS') {
-    json(response, 204, {});
+    response.writeHead(204, corsHeaders());
+    response.end();
     return;
   }
 
@@ -116,7 +136,116 @@ const server = http.createServer(async (request, response) => {
       service: 'iaf-platform-api',
       auth: 'token',
       persistence: dataFile,
+      assistant: {
+        chatConfigured: Boolean(process.env.OPENAI_API_KEY),
+        githubIssueApiConfigured: Boolean(process.env.GITHUB_TOKEN && process.env.GITHUB_ISSUES_REPO),
+      },
     });
+    return;
+  }
+
+  if (request.method === 'GET' && url.pathname === '/assistant/capabilities') {
+    json(response, 200, {
+      chat: Boolean(process.env.OPENAI_API_KEY),
+      githubIssueApi: Boolean(process.env.GITHUB_TOKEN && process.env.GITHUB_ISSUES_REPO),
+      model: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
+      feedbackSecretRequired: Boolean(process.env.HUB_FEEDBACK_SECRET),
+    });
+    return;
+  }
+
+  if (request.method === 'POST' && url.pathname === '/assistant/chat') {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      json(response, 503, {
+        error: 'Assistant chat is not configured',
+        hint: 'Set OPENAI_API_KEY on the Hub assistant API process (never expose keys in the static site).',
+      });
+      return;
+    }
+    try {
+      const body = await parseBody(request);
+      const messages = Array.isArray(body.messages) ? body.messages : [];
+      const meta = body.meta && typeof body.meta === 'object' ? body.meta : {};
+      const metaText = `Current context (JSON):\n${JSON.stringify(meta, null, 2)}`;
+      const outbound = [
+        {role: 'system', content: `${ASSISTANT_SYSTEM_PROMPT}\n\n${metaText}`},
+        ...messages
+          .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+          .map((m) => ({role: m.role, content: String(m.content).slice(0, 12000)}))
+          .slice(-24),
+      ];
+      const model = process.env.OPENAI_MODEL ?? 'gpt-4o-mini';
+      const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({model, messages: outbound, temperature: 0.4}),
+      });
+      const payload = await openaiRes.json();
+      if (!openaiRes.ok) {
+        json(response, 502, {
+          error: 'Upstream model error',
+          detail: payload?.error?.message ?? payload,
+        });
+        return;
+      }
+      const text = payload?.choices?.[0]?.message?.content ?? '';
+      json(response, 200, {reply: text, model});
+    } catch (error) {
+      json(response, 500, {error: error instanceof Error ? error.message : 'assistant chat failed'});
+    }
+    return;
+  }
+
+  if (request.method === 'POST' && url.pathname === '/feedback/github-issue') {
+    const token = process.env.GITHUB_TOKEN;
+    const repo = process.env.GITHUB_ISSUES_REPO;
+    const shared = process.env.HUB_FEEDBACK_SECRET;
+    if (shared) {
+      const got = request.headers['x-hub-feedback-secret'];
+      if (got !== shared) {
+        json(response, 403, {error: 'Invalid or missing X-Hub-Feedback-Secret'});
+        return;
+      }
+    }
+    if (!token || !repo) {
+      json(response, 501, {
+        error: 'GitHub issue API not configured',
+        hint: 'Set GITHUB_TOKEN and GITHUB_ISSUES_REPO (owner/repo) on the API server. For static GitHub Pages, use the prefilled issues/new URL from the Hub UI instead.',
+      });
+      return;
+    }
+    try {
+      const body = await parseBody(request);
+      const title = String(body.title ?? 'Hub assistant feedback').trim().slice(0, 256);
+      const issueBody = String(body.body ?? '').trim().slice(0, 60000);
+      const labels = Array.isArray(body.labels) ? body.labels.map((x) => String(x)).filter(Boolean).slice(0, 8) : [];
+      const issuePayload = {title, body: issueBody};
+      if (labels.length) {
+        issuePayload.labels = labels;
+      }
+      const ghRes = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'iaf-hub-assistant-api',
+        },
+        body: JSON.stringify(issuePayload),
+      });
+      const ghJson = await ghRes.json();
+      if (!ghRes.ok) {
+        json(response, 502, {error: 'GitHub API error', detail: ghJson});
+        return;
+      }
+      json(response, 201, {html_url: ghJson.html_url, number: ghJson.number, id: ghJson.id});
+    } catch (error) {
+      json(response, 500, {error: error instanceof Error ? error.message : 'github issue failed'});
+    }
     return;
   }
 

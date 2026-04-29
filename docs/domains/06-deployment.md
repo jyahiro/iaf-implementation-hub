@@ -8,7 +8,7 @@ slug: /domains/deployment
 - **Entry criteria:** Model validation complete and sponsor alignment on deployment pathway.
 - **Exit criteria:** Production readiness validated and deployment gate approved.
 - **Required artifacts:** Deployment Validation Report, Production Requirements, [NIST AI RMF / OMB M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf) assurance case.
-- **Accountable roles:** Program Manager, Technical Lead, Authorizing Official.
+- **Accountable roles:** Project Lead, DevOps Engineer, Authorizing Official (TDSP-aligned delivery).
 
 ## Executive Summary
 Domain VI transitions the analytics solution into production use through validation, implementation support, and operational verification. Per the INFORMS Analytics Framework, this domain includes business validation and reporting, sponsor alignment for deployment, deployed-solution requirements definition, implementation/testing support, and production validation of data flows and system behavior. Domain VI is complete when the solution is operationally accepted and demonstrably fit for use.

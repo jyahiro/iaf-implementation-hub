@@ -9,6 +9,8 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "set DISABLE_RSPACK_INCREMENTAL=true&& docusaurus start",
+    "prebuild": "node scripts/generate-hub-doc-context.mjs",
+    "prestart": "node scripts/generate-hub-doc-context.mjs",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -17,6 +19,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
+    "ecfr:watch": "node scripts/ecfr-hub-relevance.mjs",
     "platform:api": "npm run dev --workspace @iaf/platform-api",
     "platform:web": "npm run dev --workspace @iaf/platform-web",
     "platform:check-policy": "npm run check --workspace @iaf/policy",

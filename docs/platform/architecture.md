@@ -6,6 +6,18 @@ sidebar_position: 40
 
 The IAF Platform combines a knowledge layer (Docusaurus docs) with an execution layer (workflow API and project workspace).
 
+## Regulatory automation
+
+- **CFR / eCFR watch:** scheduled metadata checks and relevance triage for watched titles — see [CFR / eCFR regulatory watch](./cfr-regulatory-watch.md).
+
+## Audience & jurisdiction
+
+- **Unified Hub, tailored sidebar:** frontmatter-driven contexts and primary jurisdiction — see [Hub audience context (YAML frontmatter)](./hub-audience-context.md).
+
+## Knowledge-layer assistant
+
+- **Hub Assistant:** optional OpenAI-backed chat plus prefilled or API-driven GitHub issues — global **floating control** (bottom-right); operator notes live on [Hub Assistant configuration](/docs/start-here/hub-assistant/). Routes live on the platform API (`/assistant/chat`, `/feedback/github-issue`).
+
 ## Execution Components
 
 - `apps/web`: platform user experience shell.

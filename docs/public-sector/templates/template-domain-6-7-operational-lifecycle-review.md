@@ -1,3 +1,8 @@
+---
+hub_contexts: [federal-agency]
+hub_jurisdiction_tags: [nara-archival]
+---
+
 # Template: Domain VI/VII Operational Lifecycle Review
 
 ## Metadata

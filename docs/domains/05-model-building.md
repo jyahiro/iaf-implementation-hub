@@ -8,7 +8,7 @@ slug: /domains/model-building
 - **Entry criteria:** Approved method and architecture.
 - **Exit criteria:** Model performance validated and deployment recommendation documented.
 - **Required artifacts:** Model Validation Report, Findings Briefing, [NIST AI RMF / OMB M-24-10](https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf) assurance case.
-- **Accountable roles:** Analyst, Model Owner, Reviewer.
+- **Accountable roles:** Data Scientist, Project Lead, Team Lead (TDSP).
 
 ## Executive Summary
 Domain V designs, builds, evaluates, calibrates, and documents analytics models to produce reliable decision-support outputs. Per the INFORMS Analytics Framework, this domain includes model structure design, model construction, performance verification, calibration based on stakeholder input, potential model integration, and communication of findings with assumptions and limitations. Domain V is complete when model outputs are validated as decision-relevant and technically defensible.

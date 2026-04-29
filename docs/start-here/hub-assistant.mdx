@@ -1,0 +1,20 @@
+---
+sidebar_label: Hub Assistant (operators)
+---
+
+# Hub Assistant
+
+The **Hub Assistant** is available from every page via the **floating “Assistant” control** in the bottom-right corner (chat icon). Open it to ask about IAF domains, governance, templates, or the Hub. When the assistant API is configured, each request includes your **current path** and **primary jurisdiction** profile (from local storage).
+
+Use **Open GitHub issue** or **Create issue (API)** inside the panel to send feedback.
+
+This page documents **operator configuration** only. It is not listed in the left sidebar (the assistant is global); bookmark or link here when you need deployment notes.
+
+## Configuration (operators)
+
+- **Chat completions:** on the API process, set `OPENAI_API_KEY` and optionally `OPENAI_MODEL` (defaults to `gpt-4o-mini`).
+- **API base URL:** at **production** build time, set `HUB_ASSISTANT_API_BASE_URL` (no trailing slash), for example `https://api.example.com`. For **`npm run start`**, if that variable is **unset**, the Hub uses a **same-origin dev proxy** (`{baseUrl}__hub_platform_api/...` → `http://127.0.0.1:4100/...`, see `plugins/hub-assistant-proxy-plugin.js`) so the browser avoids cross-origin **CORS** issues. Run **`npm run platform:api`** in a second terminal. To call the API directly instead (e.g. `http://localhost:4100`), set `HUB_ASSISTANT_API_BASE_URL` before starting Docusaurus.
+- **Server-side GitHub filing:** on the API, set `GITHUB_TOKEN` and `GITHUB_ISSUES_REPO` as `owner/repo`. Optionally set `HUB_FEEDBACK_SECRET`; if set, the browser must send a matching `X-Hub-Feedback-Secret` header. For static site builds only, you can mirror the server value with `HUB_PUBLIC_FEEDBACK_SECRET` (treat as sensitive; rotate if exposed).
+- **Static GitHub Pages only:** leave the API base empty; the UI still offers **Open GitHub issue**. Never embed `GITHUB_TOKEN` or `OPENAI_API_KEY` in the client bundle.
+
+System prompt for the model lives in `apps/api/context/hub-assistant-system.md` and is loaded by `apps/api/scripts/dev-server.mjs`.

@@ -30,6 +30,7 @@ export interface FrAgency {
   id: number;
   name: string;
   slug: string;
+  shortName?: string;
 }
 
 export interface FrDocumentHit {
@@ -116,10 +117,11 @@ export async function fetchFrAgencies(perPage = 500): Promise<FrAgency[]> {
   }
   const data: unknown = await response.json();
   const rows = Array.isArray(data) ? data : [];
-  return (rows as Array<{id: number; name: string; slug: string}>).map((r) => ({
+  return (rows as Array<{id: number; name: string; slug: string; short_name?: string}>).map((r) => ({
     id: r.id,
     name: r.name,
     slug: r.slug,
+    shortName: r.short_name,
   }));
 }
 

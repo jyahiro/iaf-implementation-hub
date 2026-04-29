@@ -13,7 +13,7 @@
 - What is the expected public value impact?
 
 ## Stakeholders
-- Executive Sponsor:
+- Group Manager (TDSP):
 - Decision Owner:
 - Delivery Team:
 - Impacted Parties:

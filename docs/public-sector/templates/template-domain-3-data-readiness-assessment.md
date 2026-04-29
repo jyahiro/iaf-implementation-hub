@@ -1,3 +1,8 @@
+---
+hub_contexts: [state-local, federal-agency]
+hub_jurisdiction_tags: [hipaa-privacy]
+---
+
 # Template: Domain III Data Readiness Assessment
 
 ## Metadata

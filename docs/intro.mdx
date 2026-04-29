@@ -3,9 +3,13 @@ sidebar_position: 1
 slug: /
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import HomeCredibility from '@site/src/components/HomeCredibility';
+import JurisdictionSelector from '@site/src/components/JurisdictionSelector';
 
 # IAF Implementation Hub
+
+<BrowserOnly fallback={<div className="margin-bottom--lg" />}>{() => <JurisdictionSelector variant="default" />}</BrowserOnly>
 
 <HomeCredibility />
 
@@ -44,7 +48,7 @@ Definitions and domain intent are aligned to INFORMS IAF reference materials, wh
 
   _Release **v0.3.0** (2026-04-28). See [Release Notes](/docs/release-notes/) for the full changelog._
 
-  - **Demo:** Master role list control so role labels stay consistent everywhere in the flow.
+  - **Demo:** Master role list control so **TDSP-aligned** role labels stay consistent everywhere in the flow.
   - **Compliance:** Governance gate objectives surfaced for Domains I, III, V/VI, and VII in demo standards and exports.
   - **Productivity:** “Generate Example” on open text fields; dummy ICAM search for stakeholder-style fields.
 

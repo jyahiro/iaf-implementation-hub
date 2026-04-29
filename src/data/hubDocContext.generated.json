@@ -1,0 +1,49 @@
+{
+  "domains/07-lifecycle-management": {
+    "hub_core": false,
+    "hub_contexts": [
+      "federal-agency"
+    ],
+    "hub_jurisdiction_tags": [
+      "nara-archival"
+    ]
+  },
+  "platform/hub-audience-context": {
+    "hub_core": true,
+    "hub_contexts": [],
+    "hub_jurisdiction_tags": []
+  },
+  "platform/mvp-user-flow": {
+    "hub_core": false,
+    "hub_contexts": [
+      "connector"
+    ],
+    "hub_jurisdiction_tags": []
+  },
+  "public-sector/overview": {
+    "hub_core": false,
+    "hub_contexts": [
+      "state-local"
+    ],
+    "hub_jurisdiction_tags": []
+  },
+  "public-sector/templates/template-domain-3-data-readiness-assessment": {
+    "hub_core": false,
+    "hub_contexts": [
+      "state-local",
+      "federal-agency"
+    ],
+    "hub_jurisdiction_tags": [
+      "hipaa-privacy"
+    ]
+  },
+  "public-sector/templates/template-domain-6-7-operational-lifecycle-review": {
+    "hub_core": false,
+    "hub_contexts": [
+      "federal-agency"
+    ],
+    "hub_jurisdiction_tags": [
+      "nara-archival"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "fetchedAt": "2026-04-28T23:58:16.728Z",
+  "meta": {
+    "date": "2026-04-27",
+    "import_in_progress": true
+  },
+  "titles": {
+    "1": {
+      "name": "General Provisions",
+      "latest_amended_on": "2022-12-29",
+      "latest_issue_date": "2024-05-17",
+      "up_to_date_as_of": "2026-04-24"
+    },
+    "2": {
+      "name": "Federal Financial Assistance",
+      "latest_amended_on": "2026-04-09",
+      "latest_issue_date": "2026-04-09",
+      "up_to_date_as_of": "2026-04-24"
+    },
+    "5": {
+      "name": "Administrative Personnel",
+      "latest_amended_on": "2026-04-23",
+      "latest_issue_date": "2026-04-23",
+      "up_to_date_as_of": "2026-04-24"
+    },
+    "15": {
+      "name": "Commerce and Foreign Trade",
+      "latest_amended_on": "2026-04-24",
+      "latest_issue_date": "2026-04-24",
+      "up_to_date_as_of": "2026-04-24"
+    },
+    "40": {
+      "name": "Protection of Environment",
+      "latest_amended_on": "2026-04-27",
+      "latest_issue_date": "2026-04-27",
+      "up_to_date_as_of": "2026-04-27"
+    },
+    "44": {
+      "name": "Emergency Management and Assistance",
+      "latest_amended_on": "2024-12-31",
+      "latest_issue_date": "2025-01-01",
+      "up_to_date_as_of": "2026-04-24"
+    },
+    "48": {
+      "name": "Federal Acquisition Regulations System",
+      "latest_amended_on": "2026-04-02",
+      "latest_issue_date": "2026-04-06",
+      "up_to_date_as_of": "2026-04-24"
+    }
+  }
+}

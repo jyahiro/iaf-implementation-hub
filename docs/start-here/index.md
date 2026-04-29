@@ -17,12 +17,17 @@ Use this section to orient your team quickly and begin execution with the right 
 
 - [Demo Use Case: Permit Review Time Reduction](/docs/start-here/demo-use-case/)
 - [Interactive Demo Environment](/docs/start-here/demo-environment/)
+- [Hub Assistant (operator configuration; UI is the floating control)](/docs/start-here/hub-assistant/)
 
 ## Recommended Path
 
 - **Planning and framing:** Domains I-III
 - **Design and build:** Domains IV-V
 - **Deploy and operate:** Domains VI-VII
+
+## Primary jurisdiction (sidebar filter)
+
+Set your **Primary jurisdiction** on the [documentation home page](/docs/) (or the site home page) so the sidebar emphasizes regulations and templates that match your **relationship to the data asset**. The Hub stays unified; filtering is driven by YAML frontmatter—see [Hub audience context](/docs/platform/hub-audience-context/).
 
 ## Operating Standard
 

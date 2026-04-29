@@ -51,6 +51,19 @@
   border-bottom-color: #ee7421;
 }
 
+/* INFORMS raster logo ships with a light plate; blend it into the dark navbar instead of a stark white box */
+[data-theme='dark'] .navbar .iaf-navbar-informs-logo img,
+[data-theme='dark'] .navbar__logo.iaf-navbar-informs-logo img {
+  mix-blend-mode: multiply;
+  border-radius: 4px;
+}
+
+[data-theme='dark'] .navbar .iaf-navbar-informs-logo,
+[data-theme='dark'] .navbar__logo.iaf-navbar-informs-logo {
+  display: flex;
+  align-items: center;
+}
+
 /* Announcement bar: readable on dark default */
 div[class*='announcementBar_'] {
   font-weight: 500;
@@ -334,4 +347,152 @@ details.iaf-home-release-details summary {
 
 .iaf-demo-wizard-progress__label {
   line-height: 1.25;
+}
+
+.iaf-demo-field-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+  vertical-align: text-top;
+}
+
+.iaf-demo-field-help:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 1px;
+}
+
+/* Hub Assistant — floating launcher (see theme/Root.tsx) */
+.iaf-hub-assistant-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  background: rgba(10, 22, 40, 0.45);
+}
+
+.iaf-hub-assistant-sheet {
+  position: fixed;
+  right: 1rem;
+  bottom: 4.75rem;
+  z-index: 245;
+  width: min(22rem, calc(100vw - 2rem));
+  max-height: min(32rem, calc(100vh - 6rem));
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-surface-color);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+.iaf-hub-assistant-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-navbar-background-color);
+}
+
+.iaf-hub-assistant-sheet__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--ifm-heading-color);
+}
+
+.iaf-hub-assistant-sheet__close {
+  border: none;
+  background: transparent;
+  color: var(--ifm-color-content-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iaf-hub-assistant-sheet__close:hover {
+  color: var(--ifm-color-primary);
+  background: var(--ifm-color-emphasis-200);
+}
+
+.iaf-hub-assistant-sheet__body {
+  padding: 0.75rem 0.85rem 0.85rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.iaf-hub-assistant-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 260;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem 0.55rem 0.65rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-darker) 100%);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+.iaf-hub-assistant-fab:hover {
+  filter: brightness(1.06);
+}
+
+.iaf-hub-assistant-fab:focus-visible {
+  outline: 3px solid var(--ifm-color-secondary);
+  outline-offset: 2px;
+}
+
+.iaf-hub-assistant-fab__label {
+  padding-right: 0.15rem;
+}
+
+@media print {
+  .iaf-hub-assistant-backdrop,
+  .iaf-hub-assistant-sheet,
+  .iaf-hub-assistant-fab {
+    display: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .iaf-hub-assistant-fab__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .iaf-hub-assistant-fab {
+    padding: 0.65rem;
+    border-radius: 50%;
+  }
 }

@@ -8,7 +8,7 @@ slug: /domains/analytics-problem-framing
 - **Entry criteria:** Domain I problem statement approved.
 - **Exit criteria:** Analytics problem statement, assumptions, baseline, and risk record approved.
 - **Required artifacts:** Analytics Problem Statement, Assumptions Register, Baseline Report.
-- **Accountable roles:** Program Manager, Analyst, Reviewer.
+- **Accountable roles:** Project Lead, Application Developer, Team Lead (TDSP).
 
 ## Executive Summary
 Domain II translates an approved business problem into a structured analytics problem that can be solved with data and analytical methods. Per the INFORMS Analytics Framework, this domain defines drivers and outputs, states assumptions, sets primary success measures, identifies baseline performance, and documents implementation risks with mitigation strategies. Domain II is complete when the analytics framing is technically actionable and sponsor-aligned.

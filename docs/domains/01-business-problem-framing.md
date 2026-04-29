@@ -8,7 +8,7 @@ slug: /domains/business-problem-framing
 - **Entry criteria:** Strategic question identified and sponsor engaged.
 - **Exit criteria:** Problem statement approved and sponsor/stakeholder alignment recorded.
 - **Required artifacts:** Business Problem Statement, Stakeholder Register, [M-13-13 (Open Data Policy)](https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2013/m-13-13.pdf) checklist.
-- **Accountable roles:** Executive Sponsor, Program Manager, Analyst.
+- **Accountable roles:** Group Manager, Project Lead, Application Developer (TDSP).
 
 ## Executive Summary
 Domain I establishes the authoritative business problem statement that governs the analytics effort. Per the INFORMS Analytics Framework, this domain defines and refines the business question, identifies relevant stakeholders, confirms that the problem is appropriate for an analytics solution, and secures sponsor alignment to proceed. Domain I is complete only when the problem is clear, decision-relevant, and formally accepted as the basis for subsequent domains.
