@@ -1,7 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
+import useDocusaurusContext from '@docusaurus/core/lib/client/exports/useDocusaurusContext';
 import {JURISDICTION_PROFILES, type PrimaryJurisdictionId} from '@site/src/context/hubJurisdictionTypes';
 import {useHubJurisdiction} from '@site/src/context/HubJurisdictionContext';
+
+type SiteCustomFields = {hubAppVersion?: string};
 
 const OPTIONS = (Object.keys(JURISDICTION_PROFILES) as PrimaryJurisdictionId[]).map((id) => {
   const p = JURISDICTION_PROFILES[id];
@@ -18,6 +21,8 @@ type Props = {
 };
 
 export default function JurisdictionSelector({variant = 'default'}: Props): React.JSX.Element {
+  const {siteConfig} = useDocusaurusContext();
+  const hubVersion = String((siteConfig.customFields as SiteCustomFields | undefined)?.hubAppVersion ?? 'unknown');
   const {primaryJurisdiction, setPrimaryJurisdiction, profile} = useHubJurisdiction();
 
   return (
@@ -67,6 +72,11 @@ export default function JurisdictionSelector({variant = 'default'}: Props): Reac
       </p>
       <p className="margin-top--xs margin-bottom--none" style={{fontSize: '0.82rem', color: 'var(--ifm-color-content-secondary)'}}>
         <strong>Relationship to data:</strong> {profile.relationship}
+      </p>
+      <p
+        className="margin-top--sm margin-bottom--none"
+        style={{fontSize: '0.78rem', color: 'var(--ifm-color-content-secondary)'}}>
+        <strong>Hub version:</strong> <code>{hubVersion}</code> — shown site-wide; demos and assistant use the same profile.
       </p>
     </section>
   );

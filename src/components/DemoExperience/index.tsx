@@ -1,5 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import DemoJurisdictionBanner from '@site/src/components/DemoJurisdictionBanner';
+import {useHubJurisdiction} from '@site/src/context/HubJurisdictionContext';
 import {getIafDomainDefinition, IAF_DOMAIN_DEFINITIONS} from '@site/src/data/iafDomains';
 import {
   createEcfrTitleAnchor,
@@ -606,6 +609,7 @@ async function requestJson(
 }
 
 export default function DemoExperience(): React.JSX.Element {
+  const {profile} = useHubJurisdiction();
   const taskReferenceBaseUrl = useBaseUrl(TASK_REFERENCE_PATH);
   const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:4100');
   const [browserOnlyMode, setBrowserOnlyMode] = useState(true);
@@ -1466,6 +1470,11 @@ export default function DemoExperience(): React.JSX.Element {
   return (
     <div>
       {renderDemoWizardProgress()}
+      <DemoJurisdictionBanner variant="compact" />
+      <p className="margin-bottom--sm" style={{fontSize: '0.88rem', color: 'var(--ifm-color-content-secondary)'}}>
+        <strong>Sidebar filter in sync:</strong> documentation you open from this demo uses the same primary jurisdiction (
+        <em>{profile.label}</em>). Adjust it on the <Link to="/docs/">docs home</Link> if you want a different operating lens.
+      </p>
       <div style={containerStyle}>
         <h3>Demo Mode</h3>
         <label htmlFor="browserOnlyMode">
