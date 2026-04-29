@@ -19,7 +19,16 @@ export type ServiceRequestStatus =
   | 'completed'
   | 'closed';
 
-export type Role = 'sponsor' | 'program_manager' | 'analyst' | 'data_steward' | 'reviewer' | 'admin';
+/** Hub keys map to Microsoft TDSP role names; see site docs “By role (TDSP)”. */
+export type Role =
+  | 'sponsor'
+  | 'reviewer'
+  | 'program_manager'
+  | 'data_scientist'
+  | 'data_engineer'
+  | 'analyst'
+  | 'data_steward'
+  | 'admin';
 
 export interface Organization {
   id: string;
